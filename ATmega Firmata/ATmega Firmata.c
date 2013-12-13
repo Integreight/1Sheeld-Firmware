@@ -37,6 +37,7 @@ int main(void)
 		
 		
 		TOG_BIT((stport->portOutReg),5);
-		//TODO:: Please write your application code 
+		
     }
+	
 }
