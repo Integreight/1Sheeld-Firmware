@@ -10,6 +10,7 @@
 #include "uart.h"
 #include "CommonMacros.h"
 #include <util/delay.h>
+#include "Mapping.h"
 
 
 int main(void)
