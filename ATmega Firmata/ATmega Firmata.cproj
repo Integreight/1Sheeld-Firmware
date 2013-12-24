@@ -15,8 +15,7 @@
     <AssemblyName>ATmega Firmata</AssemblyName>
     <Name>ATmega Firmata</Name>
     <RootNamespace>ATmega Firmata</RootNamespace>
-    <ToolchainFlavour>
-    </ToolchainFlavour>
+    <ToolchainFlavour>Native</ToolchainFlavour>
     <KeepTimersRunning>true</KeepTimersRunning>
     <OverrideVtor>false</OverrideVtor>
     <OverrideVtorValue>exception_table</OverrideVtorValue>
