@@ -85,6 +85,12 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="1sheelds_functions.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="1sheelds_functions.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="ATmega Firmata.c">
       <SubType>compile</SubType>
     </Compile>
