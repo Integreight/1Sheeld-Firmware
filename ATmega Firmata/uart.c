@@ -6,8 +6,8 @@
  */ 
 #include <avr/io.h>
 #include <avr/interrupt.h>
-//#include "uart.h"
-#include "sys.h"
+#include "uart.h"
+
 
 #if UART_RX0_INTERRUPT == ENABLED
 volatile unsigned char uartRx0Flag=0;
@@ -21,7 +21,7 @@ volatile unsigned char uartRx1databuffer[10];
 volatile signed char index1=0;
 #endif 
 
-void UartInit(unsigned char serialPort,uint16 baudRate){
+void UartInit(uint8 serialPort,uint16 baudRate){
 	
 	
 			//UBRR0H=0x00;
@@ -105,7 +105,7 @@ unsigned char UartRx0(){
 }
 
 
-unsigned char getUartRx0Flag(){
+unsigned char getuartRx0Flag(){
 	return uartRx0Flag;
 	
 }
@@ -143,9 +143,9 @@ unsigned char getuartRx1Flag(){
 
 ISR (USART1_RXC_vect){
 	
-	uartRx0Flag=1;
-	uartRx0databuffer[index0]=UDR0;
-	index0++;
+	uartRx1Flag=1;
+	uartRx1databuffer[index1]=UDR1;
+	index1++;
 }
 
 #else

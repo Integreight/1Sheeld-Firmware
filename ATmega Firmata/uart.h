@@ -9,8 +9,9 @@
 #ifndef UART_H_
 #define UART_H_
 #include "CommonMacros.h"
+#include "sys.h"
 
-#define UART_RX0_INTERRUPT ENABLED 
+#define UART_RX0_INTERRUPT ENABLED
 #define UART_RX1_INTERRUPT ENABLED 
 
 //#include "sys.h"

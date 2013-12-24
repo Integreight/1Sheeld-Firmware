@@ -15,6 +15,7 @@
 #define CLR_BIT(var, bit) var &= (~(1<<bit))
 #define SET_BIT(var, bit) var |= (1<<bit)
 #define TOG_BIT(var, bit) var ^= (1<<bit)
+
 #define ENABLED    1
 #define DISABLED   0
 
