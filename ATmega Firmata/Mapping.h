@@ -2,7 +2,7 @@
 #define Mapping_h
 
 #include <avr/pgmspace.h>
-
+#include "CommonMacros.h"
 
 #define TOTAL_PINS              35 
 #define digitalPinHasPWM(p)         ((p) == 3 || (p) == 5 || (p) == 6 ||  (p) == 9||  (p) == 10||  (p) == 11)
@@ -14,19 +14,6 @@
 #define NUM_ANALOG_INPUTS           0
 #define analogInputToDigitalPin(p)  (-1)
 
-#define PA 1
-#define PB 2
-#define PC 3
-#define PD 4
-#define PE 5
-
-#define NOT_ON_TIMER 0
-#define TIMER0  1
-#define TIMER1A 2
-#define TIMER1B 3
-#define TIMER2  4
-#define TIMER3A 5
-#define TIMER3B 6
 // SPI pins 
 static const uint8_t SS   = 10;
 static const uint8_t MOSI = 28;
