@@ -11,26 +11,37 @@
 #include "gpio.h"
 #include "uart.h"
 #include "CommonMacros.h"
-#include "Mapping.h"
+#include "1sheelds_functions.h"
+
 
 
 int main(void)
 {
-	t_SetPortCfg cfg;
-	UartInit(0,9600);
-	SREG|=(1<<7);
-	cfg.Portdir=OUTPUT;
-	cfg.initValue=0x00;
-	cfg.pID=C;
-	GPIO_Cfg(&cfg);
+	//t_SetPortCfg cfg;
+	//UartInit(0,9600);
+	//SREG|=(1<<7);
+	//cfg.Portdir=0x00;
+	//cfg.Portdir |=(1<<1);
+	//cfg.initValue=0x02;
+	//cfg.pID=C;
+	//GPIO_Cfg(&cfg);
 	
-	t_stPort* stport;
-	stport=(t_stPort *)cfg.pID;
+	//t_stPort* stport;
+	//stport=(t_stPort *)cfg.pID;
 	
+	
+	
+	pinMode(10, OUTPUT);
 	
     while(1)
     {
-        //UartTx0('S');
+       
+	    digitalWrite(10, HIGH);
+	    _delay_ms(1000);
+	    digitalWrite(10, LOW);
+	    _delay_ms(1000);
+	   
+	   /* //UartTx0('S');
 		 while(getuartRx0Flag()==0);
 		 
 			 UartTx0(UartRx0());
@@ -41,7 +52,12 @@ int main(void)
 		
 		
 		TOG_BIT((stport->portOutReg),5);
-		
+		*/
+	   
+	  // GPIO_setPin(1,cfg.pID,1);
+	   
+	   
+	 
     }
 	
 }

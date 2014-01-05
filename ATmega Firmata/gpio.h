@@ -13,8 +13,8 @@
 
 typedef enum {
 	
-	INPUT=0x00,
-	OUTPUT=0xFF
+	INPUT_GPIO=0x00,
+	OUTPUT_GPIO=0xFF
 }t_ePortDirection;
 
 typedef struct
@@ -31,7 +31,8 @@ typedef enum {
 	A=0x39,
 	B=0x36,
 	C=0x33,
-	D=0x30
+	D=0x30,
+	E=0x25
 }t_ePortID;
 
 typedef enum {
@@ -47,10 +48,7 @@ typedef struct
 	t_ePortDirection Portdir;	
 	uint8 initValue;
 	t_ePortID pID;
-	t_ePinDirection pindir;
-	
-	
-	
+	t_ePinDirection pindir;	
 }t_SetPortCfg;
 
 void GPIO_Cfg(t_SetPortCfg* cfg);

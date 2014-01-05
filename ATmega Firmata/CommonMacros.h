@@ -20,11 +20,11 @@
 #define DISABLED   0
 
 // port arrays defs
-#define PA 1
-#define PB 2
-#define PC 3
-#define PD 4
-#define PE 5
+#define PA 0
+#define PB 1
+#define PC 2
+#define PD 3
+#define PE 4
 
 
 // timer defs
@@ -35,6 +35,13 @@
 #define TIMER2  4
 #define TIMER3A 5
 #define TIMER3B 6
+
+// values
+#define HIGH 0x1
+#define LOW  0x0
+
+#define OUTPUT 0x1
+#define INPUT  0x0
 
 
 

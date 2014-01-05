@@ -4,8 +4,12 @@
  * Created: 30/09/2013 08:28:06 م
  *  Author: HP
  */ 
+
+
 #include "gpio.h"
 #include "CommonMacros.h"
+
+
 
 void GPIO_Cfg(t_SetPortCfg* cfg)
 {
@@ -16,7 +20,7 @@ void GPIO_Cfg(t_SetPortCfg* cfg)
 	stport->portDirReg=cfg->Portdir;
 	
 	//DDRC=cfg->dir;
-	if(cfg->Portdir==OUTPUT)
+	if(cfg->Portdir==OUTPUT_GPIO)
 		stport->portOutReg=cfg->initValue;
 		
 		//PORTC=cfg->initValue;	
@@ -43,7 +47,8 @@ uint8 GPIO_getPin(t_ePortID pid,uint8 pinNum)
 {
 	t_stPort* stport;
 	stport=(t_stPort *)pid;
-	return (stport->portInReg&(1<<pinNum));
+	
+	return ((stport->portInReg)&(1<<pinNum));
 	
 }
 

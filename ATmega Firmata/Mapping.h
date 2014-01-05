@@ -1,5 +1,15 @@
-#ifndef mapping_h
-#define mapping_h
+﻿/*
+ * mapping.h
+ *
+ * Created: 05/01/2014 06:17:13 م
+ *  Author: HP
+ */ 
+
+
+#ifndef MAPPING_H_
+#define MAPPING_H_
+
+
 
 #include <stdlib.h>
 #include <string.h>
@@ -8,11 +18,13 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "CommonMacros.h"
+#include "gpio.h"
 
 
-#define TOTAL_PINS              35 
+
+#define TOTAL_PINS              35
 #define digitalPinHasPWM(p)         ( ((p) == 3) || ((p) == 5) || ((p) == 6) ||  (p) == 9||  (p) == 10||  (p) == 11)
-#define IS_PIN_DIGITAL(p)       ((p) >= 2 && (p) <= 22) || ((p)>=25 && (p)<=34)  
+#define IS_PIN_DIGITAL(p)       ((p) >= 2 && (p) <= 22) || ((p)>=25 && (p)<=34)
 #define IS_PIN_PWM(p)           digitalPinHasPWM(p)
 #define IS_PIN_SPI(p)           ((p) == SS || (p) == MOSI || (p) == MISO || (p) == SCK)
 #define PIN_TO_DIGITAL(p)       (p)
@@ -20,13 +32,8 @@
 #define NUM_ANALOG_INPUTS           0
 #define analogInputToDigitalPin(p)  (-1)
 
-// values
-#define HIGH 0x1
-#define LOW  0x0
 
-#define INPUT 0x0
-#define OUTPUT 0x1
-#define INPUT_PULLUP 0x2
+
 
 #define true 0x1
 #define false 0x0
@@ -65,14 +72,14 @@ static const uint8_t SCK  = 30;
 //                  +----+
 //
 
-
+/*
 // pin numbers 
 const uint16_t PROGMEM port_to_mode_PGM[] = {
 	(uint16_t) &DDRA,
 	(uint16_t) &DDRB,
 	(uint16_t) &DDRC,
 	(uint16_t) &DDRD,
-	(uint16_t) &DDRE
+	(uint16_t) &DDRE,
 };
 
 const uint16_t PROGMEM port_to_output_PGM[] = {
@@ -89,6 +96,15 @@ const uint16_t PROGMEM port_to_input_PGM[] = {
 	(uint16_t) &PINC,
 	(uint16_t) &PIND,
 	(uint16_t) &PINE,
+};
+*/
+
+const uint16_t PROGMEM port_to_register_PGM[] = {
+	(uint16_t) 0x39,
+	(uint16_t) 0x36,
+	(uint16_t) 0x33,
+	(uint16_t) 0x30,
+	(uint16_t) 0x25,
 };
 
 const uint8_t PROGMEM digital_pin_to_port_PGM[] = {
@@ -130,41 +146,41 @@ const uint8_t PROGMEM digital_pin_to_port_PGM[] = {
 };
 
 const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[] = {
-	_BV(0), 
-	_BV(1),
-	_BV(0),
-	_BV(4),
-	_BV(1),
-	_BV(5),
-	_BV(2), // PORT 
-	_BV(2),
-	_BV(3), /* 8, port B */
-	_BV(0),
-	_BV(4),
-	_BV(1),
-	_BV(4),
-	_BV(5),
-	_BV(0), /* 14, port A */
-	_BV(1),
-	_BV(2),
-	_BV(3),
-	_BV(4),
-	_BV(5),
-	_BV(6),
-	_BV(7),
-    _BV(6),
-    _BV(2),
-    _BV(3),
-    _BV(2),
-    _BV(3),
-    _BV(7),
-    _BV(5),
-    _BV(6),
-    _BV(7),
-    _BV(6),
-    _BV(7),
-    _BV(0),
-    _BV(1),
+	0,//_BV(0), 
+	1,//_BV(1),
+	0,//_BV(0),
+	4,//_BV(4),
+	1,//_BV(1),
+	5,//_BV(5),
+	2,//_BV(2), // PORT 
+	2,//_BV(2),
+	3,//_BV(3), /* 8, port B */
+	0,//_BV(0),
+	4,//_BV(4),
+	1,//_BV(1),
+	4,//_BV(4),
+	5,//_BV(5),
+	0,//_BV(0), /* 14, port A */
+	1,//_BV(1),
+	2,//_BV(2),
+	3,//_BV(3),
+	4,//_BV(4),
+	5,//_BV(5),
+	6,//_BV(6),
+	7,//_BV(7),
+    6,//_BV(6),
+    2,//_BV(2),
+    3,//_BV(3),
+    2,//_BV(2),
+    3,//_BV(3),
+    7,//_BV(7),
+    5,//_BV(5),
+    6,//_BV(6),
+    7,//_BV(7),
+    6,//_BV(6),
+    7,//_BV(7),
+    0,//_BV(0),
+    1,//_BV(1),
 
 };
 
@@ -205,7 +221,7 @@ const uint8_t PROGMEM digital_pin_to_timer_PGM[] = {
 	NOT_ON_TIMER, 
 	NOT_ON_TIMER,
 };
-
+/*
 static inline unsigned char readPort(byte, byte) __attribute__((always_inline, unused));
 static inline unsigned char readPort(byte port, byte bitmask)
 {
@@ -240,13 +256,14 @@ static inline unsigned char writePort(byte port, byte value, byte bitmask)
 	if ((bitmask & 0x80)) digitalWrite(PIN_TO_DIGITAL(pin+7), (value & 0x80));
 }
 
-
+*/
 #define digitalPinToPort(P) ( pgm_read_byte( digital_pin_to_port_PGM + (P) ) )
 #define digitalPinToBitMask(P) ( pgm_read_byte( digital_pin_to_bit_mask_PGM + (P) ) )
 #define digitalPinToTimer(P) ( pgm_read_byte( digital_pin_to_timer_PGM + (P) ) )
 #define analogInPinToBit(P) (P)
-#define portOutputRegister(P) ( (volatile uint8_t *)( pgm_read_word( port_to_output_PGM + (P))) )
-#define portInputRegister(P) ( (volatile uint8_t *)( pgm_read_word( port_to_input_PGM + (P))) )
-#define portModeRegister(P) ( (volatile uint8_t *)( pgm_read_word( port_to_mode_PGM + (P))) )
+//#define portOutputRegister(P) ( (volatile uint8_t *)( pgm_read_word( port_to_output_PGM + (P))) )
+//#define portInputRegister(P) ( (volatile uint8_t *)( pgm_read_word( port_to_input_PGM + (P))) )
+//#define portModeRegister(P) ( (volatile uint8_t *)( pgm_read_word( port_to_mode_PGM + (P))) )
+#define portModeRegister(P) ( ( pgm_read_word( port_to_register_PGM + (P))) )
 
-#endif // Mapping_h
+#endif /* MAPPING_H_ */

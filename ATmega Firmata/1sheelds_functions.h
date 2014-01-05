@@ -6,8 +6,8 @@
  */ 
 
 
-#ifndef 1SHEELDS_FUNCTIONS_H_
-#define 1SHEELDS_FUNCTIONS_H_
+#ifndef SHEELDS_FUNCTIONS_H_
+#define SHEELDS_FUNCTIONS_H_
 
 #include "sys.h"
 
