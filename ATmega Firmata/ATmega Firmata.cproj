@@ -103,7 +103,7 @@
     <Compile Include="gpio.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="mapping.h">
+    <Compile Include="mapping162.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="sys.h">

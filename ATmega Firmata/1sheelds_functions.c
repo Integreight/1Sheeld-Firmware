@@ -5,7 +5,7 @@
  *  Author: HP
  */ 
 #include "gpio.h"
-#include "mapping.h"
+#include "mapping162.h"
 
 
 void pinMode(uint8 pin , uint8 pinMode)

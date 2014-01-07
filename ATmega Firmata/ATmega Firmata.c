@@ -4,6 +4,7 @@
  * Created: 2/12/2013 9:43:21 AM
  *  Author: iMustafa
  */ 
+//#define F_CPU 8000000UL
 
 #include <avr/io.h>
 #include <util/delay.h>
@@ -12,7 +13,6 @@
 #include "uart.h"
 #include "CommonMacros.h"
 #include "1sheelds_functions.h"
-
 
 
 int main(void)
@@ -31,14 +31,14 @@ int main(void)
 	
 	
 	
-	pinMode(10, OUTPUT);
+	pinMode(3, OUTPUT);
 	
     while(1)
     {
        
-	    digitalWrite(10, HIGH);
+	    digitalWrite(3, HIGH);
 	    _delay_ms(1000);
-	    digitalWrite(10, LOW);
+	    digitalWrite(3, LOW);
 	    _delay_ms(1000);
 	   
 	   /* //UartTx0('S');
