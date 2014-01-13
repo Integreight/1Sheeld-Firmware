@@ -14,10 +14,10 @@ void pinMode(uint8 pin , uint8 pinMode)
 	uint8 port = digitalPinToPort(pin);
 	t_SetPortCfg cfg;
 	
-	if(port==NOT_A_PIN)
+	if(port == NOT_A_PIN)
 	{
 		return;
-	}	
+	}
 	
 	
 	//cfg.initValue=0x00;
@@ -46,7 +46,7 @@ uint8  digitalRead(uint8 pin)
 	uint8 port = digitalPinToPort(pin);
 	t_SetPortCfg cfg;
 	
-	if(port==NOT_A_PIN)
+	if(port == NOT_A_PIN)
 	{
 		return 0;
 	}
@@ -63,7 +63,7 @@ void   digitalWrite(uint8 pin, uint8 value)
 	uint8 port = digitalPinToPort(pin);
 	t_SetPortCfg cfg;
 	
-	if(port==NOT_A_PIN)
+	if(port == NOT_A_PIN)
 	{
 		//return;
 	}
