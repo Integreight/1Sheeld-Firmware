@@ -39,8 +39,8 @@
 #define false 0x0
 
 
-#define NOT_A_PIN 0
-#define NOT_A_PORT 0
+#define NOT_A_PIN 255
+#define NOT_A_PORT 255
 // SPI pins 
 static const uint8_t SS   = 10;
 static const uint8_t MOSI = 28;

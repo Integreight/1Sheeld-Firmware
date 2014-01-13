@@ -17,15 +17,16 @@
 
 int main(void)
 {
-	uint8 duty = 255;
-	DDRB=0xff;
-	/*t_SetPortCfg cfg;
+  	
+	  uint8 duty = 255;
+	//DDRB=0xff;
+	//t_SetPortCfg cfg;
 	//UartInit(0,9600);
 	//SREG|=(1<<7);
 	//cfg.Portdir=0x00;
 	//cfg.Portdir |=(1<<1);
 	//cfg.initValue=0x02;
-	cfg.pID=A;
+	//cfg.pID=A;
 	//GPIO_Cfg(&cfg);
 	
 	//t_stPort* stport;
@@ -34,7 +35,7 @@ int main(void)
 	
 	
 
-	
+	/*
 	pinMode(1, OUTPUT);
 	pinMode(2, OUTPUT);
 	pinMode(3, OUTPUT);
@@ -50,13 +51,20 @@ int main(void)
 	pinMode(13, OUTPUT);
 	
 	pinMode(14, OUTPUT);*/
-    //pwm_Setup(TIMER_00);
-	TCCR0|=(1<<WGM00)|(1<<WGM01)|(1<<CS00)|(1<<COM01);
+    //DDRB=0xff;
+	//PORTB=0x00;
+	//pwm_Setup(TIMER_00);
+	
+	//TCCR0|=(1<<WGM00)|(1<<WGM01)|(1<<CS00)|(1<<COM01);
     while(1)
     {
-       
-
-	  /*  digitalWrite(14, HIGH);
+      
+		//pwm_SetDutyCycle(duty++,TIMER_00);
+		analogWrite(5, duty++);
+		analogWrite(9, duty++);
+		_delay_ms(20);
+		/*
+	   digitalWrite(14, HIGH);
 		
 	    
 		
@@ -109,12 +117,13 @@ int main(void)
 	   
 	//   GPIO_setPin(1,cfg.pID,1);
 	  // _delay_ms(1000);
-	   */
+	   
 	 
 		//pwm_SetDutyCycle(0,TIMER_00);
-		_delay_ms(100);
-		OCR0=duty++;
-
+		//_delay_ms(100);
+		//OCR0=duty++;
+*/
+		
 	}
 	
 	

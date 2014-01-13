@@ -15,8 +15,7 @@
     <AssemblyName>ATmega Firmata</AssemblyName>
     <Name>ATmega Firmata</Name>
     <RootNamespace>ATmega Firmata</RootNamespace>
-    <ToolchainFlavour>
-    </ToolchainFlavour>
+    <ToolchainFlavour>Native</ToolchainFlavour>
     <KeepTimersRunning>true</KeepTimersRunning>
     <OverrideVtor>false</OverrideVtor>
     <OverrideVtorValue>exception_table</OverrideVtorValue>
@@ -102,6 +101,12 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="gpio.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="pwm.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="pwm.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="mapping162.h">

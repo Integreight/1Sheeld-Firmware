@@ -13,7 +13,7 @@
 #define TIMER_00		0
 #define TIMER_1A		1
 #define TIMER_1B		2
-#define TIMER_20		3
+#define TIMER_02		3
 #define TIMER_3A		4
 #define TIMER_3B		5
 

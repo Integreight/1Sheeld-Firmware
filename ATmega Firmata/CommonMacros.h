@@ -28,13 +28,13 @@
 
 
 // timer defs
-#define NOT_ON_TIMER 0
-#define TIMER0  1
-#define TIMER1A 2
-#define TIMER1B 3
-#define TIMER2  4
-#define TIMER3A 5
-#define TIMER3B 6
+#define NOT_ON_TIMER 255
+#define TIMER0  0
+#define TIMER1A 1
+#define TIMER1B 2
+#define TIMER2  3
+#define TIMER3A 4
+#define TIMER3B 5
 
 // values
 #define HIGH 0x1

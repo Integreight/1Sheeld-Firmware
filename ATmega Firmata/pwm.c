@@ -26,7 +26,7 @@ void pwm_Setup(uint8 timer)
 			TCCR1B|=(1<<WGM12)|(1<<CS10);	
 			break;
 		
-		case TIMER_20:
+		case TIMER_02:
 			TCCR2|=(1<<WGM20)|(1<<WGM21)|(1<<CS20)|(1<<COM01);
 			break;
 		
@@ -63,7 +63,7 @@ void pwm_SetDutyCycle(uint8 dutyCycle, uint8 timer_No )
 			OCR1B = dutyCycle;
 			break;
 		
-		case TIMER_20:
+		case TIMER_02:
 			OCR2 = dutyCycle;
 			break;
 		
