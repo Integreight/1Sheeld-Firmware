@@ -117,17 +117,17 @@ const uint8_t PROGMEM digital_pin_to_port_PGM[] = {
 	PE, // PE2
 	PC, // PC2
 	PC, // PC3
-	PB, // PB0
-	PB, // PB4
 	PB, // PB1
+	PB, // PB4
+	PB, // PB0
 	PC, // PC4
 	PC, // PC5
-	PA, // PA0
-	PA, // PA1
-	PA, // PA2
-	PA, // PA3
-	PA, // PA4
 	PA, // PA5
+	PA, // PA4
+	PA, // PA3
+	PA, // PA2
+	PA, // PA1
+	PA, // PA0
 	PA, // PA6
 	PA, // PA7
 	PD, // PD6
@@ -155,17 +155,17 @@ const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[] = {
 	2,//_BV(2), // PORT 
 	2,//_BV(2),
 	3,//_BV(3), /* 8, port B */
-	0,//_BV(0),
+	1,//_BV(0),
 	4,//_BV(4),
-	1,//_BV(1),
-	4,//_BV(4),
-	5,//_BV(5),
-	0,//_BV(0), /* 14, port A */
-	1,//_BV(1),
-	2,//_BV(2),
-	3,//_BV(3),
+	0,//_BV(1),
 	4,//_BV(4),
 	5,//_BV(5),
+	5,//_BV(0), /* 14, port A */
+	4,//_BV(1),
+	3,//_BV(2),
+	2,//_BV(3),
+	1,//_BV(4),
+	0,//_BV(5),
 	6,//_BV(6),
 	7,//_BV(7),
     6,//_BV(6),
