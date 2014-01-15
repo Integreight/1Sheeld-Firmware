@@ -6,8 +6,8 @@
  */ 
 
 
-#ifndef MAPPING162_H_
-#define MAPPING162_H_
+#ifndef MAPPING_H_
+#define MAPPING_H_
 
 
 
@@ -39,7 +39,7 @@
 #define false 0x0
 
 
-#define NOT_A_PIN 255
+#define NOT_A_PIN  255
 #define NOT_A_PORT 255
 // SPI pins 
 static const uint8_t SS   = 10;

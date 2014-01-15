@@ -5,6 +5,7 @@
  *  Author: HP
  */ 
 #include "gpio.h"
+#include "pwm.h"
 #include "mapping162.h"
 
 
@@ -14,10 +15,10 @@ void pinMode(uint8 pin , uint8 pinMode)
 	uint8 port = digitalPinToPort(pin);
 	t_SetPortCfg cfg;
 	
-	if(port==NOT_A_PIN)
+	if(port == NOT_A_PIN)
 	{
 		return;
-	}	
+	}
 	
 	
 	//cfg.initValue=0x00;
@@ -46,7 +47,7 @@ uint8  digitalRead(uint8 pin)
 	uint8 port = digitalPinToPort(pin);
 	t_SetPortCfg cfg;
 	
-	if(port==NOT_A_PIN)
+	if(port == NOT_A_PIN)
 	{
 		return 0;
 	}
@@ -63,7 +64,7 @@ void   digitalWrite(uint8 pin, uint8 value)
 	uint8 port = digitalPinToPort(pin);
 	t_SetPortCfg cfg;
 	
-	if(port==NOT_A_PIN)
+	if(port == NOT_A_PIN)
 	{
 		//return;
 	}
@@ -71,4 +72,15 @@ void   digitalWrite(uint8 pin, uint8 value)
 	cfg.pID = portModeRegister(port);
 	
 	GPIO_setPin(value,cfg.pID,bit);
+}
+
+
+void analogWrite(uint8 pin, uint16 val)
+{
+	uint8 timer = 0xff;
+	pinMode(pin, OUTPUT);
+		
+	timer = digitalPinToTimer(pin);	 
+	pwm_Setup(timer);
+	pwm_SetDutyCycle(val, timer);	
 }

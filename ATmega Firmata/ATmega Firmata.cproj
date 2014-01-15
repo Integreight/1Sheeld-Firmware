@@ -103,6 +103,12 @@
     <Compile Include="gpio.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="pwm.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="pwm.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="mapping162.h">
       <SubType>compile</SubType>
     </Compile>

@@ -17,7 +17,7 @@ void GPIO_Cfg(t_SetPortCfg* cfg)
 	stport=(t_stPort *)cfg->pID; //make the pointer points to the Port Registers in memory
 		
 	//cfg->pID=cfg->dir;
-	stport->portDirReg=cfg->Portdir;
+	stport->portDirReg |= cfg->Portdir;
 	
 	//DDRC=cfg->dir;
 	if(cfg->Portdir==OUTPUT_GPIO)
