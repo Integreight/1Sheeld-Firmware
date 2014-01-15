@@ -18,7 +18,7 @@
 int main(void)
 {
   	
-	  uint8 duty = 255;
+	  uint8 duty = 0;
 	//DDRB=0xff;
 	//t_SetPortCfg cfg;
 	//UartInit(0,9600);
@@ -62,7 +62,7 @@ int main(void)
 		//pwm_SetDutyCycle(duty++,TIMER_00);
 		analogWrite(5, duty++);
 		analogWrite(9, duty++);
-		_delay_ms(20);
+		_delay_ms(200);
 		/*
 	   digitalWrite(14, HIGH);
 		
