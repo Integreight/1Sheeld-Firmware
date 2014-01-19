@@ -4,7 +4,7 @@
  * Created: 2/12/2013 9:43:21 AM
  *  Author: iMustafa
  */ 
-//#define F_CPU 8000000UL
+#define F_CPU 16000000UL
 
 #include <avr/io.h>
 #include <util/delay.h>
@@ -18,7 +18,7 @@
 int main(void)
 {
   	
-	  uint8 duty = 0;
+	 // uint8 duty = 0;
 	//DDRB=0xff;
 	//t_SetPortCfg cfg;
 	//UartInit(0,9600);
@@ -56,74 +56,25 @@ int main(void)
 	//pwm_Setup(TIMER_00);
 	
 	//TCCR0|=(1<<WGM00)|(1<<WGM01)|(1<<CS00)|(1<<COM01);
+	pinMode(4,OUTPUT);
+	UartInit(0,9600);
+	
     while(1)
     {
+		if (getuartRx0Flag()!=0)
+		{
+			UartTx0('p');
+			 writePort(0,0xff,0xff);
+			 
+		}
+		
       
-		//pwm_SetDutyCycle(duty++,TIMER_00);
-		analogWrite(5, duty++);
-		analogWrite(9, duty++);
-		_delay_ms(200);
-		/*
-	   digitalWrite(14, HIGH);
-		
-	    
-		
-		digitalWrite(4, LOW);
-		digitalWrite(1, HIGH);
-		digitalWrite(2, HIGH);
-		digitalWrite(3, HIGH);
-		digitalWrite(4, HIGH);
-		digitalWrite(5, HIGH);
-		digitalWrite(6, HIGH);
-		digitalWrite(7, HIGH);
-		digitalWrite(8, HIGH);
-		digitalWrite(9, HIGH);
-		digitalWrite(10, HIGH);
-		digitalWrite(11, HIGH);
-		digitalWrite(12, HIGH);
-		digitalWrite(13, HIGH);
-		//GPIO_setPin(0,cfg.pID,7);
-	     _delay_ms(1000);
-	    digitalWrite(1, LOW);
-	    digitalWrite(2, LOW);
-	    digitalWrite(3, LOW);
-	    digitalWrite(4, LOW);
-		digitalWrite(5, LOW);
-	    digitalWrite(6, LOW);
-	    digitalWrite(7, LOW);
-	    digitalWrite(8, LOW);
-	    digitalWrite(9, LOW);
-	    digitalWrite(10, LOW);
-	    digitalWrite(11, LOW);
-	    digitalWrite(12, LOW);
-	    digitalWrite(13, LOW);
-		digitalWrite(14, LOW);
-		//GPIO_setPin(1,cfg.pID,7);
-	   // _delay_ms(1000);
-	   _delay_ms(1000);
-	    //UartTx0('S');
-		// while(getuartRx0Flag()==0);
-
-			// UartTx0(UartRx0());
-		 			
-		//GPIO_setPort(UartRx0(),cfg.pID);
-		//GPIO_setPort(i++,cfg.pID);
-		//GPIO_setPin(0,cfg.pID,1);
-		//_delay_ms(1000);
-		
-		
-		//TOG_BIT((stport->portOutReg),5);
-		
-	   
-	//   GPIO_setPin(1,cfg.pID,1);
-	  // _delay_ms(1000);
-	   
-	 
-		//pwm_SetDutyCycle(0,TIMER_00);
-		//_delay_ms(100);
-		//OCR0=duty++;
-*/
-		
+            
+			//_delay_ms(100);
+		  
+		 //  writePort(0,0x00,0xff);
+		//	_delay_ms(100);
+			
 	}
 	
 	
