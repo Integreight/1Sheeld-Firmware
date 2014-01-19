@@ -68,6 +68,7 @@ void GPIO_setPin(uint8 data,t_ePortID pid,uint8 pinNum)
 		break;
 		
 		default:
+		    SET_BIT((stport->portOutReg),pinNum);//19/1
 		break;
 		
 	}	
