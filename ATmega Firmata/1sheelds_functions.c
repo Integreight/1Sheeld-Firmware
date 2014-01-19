@@ -85,7 +85,7 @@ void analogWrite(uint8 pin, uint16 val)
 	pwm_SetDutyCycle(val, timer);	
 }
 
-unsigned char readPort(byte port, byte bitmask)
+uint8 readPort(byte port, byte bitmask)
 {
 	unsigned char out=0, pin=port*8;
 	if ((IS_PIN_DIGITAL(pin+0)) && (bitmask & 0x01) && ( digitalRead(pin+0))) out |= 0x01;

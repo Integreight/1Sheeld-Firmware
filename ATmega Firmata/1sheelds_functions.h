@@ -17,7 +17,7 @@ void   pinMode(uint8 , uint8);
 uint16 analogRead(uint8);
 void   analogWrite(uint8_t, uint16);
 void   writePort(byte, byte, byte);
-//uint8  readPort(byte, byte);
+uint8  readPort(byte, byte);
 
 
 
