@@ -84,3 +84,30 @@ void analogWrite(uint8 pin, uint16 val)
 	pwm_Setup(timer);
 	pwm_SetDutyCycle(val, timer);	
 }
+
+unsigned char readPort(byte port, byte bitmask)
+{
+	unsigned char out=0, pin=port*8;
+	if ((IS_PIN_DIGITAL(pin+0)) && (bitmask & 0x01) && ( digitalRead(pin+0))) out |= 0x01;
+	if ((IS_PIN_DIGITAL(pin+1)) && (bitmask & 0x02) && ( digitalRead(pin+1))) out |= 0x02;
+	if ((IS_PIN_DIGITAL(pin+2)) && (bitmask & 0x04) && ( digitalRead(pin+2))) out |= 0x04;
+	if ((IS_PIN_DIGITAL(pin+3)) && (bitmask & 0x08) && ( digitalRead(pin+3))) out |= 0x08;
+	if ((IS_PIN_DIGITAL(pin+4)) && (bitmask & 0x10) && ( digitalRead(pin+4))) out |= 0x10;
+	if ((IS_PIN_DIGITAL(pin+5)) && (bitmask & 0x20) && ( digitalRead(pin+5))) out |= 0x20;
+	if ((IS_PIN_DIGITAL(pin+6)) && (bitmask & 0x40) && ( digitalRead(pin+6))) out |= 0x40;
+	if ((IS_PIN_DIGITAL(pin+7)) && (bitmask & 0x80) && ( digitalRead(pin+7))) out |= 0x80;
+	return out;
+}
+
+void writePort(byte port, byte value, byte bitmask)
+{
+	byte pin=port*8;
+	if ((bitmask & 0x01)) digitalWrite((pin+0), (value & 0x01));
+	if ((bitmask & 0x02)) digitalWrite((pin+1), (value & 0x02));
+	if ((bitmask & 0x04)) digitalWrite((pin+2), (value & 0x04));
+	if ((bitmask & 0x08)) digitalWrite((pin+3), (value & 0x08));
+	if ((bitmask & 0x10)) digitalWrite((pin+4), (value & 0x10));
+	if ((bitmask & 0x20)) digitalWrite((pin+5), (value & 0x20));
+	if ((bitmask & 0x40)) digitalWrite((pin+6), (value & 0x40));
+	if ((bitmask & 0x80)) digitalWrite((pin+7), (value & 0x80));
+}
