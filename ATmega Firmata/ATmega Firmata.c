@@ -8,6 +8,7 @@
 
 #include <avr/io.h>
 #include <util/delay.h>
+#include <avr/interrupt.h>
 #include "sys.h"
 #include "gpio.h"
 #include "uart.h"
@@ -57,20 +58,19 @@ int main(void)
 	
 	//TCCR0|=(1<<WGM00)|(1<<WGM01)|(1<<CS00)|(1<<COM01);
 	pinMode(4,OUTPUT);
-	UartInit(0,9600);
-	
+	UartInit(0,BAUD_57600);
+	sei();
     while(1)
     {
 		if (getuartRx0Flag()!=0)
 		{
-			UartTx0('p');
+			UartTx0(UartRx0());
 			 writePort(0,0xff,0xff);
 			 
 		}
-		
-      
-            
-			//_delay_ms(100);
+		_delay_ms(100);
+		writePort(0,0x00,0xff); 
+		_delay_ms(100);
 		  
 		 //  writePort(0,0x00,0xff);
 		//	_delay_ms(100);

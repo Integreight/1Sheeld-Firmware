@@ -30,37 +30,55 @@ void UartInit(uint8 serialPort,uint16 baudRate){
 	switch(serialPort)
 	{
 		case 0:
+		    UCSR0A=(1<<U2X0); // U2X=1 double speed transmission for less error 
 			#if UART_RX0_INTERRUPT == DISABLED	
-		
-			UBRR0L=0x33;
-			UBRR0H=0x00;
+		    
 			UCSR0B=UCSR0B|(1<<TXEN0)|(1<<RXEN0);		
 			UCSR0C=UCSR0C|(1<<URSEL0)|(1<<UCSZ00)|(1<<UCSZ01);
 			
 			#else
 		
-			UBRR0L=0x33;
-			UBRR0H=0x00;
-			UCSR0B=UCSR0B|(1<<TXEN0)|(1<<RXEN0)|(1<<RXCIE0);		
+		    UCSR0B=UCSR0B|(1<<TXEN0)|(1<<RXEN0)|(1<<RXCIE0);		
 			UCSR0C=UCSR0C|(1<<URSEL0)|(1<<UCSZ00)|(1<<UCSZ01);
 		
 			#endif
+			
+			
+			if (baudRate>0xff)
+			{
+				UBRR0L = (byte) (baudRate &0x00ff) ;
+				UBRR0H&=(byte)((baudRate &0xff00)>>8);
+			}
+			else
+			{
+				UBRR0L=baudRate;
+			}
 		break;
 		
 		case 1:
+		    UCSR1A=(1<<U2X1);
 			#if UART_RX1_INTERRUPT == DISABLED
-			UBRR1L=0x33;
 			UCSR1B=UCSR1B|(1<<TXEN1)|(1<<RXEN1);		
 			UCSR1C=UCSR1C|(1<<URSEL1)|(1<<UCSZ10)|(1<<UCSZ11);
 			#else
-			UBRR1L=0x33;
 			UCSR1B=UCSR1B|(1<<TXEN1)|(1<<RXEN1)|(1<<RXCIE1);		
 			UCSR1C=UCSR1C|(1<<URSEL1)|(1<<UCSZ10)|(1<<UCSZ11);
 			#endif 
+			
+			if (baudRate>0xff)
+				{
+					UBRR1L = (byte) (baudRate &0x00ff) ;
+					UBRR1H&=(byte)((baudRate &0xff00)>>8);
+				}
+			else
+				{
+					UBRR1L=baudRate;
+				}
 		break;
 		
 		default:
-			break;		
+			break;
+		
 	}
 	
 }
