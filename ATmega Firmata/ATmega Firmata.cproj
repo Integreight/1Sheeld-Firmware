@@ -97,6 +97,12 @@
     <Compile Include="CommonMacros.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="firmata162.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="firmata162.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="gpio.c">
       <SubType>compile</SubType>
     </Compile>
