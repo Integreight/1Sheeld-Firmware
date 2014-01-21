@@ -42,17 +42,10 @@ void UartInit(uint8 serialPort,uint16 baudRate){
 			UCSR0C=UCSR0C|(1<<URSEL0)|(1<<UCSZ00)|(1<<UCSZ01);
 		
 			#endif
+			UBRR0L = (byte) (baudRate &0x00ff) ;
+			UBRR0H = (byte)((baudRate &0xff00)>>8);
+				
 			
-			
-			if (baudRate>0xff)
-			{
-				UBRR0L = (byte) (baudRate &0x00ff) ;
-				UBRR0H&=(byte)((baudRate &0xff00)>>8);
-			}
-			else
-			{
-				UBRR0L=baudRate;
-			}
 		break;
 		
 		case 1:
@@ -64,16 +57,9 @@ void UartInit(uint8 serialPort,uint16 baudRate){
 			UCSR1B=UCSR1B|(1<<TXEN1)|(1<<RXEN1)|(1<<RXCIE1);		
 			UCSR1C=UCSR1C|(1<<URSEL1)|(1<<UCSZ10)|(1<<UCSZ11);
 			#endif 
-			
-			if (baudRate>0xff)
-				{
-					UBRR1L = (byte) (baudRate &0x00ff) ;
-					UBRR1H&=(byte)((baudRate &0xff00)>>8);
-				}
-			else
-				{
-					UBRR1L=baudRate;
-				}
+			UBRR1L = (byte) (baudRate &0x00ff) ;
+			UBRR1H =(byte)((baudRate &0xff00)>>8);
+
 		break;
 		
 		default:
