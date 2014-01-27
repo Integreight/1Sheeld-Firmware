@@ -19,7 +19,7 @@ void   writePort(byte, byte, byte);
 uint8  readPort(byte, byte);
 uint8 serial0_Avilable();
 uint8 serial1_Avilable();
-
+void turnOffPWM(uint8 timer);
 
 
 

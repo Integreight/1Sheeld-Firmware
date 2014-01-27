@@ -43,12 +43,55 @@ void pinMode(uint8 pin , uint8 pinMode)
 	GPIO_Cfg(&cfg);
 }
 
+void turnOffPWM(uint8 timer)
+{
+	
+	
+	switch(timer)
+	{
+		case TIMER_00 :
+		TCCR0=0x00;
+		break;
+		
+		case TIMER_1A:
+		CLR_BIT(TCCR1A ,COM1A1);
+		TCCR1B|=(1<<WGM12)|(1<<CS10);
+		break;
+		
+		case TIMER_1B:
+		CLR_BIT(TCCR1A ,COM1B1);
+		TCCR1B|=(1<<WGM12)|(1<<CS10);
+		break;
+		
+		case TIMER_02:
+		TCCR2 = 0x00;
+		break;
+		
+		case TIMER_3A:
+		CLR_BIT(TCCR3A ,COM3A1);
+		TCCR3B|=(1<<WGM32)|(1<<CS30);
+		break;
+		
+		case TIMER_3B:
+		CLR_BIT(TCCR3A ,COM3B1);
+		TCCR3B|=(1<<WGM32)|(1<<CS30);
+		break;
+		
+		default:
+		break;
+		
+	}
+}
+
 uint8  digitalRead(uint8 pin)
 {
+	uint8 timer = digitalPinToTimer(pin);
 	uint8 bit = digitalPinToBitMask(pin);
 	uint8 port = digitalPinToPort(pin);
 	t_SetPortCfg cfg;
 	
+	if (timer != NOT_ON_TIMER) turnOffPWM(timer);
+
 	if(port == NOT_A_PIN)
 	{
 		return 0;
@@ -62,9 +105,12 @@ uint8  digitalRead(uint8 pin)
 
 void   digitalWrite(uint8 pin, uint8 value)
 {
+	uint8 timer = digitalPinToTimer(pin);
 	uint8 bit = digitalPinToBitMask(pin);
 	uint8 port = digitalPinToPort(pin);
 	t_SetPortCfg cfg;
+
+	if (timer != NOT_ON_TIMER) turnOffPWM(timer);
 	
 	if(port == NOT_A_PIN)
 	{
@@ -81,7 +127,7 @@ void analogWrite(uint8 pin, uint16 val)
 {
 	uint8 timer = 0xff;
 	pinMode(pin, OUTPUT);
-		
+	
 	timer = digitalPinToTimer(pin);	 
 	pwm_Setup(timer);
 	pwm_SetDutyCycle(val, timer);	
