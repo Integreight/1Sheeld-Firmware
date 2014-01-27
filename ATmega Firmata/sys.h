@@ -14,5 +14,4 @@ typedef unsigned short uint16;
 typedef unsigned char byte;
 
 
-
 #endif /* SYS_H_ */
