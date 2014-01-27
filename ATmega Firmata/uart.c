@@ -10,13 +10,13 @@
 
 
 #if UART_RX0_INTERRUPT == ENABLED
-volatile unsigned char uartRx0Flag=0;
+//volatile unsigned char uartRx0Flag=0;
 volatile unsigned char uartRx0databuffer[10];
 volatile signed char index0=0;
 #endif 
 
 #if UART_RX1_INTERRUPT == ENABLED
-volatile unsigned char uartRx1Flag=0;
+//volatile unsigned char uartRx1Flag=0;
 volatile unsigned char uartRx1databuffer[10];
 volatile signed char index1=0;
 #endif 
@@ -30,7 +30,7 @@ void UartInit(uint8 serialPort,uint16 baudRate){
 	switch(serialPort)
 	{
 		case 0:
-		    UCSR0A=(1<<U2X0); // U2X=1 double speed transmission for less error 
+		    //UCSR0A=(1<<U2X0); // U2X=1 double speed transmission for less error 
 			#if UART_RX0_INTERRUPT == DISABLED	
 		    
 			UCSR0B=UCSR0B|(1<<TXEN0)|(1<<RXEN0);		
@@ -42,8 +42,10 @@ void UartInit(uint8 serialPort,uint16 baudRate){
 			UCSR0C=UCSR0C|(1<<URSEL0)|(1<<UCSZ00)|(1<<UCSZ01);
 		
 			#endif
-			UBRR0L = (byte) (baudRate &0x00ff) ;
-			UBRR0H = (byte)((baudRate &0xff00)>>8);
+			 UBRR0L=0x33;
+			//UBRR0L =(byte) (baudRate & 0x00ff) ;
+			
+			//UBRR0H = (byte)((baudRate &0xff00)>>8);
 				
 			
 		break;
@@ -58,6 +60,7 @@ void UartInit(uint8 serialPort,uint16 baudRate){
 			UCSR1C=UCSR1C|(1<<URSEL1)|(1<<UCSZ10)|(1<<UCSZ11);
 			#endif 
 			UBRR1L = (byte) (baudRate &0x00ff) ;
+			
 			UBRR1H =(byte)((baudRate &0xff00)>>8);
 
 		break;
@@ -96,26 +99,28 @@ unsigned char UartRx0(){
 	unsigned char data;
 	unsigned int i;
 	data=uartRx0databuffer[0];
-	uartRx0Flag=0;
+	
 	
 	for(i=0;i<index0;i++)
 		uartRx0databuffer[i]=uartRx0databuffer[i+1];
 	
 	index0--;	
-	if(index0<0)
-		index0=0;
+	/*if(index0 == 0)
+	{
 		
+		
+	}*/
 	return data;
 }
 
 
 unsigned char getuartRx0Flag(){
-	return uartRx0Flag;
+	return index0;
 	
 }
 ISR (USART0_RXC_vect){
 	
-	uartRx0Flag=1;
+	//uartRx0Flag=1;
 	uartRx0databuffer[index0]=UDR0;
 	index0++;
 }
@@ -127,27 +132,29 @@ unsigned char UartRx1(){
 	unsigned char data;
 	unsigned int i;
 	data=uartRx1databuffer[0];
-	uartRx1Flag=0;
+	
 	
 	for(i=0;i<index1;i++)
 		uartRx1databuffer[i]=uartRx1databuffer[i+1];
 	
 	index1--;	
-	if(index1<0)
-		index1=0;
+	/*if(index1 == 0)
+	{
 		
+		
+	}*/
 	return data;
 }
 
 
 unsigned char getuartRx1Flag(){
-	return uartRx1Flag;
+	return index1;
 	
 }
 
 ISR (USART1_RXC_vect){
 	
-	uartRx1Flag=1;
+	
 	uartRx1databuffer[index1]=UDR1;
 	index1++;
 }

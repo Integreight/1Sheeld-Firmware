@@ -97,7 +97,7 @@
     <Compile Include="CommonMacros.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="firmata162.c">
+    <Compile Include="firmata162.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="firmata162.h">

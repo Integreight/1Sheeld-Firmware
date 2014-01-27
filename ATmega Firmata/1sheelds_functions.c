@@ -6,6 +6,7 @@
  */ 
 #include "gpio.h"
 #include "pwm.h"
+#include "uart.h"
 #include "mapping162.h"
 
 
@@ -85,6 +86,7 @@ void analogWrite(uint8 pin, uint16 val)
 	pwm_SetDutyCycle(val, timer);	
 }
 
+
 uint8 readPort(byte port, byte bitmask)
 {
 	unsigned char out=0, pin=port*8;
@@ -110,4 +112,21 @@ void writePort(byte port, byte value, byte bitmask)
 	if ((bitmask & 0x20)) digitalWrite((pin+5), (value & 0x20));
 	if ((bitmask & 0x40)) digitalWrite((pin+6), (value & 0x40));
 	if ((bitmask & 0x80)) digitalWrite((pin+7), (value & 0x80));
+}
+
+uint8 serial0_Avilable()
+{
+	
+	
+	return getuartRx0Flag();
+	
+} 
+
+
+uint8 serial1_Avilable()
+{
+	
+	
+	return getuartRx1Flag();
+	
 }
