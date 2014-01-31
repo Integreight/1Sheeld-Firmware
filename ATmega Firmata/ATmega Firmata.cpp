@@ -5,7 +5,7 @@
  *  Author: iMustafa
  */ 
 
-#define  F_CPU 16000000UL
+#define  F_CPU 16000000UL //
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "gpio.h"
@@ -179,14 +179,22 @@ void sysexCallback(byte command, byte argc, byte *argv)
   unsigned int delayTime; 
   
   switch(command) {
+	  case EXTENDED_ANALOG:
+	  if (argc > 1) {
+		  int val = argv[1];
+		  if (argc > 2) val |= (argv[2] << 7);
+		  if (argc > 3) val |= (argv[3] << 14);
+		  analogWriteCallback(argv[0], val);
+	  }
+	  break;
 	 
 	  case CAPABILITY_QUERY:
 	  UartTx1(START_SYSEX);
 	  UartTx1(CAPABILITY_RESPONSE);
 	  for (byte pin=0; pin < TOTAL_PINS; pin++) {
-		  if (IS_PIN_DIGITAL(pin)) {
-			  UartTx1((byte)INPUT);
-			  
+		  if (IS_PIN_DIGITAL(pin)) 
+		  {
+			  UartTx1((byte)INPUT);			  
 			  UartTx1(1);
 			  UartTx1((byte)OUTPUT);
 			  UartTx1(1);
@@ -281,9 +289,11 @@ void systemResetCallback()
 }
 int main(void)
 {
+	
     uint8 duty=0;
 	sei(); // global interrupt enable 
 	Firmata.setFirmwareVersion(FIRMATA_MAJOR_VERSION, FIRMATA_MINOR_VERSION);
+	Firmata.attach(ANALOG_MESSAGE, analogWriteCallback);
 	Firmata.attach(DIGITAL_MESSAGE, digitalWriteCallback);
 	Firmata.attach(REPORT_DIGITAL, reportDigitalCallback);
 	Firmata.attach(SET_PIN_MODE, setPinModeCallback);
@@ -292,7 +302,6 @@ int main(void)
 
 	Firmata.begin(57600);
 	systemResetCallback();  // reset to default config
-	UartTx1('X');
 	while (1) // the super loop!
 	{
 		/*if (Serial.available()>0)
@@ -332,7 +341,7 @@ int main(void)
 			
 			
 		}*/
-		
+	
 		checkDigitalInputs();
 		while(serial1_Avilable()>0)
           {
@@ -343,5 +352,6 @@ int main(void)
 		
 
   }
+
 
 }

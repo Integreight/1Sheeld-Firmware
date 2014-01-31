@@ -128,9 +128,21 @@ void analogWrite(uint8 pin, uint16 val)
 	uint8 timer = 0xff;
 	pinMode(pin, OUTPUT);
 	
-	timer = digitalPinToTimer(pin);	 
-	pwm_Setup(timer);
-	pwm_SetDutyCycle(val, timer);	
+	if (val == 0)
+	{
+		digitalWrite(pin, LOW);
+	}
+	else if (val == 255)
+	{
+		digitalWrite(pin, HIGH);
+	}
+	else
+	{
+		timer = digitalPinToTimer(pin);
+		pwm_Setup(timer);
+		pwm_SetDutyCycle(val, timer);
+	}
+	
 }
 
 

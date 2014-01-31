@@ -206,6 +206,13 @@ void FirmataClass::processInput(void)
 		storedInputData[waitForData] = inputData;
 		if( (waitForData==0) && executeMultiByteCommand ) { // got the whole message
 			switch(executeMultiByteCommand) {
+				case ANALOG_MESSAGE:
+				if(currentAnalogCallback) {
+					(*currentAnalogCallback)(multiByteChannel,
+					(storedInputData[0] << 7)
+					+ storedInputData[1]);
+				}
+				break;
 
 				case DIGITAL_MESSAGE:
 				if(currentDigitalCallback) {
@@ -238,6 +245,7 @@ void FirmataClass::processInput(void)
 		switch (command) {
 			
 			case DIGITAL_MESSAGE:
+			case ANALOG_MESSAGE:
 			case SET_PIN_MODE:
 			waitForData = 2; // two data bytes needed
 			executeMultiByteCommand = command;
@@ -299,7 +307,7 @@ void FirmataClass::attach(byte command, callbackFunction newFunction)
 	switch(command) {
 		
 		case DIGITAL_MESSAGE: currentDigitalCallback = newFunction; break;
-		
+		case ANALOG_MESSAGE : currentAnalogCallback = newFunction; break;
 		case REPORT_DIGITAL: currentReportDigitalCallback = newFunction; break;
 		case SET_PIN_MODE: currentPinModeCallback = newFunction; break;
 	}

@@ -13,7 +13,7 @@
 
 #define UART_RX0_INTERRUPT ENABLED
 #define UART_RX1_INTERRUPT ENABLED 
-
+#define BUFFER_SIZE 64
 // baud rate register values for U2X=1
 #define BAUD_4800   0x1A0
 #define BAUD_9600   0xCF

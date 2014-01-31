@@ -11,13 +11,13 @@
 
 #if UART_RX0_INTERRUPT == ENABLED
 //volatile unsigned char uartRx0Flag=0;
-volatile unsigned char uartRx0databuffer[10];
+volatile unsigned char uartRx0databuffer[BUFFER_SIZE];
 volatile signed char index0=0;
 #endif 
 
 #if UART_RX1_INTERRUPT == ENABLED
 //volatile unsigned char uartRx1Flag=0;
-volatile unsigned char uartRx1databuffer[10];
+volatile unsigned char uartRx1databuffer[BUFFER_SIZE];
 volatile signed char index1=0;
 #endif 
 
@@ -57,9 +57,10 @@ void UartInit(uint8 serialPort,uint16 baudRate){
 			UCSR1B=UCSR1B|(1<<TXEN1)|(1<<RXEN1)|(1<<RXCIE1);		
 			UCSR1C=UCSR1C|(1<<URSEL1)|(1<<UCSZ10)|(1<<UCSZ11);
 			#endif 
-			UBRR1L = (byte) (baudRate &0x00ff) ;
-			UBRR1H =(byte)((baudRate &0xff00)>>8);
-
+		    UBRR1L = (byte) (baudRate &0x00ff) ;
+		    UBRR1H =(byte)((baudRate &0xff00)>>8);
+           
+			
 		break;
 		
 		default:
