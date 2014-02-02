@@ -17,6 +17,7 @@
 
 #define TOTAL_PORTS             5
 #define TOTAL_PINS              35
+#define SYSEX_UART              0x0A
 //variables declarations//
 unsigned int BAUD_RATE;// for the hardware serial terminal
 byte   isPulseInEnabled =0;
@@ -172,12 +173,16 @@ void reportDigitalCallback(byte port, int value)
 
 void sysexCallback(byte command, byte argc, byte *argv)
 {
-  byte mode;
-  byte slaveAddress;
-  byte slaveRegister;
-  byte data;
-  unsigned int delayTime; 
-  
+           byte mode;
+           byte slaveAddress;
+           byte slaveRegister;
+           byte data;
+           byte newData [argc/2];
+  unsigned int  delayTime; 
+           int  s16DataCounter;
+		       
+		   
+		        
   switch(command) {
 	  case EXTENDED_ANALOG:
 	  if (argc > 1) {
@@ -187,7 +192,18 @@ void sysexCallback(byte command, byte argc, byte *argv)
 		  analogWriteCallback(argv[0], val);
 	  }
 	  break;
-	 
+
+	  case SYSEX_UART:
+	  for (int s16DataCounter = 0; s16DataCounter < argc; s16DataCounter+=2) // run over and over
+	  {
+		  newData[s16DataCounter/2]=(argv[s16DataCounter]|(argv[s16DataCounter+1]<<7));
+		  UartTx0(newData[s16DataCounter/2]);
+	  }
+	  //for(s16DataCounter = 0; s16DataCounter < argc ;s16DataCounter++)
+	  //{
+	//	  UartTx0(argv[s16DataCounter]);//mySerial.write(argv[s16DataCounter]);
+	 // }
+	  break;
 	  case CAPABILITY_QUERY:
 	  UartTx1(START_SYSEX);
 	  UartTx1(CAPABILITY_RESPONSE);
@@ -291,6 +307,10 @@ int main(void)
 {
 	
     uint8 duty=0;
+	byte  u8SoftData[MAX_DATA_BYTES];
+	int   s16DataLength, s16DataCounter;
+	
+	
 	sei(); // global interrupt enable 
 	Firmata.setFirmwareVersion(FIRMATA_MAJOR_VERSION, FIRMATA_MINOR_VERSION);
 	Firmata.attach(ANALOG_MESSAGE, analogWriteCallback);
@@ -301,9 +321,23 @@ int main(void)
 	Firmata.attach(SYSTEM_RESET, systemResetCallback);
 
 	Firmata.begin(57600);
+	UartInit(0, BAUD_57600);
 	systemResetCallback();  // reset to default config
 	while (1) // the super loop!
 	{
+		
+		s16DataLength  = serial0_Avilable();//mySerial.available();
+		if(s16DataLength > 0)
+		{
+			
+			for(s16DataCounter = 0; s16DataCounter < s16DataLength; s16DataCounter++)
+			{
+				u8SoftData[s16DataCounter] = UartRx0();//mySerial.read();
+			}
+			
+			/* if data received transmit to HW UART of firmata by sysex */
+			Firmata.sendSysex(SYSEX_UART, s16DataLength, u8SoftData);
+		}
 		/*if (Serial.available()>0)
 		{
 			tempChar=Serial.read();
