@@ -12,7 +12,7 @@
 #include "sys.h"
 
 #define UART_RX0_INTERRUPT ENABLED
-#define UART_RX1_INTERRUPT ENABLED 
+#define UART_RX1_INTERRUPT ENABLED
 
 // baud rate register values for U2X=1
 #define BAUD_4800   0x1A0
@@ -32,8 +32,10 @@ void UartTx0(unsigned char data);
 void UartTx1(unsigned char data);
 unsigned char UartRx0();
 unsigned char UartRx1();
-unsigned char getuartRx1Flag();
-unsigned char getuartRx0Flag();
+#if UART_RX0_INTERRUPT == ENABLED
+    unsigned char getuartRx1Flag();
+    unsigned char getuartRx0Flag();
+#endif
 
 
 
