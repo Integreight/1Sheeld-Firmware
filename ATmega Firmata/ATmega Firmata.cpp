@@ -177,16 +177,23 @@ void sysexCallback(byte command, byte argc, byte *argv)
            byte slaveAddress;
            byte slaveRegister;
            byte data;
+           byte newData [argc/2];
   unsigned int  delayTime; 
-           int  s16DataCounter;    
+           int  s16DataCounter;
+		       
 		   
 		        
   switch(command) {
 	  case SYSEX_UART:
-	  for(s16DataCounter = 0; s16DataCounter < argc ;s16DataCounter++)
+	  for (int s16DataCounter = 0; s16DataCounter < argc; s16DataCounter+=2) // run over and over
 	  {
-		  UartTx0(argv[s16DataCounter]);//mySerial.write(argv[s16DataCounter]);
+		  newData[s16DataCounter/2]=(argv[s16DataCounter]|(argv[s16DataCounter+1]<<7));
+		  UartTx0(newData[s16DataCounter/2]);
 	  }
+	  //for(s16DataCounter = 0; s16DataCounter < argc ;s16DataCounter++)
+	  //{
+	//	  UartTx0(argv[s16DataCounter]);//mySerial.write(argv[s16DataCounter]);
+	 // }
 	  break;
 	  case CAPABILITY_QUERY:
 	  UartTx1(START_SYSEX);
@@ -304,7 +311,7 @@ int main(void)
 
 	Firmata.begin(57600);
 	UartInit(0, BAUD_57600);
-	//systemResetCallback();  // reset to default config
+	systemResetCallback();  // reset to default config
 	UartTx1('X');
 	while (1) // the super loop!
 	{
