@@ -128,11 +128,12 @@ void analogWrite(uint8 pin, int val)
 	uint8 timer = 0xff;
 	pinMode(pin, OUTPUT);
 	
-	if (val == 0)
+	if ((val == 0) || (val <0))
 	{
 		digitalWrite(pin, LOW);
+		UartTx1('2');
 	}
-	else if (val == 255)
+	else if ((val > 255) || (val == 255))
 	{
 		digitalWrite(pin, HIGH);
 	}
