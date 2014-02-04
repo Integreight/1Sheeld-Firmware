@@ -131,17 +131,19 @@ void analogWrite(uint8 pin, int val)
 	if ((val == 0) || (val <0))
 	{
 		digitalWrite(pin, LOW);
-		UartTx1('2');
+
 	}
 	else if ((val > 255) || (val == 255))
 	{
 		digitalWrite(pin, HIGH);
+
 	}
 	else
 	{
 		timer = digitalPinToTimer(pin);
 		pwm_Setup(timer);
 		pwm_SetDutyCycle(val, timer);
+
 	}
 	
 }

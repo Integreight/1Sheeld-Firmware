@@ -43,7 +43,6 @@ FirmataClass::FirmataClass()
 	firmwareVersionCount = 0;
 	firmwareVersionVector = 0;
 	systemReset();
-	UartTx1('6');
 }
 
 //******************************************************************************
@@ -267,7 +266,6 @@ void FirmataClass::processInput(void)
 			break;
 			case SYSTEM_RESET:
 			systemReset();
-			UartTx1('5');
 			break;
 			case REPORT_VERSION:
 			//Firmata.printVersion();

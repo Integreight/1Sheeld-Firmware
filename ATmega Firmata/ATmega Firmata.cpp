@@ -97,15 +97,13 @@ void setPinModeCallback(byte pin, int mode)
   case INPUT:
     if (IS_PIN_DIGITAL(pin)) {
       pinMode(pin, INPUT); // disable output driver
-      digitalWrite(pin, LOW);
-	  UartTx1('3'); // disable internal pull-ups
+      digitalWrite(pin, LOW); // disable internal pull-ups
       pinConfig[pin] = INPUT;
     }
     break;
   case OUTPUT:
     if (IS_PIN_DIGITAL(pin)) {
-      digitalWrite(pin, LOW);
-	  UartTx1('4'); // disable PWM
+      digitalWrite(pin, LOW); // disable PWM
       pinMode(pin, OUTPUT);
       pinConfig[pin] = OUTPUT;
     }
@@ -114,7 +112,6 @@ void setPinModeCallback(byte pin, int mode)
     if (IS_PIN_PWM(pin)) {
       pinMode(pin, OUTPUT);
       analogWrite(pin, 0);
-	  UartTx1('1');
       pinConfig[pin] = PWM;
     }
     break;
@@ -313,7 +310,7 @@ int main(void)
     uint8 duty=0;
 	byte  u8SoftData[MAX_DATA_BYTES];
 	int   s16DataLength, s16DataCounter;
-	
+
 	sei(); // global interrupt enable 
 	Firmata.setFirmwareVersion(FIRMATA_MAJOR_VERSION, FIRMATA_MINOR_VERSION);
 	Firmata.attach(ANALOG_MESSAGE, analogWriteCallback);
@@ -325,7 +322,7 @@ int main(void)
 
 	Firmata.begin(57600);
 	systemResetCallback();  // reset to default config
-    UartTx1('7');
+
 	UartInit(0, BAUD_57600);
 	while (1) // the super loop!
 	{
@@ -379,7 +376,7 @@ int main(void)
 			
 			
 		}*/
-	
+
 		checkDigitalInputs();
 		while(Firmata.available()>0)
           {
@@ -391,5 +388,5 @@ int main(void)
 
   }
 
-
+	
 }
