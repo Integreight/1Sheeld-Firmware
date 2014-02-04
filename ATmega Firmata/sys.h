@@ -9,9 +9,10 @@
 #ifndef SYS_H_
 #define SYS_H_
 
-typedef unsigned char uint8;
+#include <stdint.h>
+typedef uint8_t uint8;
 typedef unsigned short uint16;
-typedef unsigned char byte;
-
+typedef uint8_t byte;
+typedef uint8_t boolean;
 
 #endif /* SYS_H_ */

@@ -12,13 +12,13 @@
 #if UART_RX0_INTERRUPT == ENABLED
 //volatile unsigned char uartRx0Flag=0;
 volatile unsigned char uartRx0databuffer[BUFFER_SIZE];
-volatile signed char index0=0;
+volatile int index0=0;
 #endif 
 
 #if UART_RX1_INTERRUPT == ENABLED
 //volatile unsigned char uartRx1Flag=0;
 volatile unsigned char uartRx1databuffer[BUFFER_SIZE];
-volatile signed char index1=0;
+volatile int index1=0;
 #endif 
 
 void UartInit(uint8 serialPort,uint16 baudRate){
@@ -92,10 +92,14 @@ void UartTx1(unsigned char data){
 
 #if UART_RX0_INTERRUPT == ENABLED
 
-unsigned char UartRx0(){
+int UartRx0(){
 	
-	unsigned char data;
+	int data;
 	unsigned int i;
+	if(index0 <= 0) return-1;
+	
+	else
+	{
 	data=uartRx0databuffer[0];
 	
 	
@@ -107,10 +111,11 @@ unsigned char UartRx0(){
 		index0=0;
 		*/
 	return data;
+	}
 }
 
 
-unsigned char getuartRx0Flag(){
+int getuartRx0Flag(){
 	return index0;
 	
 }
@@ -123,10 +128,16 @@ ISR (USART0_RXC_vect){
 
 
 
-unsigned char UartRx1(){
+int UartRx1(){
 	
-	unsigned char data;
+	int data;
 	unsigned int i;
+	if (index1 <= 0)
+	{
+		return -1 ;
+	}
+	else
+	{
 	data=uartRx1databuffer[0];
 	
 	
@@ -138,10 +149,12 @@ unsigned char UartRx1(){
 		index1=0;
 	*/	
 	return data;
+	}
+
 }
 
 
-unsigned char getuartRx1Flag(){
+int getuartRx1Flag(){
 	return index1;
 	
 }
@@ -154,13 +167,13 @@ ISR (USART1_RXC_vect){
 }
 
 #else
-unsigned char UartRx0(){
+int UartRx0(){
 	
 	while ( (UCSR0A & (1<<RXC0))==0);
 	return UDR0;
 }
 
-unsigned char UartRx1(){
+int UartRx1(){
 	
 	
 	while ( !(UCSR1A & (1<<RXC1)) );

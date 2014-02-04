@@ -123,7 +123,7 @@ void   digitalWrite(uint8 pin, uint8 value)
 }
 
 
-void analogWrite(uint8 pin, uint16 val)
+void analogWrite(uint8 pin, int val)
 {
 	uint8 timer = 0xff;
 	pinMode(pin, OUTPUT);
@@ -187,7 +187,7 @@ void writePort(byte port, byte value, byte bitmask)
 	if ((bitmask & 0x80)) digitalWrite((pin+7), (value & 0x80));
 }
 
-uint8 serial0_Avilable()
+int serial0_Avilable()
 {
 	
 	
@@ -196,7 +196,7 @@ uint8 serial0_Avilable()
 }
 
 
-uint8 serial1_Avilable()
+int serial1_Avilable()
 {
 	
 	

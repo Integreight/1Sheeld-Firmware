@@ -312,7 +312,7 @@ int main(void)
 	
 	
 	sei(); // global interrupt enable 
-	Firmata.setFirmwareVersion(FIRMATA_MAJOR_VERSION, FIRMATA_MINOR_VERSION);
+	//Firmata.setFirmwareVersion(FIRMATA_MAJOR_VERSION, FIRMATA_MINOR_VERSION);
 	Firmata.attach(ANALOG_MESSAGE, analogWriteCallback);
 	Firmata.attach(DIGITAL_MESSAGE, digitalWriteCallback);
 	Firmata.attach(REPORT_DIGITAL, reportDigitalCallback);
@@ -320,9 +320,10 @@ int main(void)
 	Firmata.attach(START_SYSEX, sysexCallback);
 	Firmata.attach(SYSTEM_RESET, systemResetCallback);
 
-	Firmata.begin(57600);
-	UartInit(0, BAUD_57600);
+	Firmata.begin(9600);
 	systemResetCallback();  // reset to default config
+
+	UartInit(0, BAUD_57600);
 	while (1) // the super loop!
 	{
 		
@@ -335,7 +336,7 @@ int main(void)
 				u8SoftData[s16DataCounter] = UartRx0();//mySerial.read();
 			}
 			
-			/* if data received transmit to HW UART of firmata by sysex */
+			// if data received transmit to HW UART of firmata by sysex 
 			Firmata.sendSysex(SYSEX_UART, s16DataLength, u8SoftData);
 		}
 		/*if (Serial.available()>0)
@@ -377,7 +378,7 @@ int main(void)
 		}*/
 	
 		checkDigitalInputs();
-		while(serial1_Avilable()>0)
+		while(Firmata.available()>0)
           {
              
              Firmata.processInput();
@@ -386,6 +387,7 @@ int main(void)
 		
 
   }
+
 
 
 }

@@ -31,11 +31,11 @@
 void UartInit(uint8 serialPort,uint16 baudRate);
 void UartTx0(unsigned char data);
 void UartTx1(unsigned char data);
-unsigned char UartRx0();
-unsigned char UartRx1();
+int  UartRx0();
+int  UartRx1();
 #if UART_RX0_INTERRUPT == ENABLED
-    unsigned char getuartRx1Flag();
-    unsigned char getuartRx0Flag();
+    int getuartRx1Flag();
+    int getuartRx0Flag();
 #endif
 
 

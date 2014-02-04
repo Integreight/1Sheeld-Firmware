@@ -14,11 +14,11 @@
 uint8  digitalRead(uint8);
 void   digitalWrite(uint8, uint8);
 void   pinMode(uint8 , uint8);
-void   analogWrite(uint8, uint16);
+void   analogWrite(uint8, int);
 void   writePort(byte, byte, byte);
 uint8  readPort(byte, byte);
-uint8 serial0_Avilable();
-uint8 serial1_Avilable();
+int serial0_Avilable();
+int serial1_Avilable();
 void turnOffPWM(uint8 timer);
 
 

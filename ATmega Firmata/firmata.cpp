@@ -9,9 +9,13 @@
 #include "firmata.h"
 #include "uart.h"
 #include <util/delay.h>
-#include <string.h>
-#include <stdlib.h>
+
 #include "mapping162.h"
+
+extern "C" {
+	#include <string.h>
+	#include <stdlib.h>
+}
 
 //******************************************************************************
 //* Support Functions
@@ -37,7 +41,8 @@ void FirmataClass::endSysex(void)
 FirmataClass::FirmataClass()
 {
 	firmwareVersionCount = 0;
-	//systemReset();
+	firmwareVersionVector = 0;
+	systemReset();
 }
 
 //******************************************************************************
@@ -150,7 +155,7 @@ void FirmataClass::setFirmwareNameAndVersion(const char *name, byte major, byte 
 	strncpy((char*)firmwareVersionVector + 2, filename, firmwareVersionCount - 2);
 }
 
-unsigned char FirmataClass::available(void)
+int FirmataClass::available(void)
 {
 	return serial1_Avilable();
 }

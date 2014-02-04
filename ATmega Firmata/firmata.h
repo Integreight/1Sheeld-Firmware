@@ -69,7 +69,6 @@
 #define ANALOG                  0x02 // analog pin in analogInput mode
 #define PWM                     0x03 // digital pin in PWM output mode
 #define SHIFT                   0x05 // shiftIn/shiftOut mode
-#define TOTAL_PIN_MODES         7
 
 //uart 
 #define UART_COMMAND 0x65
@@ -84,10 +83,12 @@
 #define UART_END 0x00
 
 //firmata callback function type
+extern "C"{
 typedef void (*callbackFunction)(byte, int);
 typedef void (*systemResetCallbackFunction)(void);
 typedef void (*stringCallbackFunction)(char*);
 typedef void (*sysexCallbackFunction)(byte command, byte argc, byte*argv);
+}
 
 class FirmataClass
 {
@@ -102,7 +103,7 @@ class FirmataClass
 	//void setFirmwareVersion(byte major, byte minor);  // see macro below
 	void setFirmwareNameAndVersion(const char *name, byte major, byte minor);
 	/* serial receive handling */
-	unsigned char available(void);
+	int available(void);
 	void processInput(void);
 	/* serial send handling */
 	void sendDigital(byte pin, int value); // TODO implement this
@@ -131,7 +132,7 @@ class FirmataClass
 	byte multiByteChannel; // channel data for multiByteCommands
 	byte storedInputData[MAX_DATA_BYTES]; // multi-byte data
 	/* sysex */
-	bool parsingSysex;
+	boolean parsingSysex;
 	int sysexBytesRead;
 	/* callback functions */
 	callbackFunction currentAnalogCallback;
