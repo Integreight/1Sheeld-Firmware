@@ -82,17 +82,40 @@
 #define UART_BEGIN 0x01
 #define UART_END 0x00
 
+#define TOTAL_PORTS             5
+#define TOTAL_PINS              35
+#define SYSEX_UART              0x0A
+
+
 //firmata callback function type
-extern "C"{
-typedef void (*callbackFunction)(byte, int);
+//extern "C"{
+/*typedef void (*callbackFunction)(byte, int);
 typedef void (*systemResetCallbackFunction)(void);
 typedef void (*stringCallbackFunction)(char*);
 typedef void (*sysexCallbackFunction)(byte command, byte argc, byte*argv);
-}
+//}*/
 
 class FirmataClass
 {
 	public:
+	//variables declarations//
+	unsigned int BAUD_RATE;// for the hardware serial terminal
+	byte   isPulseInEnabled;
+
+	/* digital input ports */
+	byte reportPINs[TOTAL_PORTS];       // 1 = report this port, 0 = silence
+	byte previousPINs[TOTAL_PORTS];     // previous 8 bits sent
+	// PIN means PORT for input
+
+	/* pins configuration */
+	byte pinConfig[TOTAL_PINS];         // configuration of every pin
+	byte portConfigInputs[TOTAL_PORTS]; // each bit: 1 = pin in INPUT, 0 = anything else
+	int pinState[TOTAL_PINS];           // any value that has been written
+
+	char incomingString[MAX_UART_STRING_SIZE];
+	int stringPosition;
+	char tempChar;
+	char isUartStringStarted;
 	FirmataClass();
 	void begin();
 	void begin(long);
@@ -101,7 +124,7 @@ class FirmataClass
 	void blinkVersion(void);
 	void printFirmwareVersion(void);
 	//void setFirmwareVersion(byte major, byte minor);  // see macro below
-	void setFirmwareNameAndVersion(const char *name, byte major, byte minor);
+	//void setFirmwareNameAndVersion(const char *name, byte major, byte minor);
 	/* serial receive handling */
 	int available(void);
 	void processInput(void);
@@ -112,14 +135,22 @@ class FirmataClass
 	void sendString(byte command, const char* string);
 	void sendSysex(byte command, byte bytec, byte* bytev);
 	/* attach & detach callback functions to messages */
-	void attach(byte command, callbackFunction newFunction);
+	/*void attach(byte command, callbackFunction newFunction);
 	void attach(byte command, systemResetCallbackFunction newFunction);
 	void attach(byte command, stringCallbackFunction newFunction);
 	void attach(byte command, sysexCallbackFunction newFunction);
-	void detach(byte command);
+	void detach(byte command);*/
 	//fayz
 	void print(long data);
 	void sendSysexDataByte(byte command, int value);
+	void outputPort(byte portNumber, byte portValue, byte forceSend);
+	void checkDigitalInputs(void);
+	void setPinModeCallback(byte pin, int mode);
+	void analogWriteCallback(byte pin, int value);
+	void digitalWriteCallback(byte port, int value);
+	void reportDigitalCallback(byte port, int value);
+	void sysexCallback(byte command, byte argc, byte *argv);
+	void systemResetCallback();
     private:
 	//serial
 	uint16 baudRate;
@@ -135,14 +166,14 @@ class FirmataClass
 	boolean parsingSysex;
 	int sysexBytesRead;
 	/* callback functions */
-	callbackFunction currentAnalogCallback;
+	/*callbackFunction currentAnalogCallback;
 	callbackFunction currentDigitalCallback;
 	callbackFunction currentReportAnalogCallback;
 	callbackFunction currentReportDigitalCallback;
 	callbackFunction currentPinModeCallback;
 	systemResetCallbackFunction currentSystemResetCallback;
 	stringCallbackFunction currentStringCallback;
-	sysexCallbackFunction currentSysexCallback;
+	sysexCallbackFunction currentSysexCallback;*/
 
 	/* private methods ------------------------------ */
 	void processSysexMessage(void);
@@ -163,7 +194,7 @@ extern FirmataClass Firmata;
  * firmware name.  It needs to be a macro so that __FILE__ is included in the
  * firmware source file rather than the library source file.
  */
-#define setFirmwareVersion(x, y)   setFirmwareNameAndVersion(__FILE__, x, y)
+//#define setFirmwareVersion(x, y)   setFirmwareNameAndVersion(__FILE__, x, y)
 
 
 #endif /* FIRMATA_H_ */

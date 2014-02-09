@@ -38,6 +38,7 @@ void pinMode(uint8 pin , uint8 pinMode)
 		SET_BIT((cfg.Portdir),bit);
 		//cfg.Portdir =0xff;//|= (1 << bit);
 		//cfg.Portdir=0xff;
+
 	}
 	
 	GPIO_Cfg(&cfg);

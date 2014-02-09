@@ -59,7 +59,7 @@ void UartInit(uint8 serialPort,uint16 baudRate){
 			#endif 
 		    UBRR1L = (byte) (baudRate &0x00ff) ;
 		    UBRR1H =(byte)((baudRate &0xff00)>>8);
-           
+
 			
 		break;
 		
