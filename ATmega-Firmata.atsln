@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Atmel Studio Solution File, Format Version 11.00
-Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "ATmega Firmata", "ATmega Firmata\ATmega Firmata.cproj", "{3E65541A-0B2E-4FB8-97D9-62241F4EED26}"
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "ATmega Firmata", "ATmega Firmata\ATmega Firmata.cppproj", "{E62DAEFA-537F-447C-8CB2-F01E824DECDE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,10 +9,9 @@ Global
 		Release|AVR = Release|AVR
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3E65541A-0B2E-4FB8-97D9-62241F4EED26}.Debug|AVR.ActiveCfg = Debug|AVR
-		{3E65541A-0B2E-4FB8-97D9-62241F4EED26}.Debug|AVR.Build.0 = Debug|AVR
-		{3E65541A-0B2E-4FB8-97D9-62241F4EED26}.Release|AVR.ActiveCfg = Release|AVR
-		{3E65541A-0B2E-4FB8-97D9-62241F4EED26}.Release|AVR.Build.0 = Release|AVR
+		{E62DAEFA-537F-447C-8CB2-F01E824DECDE}.Debug|AVR.ActiveCfg = Debug|AVR
+		{E62DAEFA-537F-447C-8CB2-F01E824DECDE}.Debug|AVR.Build.0 = Debug|AVR
+		{E62DAEFA-537F-447C-8CB2-F01E824DECDE}.Release|AVR.ActiveCfg = Release|AVR
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
