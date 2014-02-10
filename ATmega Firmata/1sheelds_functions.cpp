@@ -16,6 +16,8 @@ void pinMode(uint8 pin , uint8 pinMode)
 	uint8 bit = digitalPinToBitMask(pin);
 	uint8 port = digitalPinToPort(pin);
 	t_SetPortCfg cfg;
+	int portDirection1;
+	
 	
 	if(port == NOT_A_PIN)
 	{
@@ -29,13 +31,15 @@ void pinMode(uint8 pin , uint8 pinMode)
 	
 	if(pinMode == INPUT)
 	{
+		portDirection1 = (int)cfg.Portdir;
 		//cfg.Portdir &= (~(1 << bit)); 
-		CLR_BIT((cfg.Portdir),bit);
+		CLR_BIT(portDirection1,bit);
 		//cfg.Portdir=0x00;
 	}
 	else
 	{		
-		SET_BIT((cfg.Portdir),bit);
+		portDirection1 = (int)cfg.Portdir;
+		SET_BIT(portDirection1,bit);
 		//cfg.Portdir =0xff;//|= (1 << bit);
 		//cfg.Portdir=0xff;
 
@@ -98,7 +102,7 @@ uint8  digitalRead(uint8 pin)
 		return 0;
 	}
 	
-	cfg.pID = portModeRegister(port);
+	cfg.pID = (t_ePortID)portModeRegister(port);
 	
 	return GPIO_getPin(cfg.pID,bit);
 			
@@ -118,7 +122,7 @@ void   digitalWrite(uint8 pin, uint8 value)
 		//return;
 	}
 	
-	cfg.pID = portModeRegister(port);
+	cfg.pID = (t_ePortID)portModeRegister(port);
 	
 	GPIO_setPin(value,cfg.pID,bit);
 }
