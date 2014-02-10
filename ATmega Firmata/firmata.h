@@ -124,7 +124,7 @@ class FirmataClass
 	void blinkVersion(void);
 	void printFirmwareVersion(void);
 	//void setFirmwareVersion(byte major, byte minor);  // see macro below
-	//void setFirmwareNameAndVersion(const char *name, byte major, byte minor);
+	void setFirmwareNameAndVersion(const char *name, byte major, byte minor);
 	/* serial receive handling */
 	int available(void);
 	void processInput(void);
@@ -194,7 +194,7 @@ extern FirmataClass Firmata;
  * firmware name.  It needs to be a macro so that __FILE__ is included in the
  * firmware source file rather than the library source file.
  */
-//#define setFirmwareVersion(x, y)   setFirmwareNameAndVersion(__FILE__, x, y)
+#define setFirmwareVersion(x, y)   setFirmwareNameAndVersion(__FILE__, x, y)
 
 
 #endif /* FIRMATA_H_ */

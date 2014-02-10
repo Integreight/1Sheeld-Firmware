@@ -25,7 +25,7 @@ int main(void)
 	int   s16DataLength, s16DataCounter;
 
 	sei(); // global interrupt enable 
-	//Firmata.setFirmwareVersion(FIRMATA_MAJOR_VERSION, FIRMATA_MINOR_VERSION);
+	Firmata.setFirmwareVersion(FIRMATA_MAJOR_VERSION, FIRMATA_MINOR_VERSION);
 	//Firmata.attach(ANALOG_MESSAGE, analogWriteCallback);
 	//Firmata.attach(DIGITAL_MESSAGE, digitalWriteCallback);
 	//Firmata.attach(REPORT_DIGITAL, reportDigitalCallback);

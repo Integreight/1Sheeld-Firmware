@@ -135,7 +135,7 @@ void FirmataClass::printFirmwareVersion(void)
 		endSysex();
 	}
 }
-/*
+
 void FirmataClass::setFirmwareNameAndVersion(const char *name, byte major, byte minor)
 {
 	const char *filename;
@@ -157,7 +157,7 @@ void FirmataClass::setFirmwareNameAndVersion(const char *name, byte major, byte 
 	firmwareVersionVector[1] = minor;
 	strncpy((char*)firmwareVersionVector + 2, filename, firmwareVersionCount - 2);
 }
-*/
+
 int FirmataClass::available(void)
 {
 	return serial1_Avilable();
