@@ -25,16 +25,6 @@ typedef struct
 	
 }t_stPort;
 
-//Registers addresses in the memory 
-typedef enum {
-	
-	A=0x39,
-	B=0x36,
-	C=0x33,
-	D=0x30,
-	E=0x25
-}t_ePortID;
-
 typedef enum {
 	
 	PinIn=0,
@@ -45,16 +35,17 @@ typedef enum {
 
 typedef struct
 {
-	t_ePortDirection Portdir;	
+	byte Portdir;	
 	uint8 initValue;
-	t_ePortID pID;
+	unsigned int pID;
 	t_ePinDirection pindir;	
 }t_SetPortCfg;
 
 void GPIO_Cfg(t_SetPortCfg* cfg);
-void GPIO_setPort(uint8 data,t_ePortID pid);
-uint8 GPIO_getPort(t_ePortID pid);
-uint8 GPIO_getPin(t_ePortID pid,uint8 pinNum);
-void GPIO_setPin(uint8 data,t_ePortID pid,uint8 pinNum);
+void GPIO_CfgIN(t_SetPortCfg* cfg);
+void GPIO_setPort(uint8 data,unsigned int pid);
+uint8 GPIO_getPort(unsigned int pid);
+uint8 GPIO_getPin(unsigned int pid,uint8 pinNum);
+void GPIO_setPin(uint8 data,unsigned int pid,uint8 pinNum);
 
 #endif /* GPIO_H_ */

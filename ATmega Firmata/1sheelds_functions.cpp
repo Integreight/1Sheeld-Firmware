@@ -16,36 +16,28 @@ void pinMode(uint8 pin , uint8 pinMode)
 	uint8 bit = digitalPinToBitMask(pin);
 	uint8 port = digitalPinToPort(pin);
 	t_SetPortCfg cfg;
-	int portDirection1;
+		
 	
-	
-	if(port == NOT_A_PIN)
+	if(port == NOT_A_PIN) 
 	{
 		return;
 	}
 	
 	
-	//cfg.initValue=0x00;
-	//SET_BIT((cfg.initValue),bit);
-	cfg.pID = (t_ePortID) portModeRegister(port);
+	
+	cfg.pID =  portModeRegister(port);
 	
 	if(pinMode == INPUT)
 	{
-		portDirection1 = (int)cfg.Portdir;
-		//cfg.Portdir &= (~(1 << bit)); 
-		CLR_BIT(portDirection1,bit);
-		//cfg.Portdir=0x00;
+		CLR_BIT(cfg.Portdir,bit);
+	    GPIO_CfgIN(&cfg);
 	}
-	else
+	else 
 	{		
-		portDirection1 = (int)cfg.Portdir;
-		SET_BIT(portDirection1,bit);
-		//cfg.Portdir =0xff;//|= (1 << bit);
-		//cfg.Portdir=0xff;
-
+		SET_BIT(cfg.Portdir,bit);
+	    GPIO_Cfg(&cfg);
 	}
 	
-	GPIO_Cfg(&cfg);
 }
 
 void turnOffPWM(uint8 timer)
@@ -102,7 +94,7 @@ uint8  digitalRead(uint8 pin)
 		return 0;
 	}
 	
-	cfg.pID = (t_ePortID)portModeRegister(port);
+	cfg.pID = (unsigned int)portModeRegister(port);
 	
 	return GPIO_getPin(cfg.pID,bit);
 			
@@ -122,7 +114,7 @@ void   digitalWrite(uint8 pin, uint8 value)
 		//return;
 	}
 	
-	cfg.pID = (t_ePortID)portModeRegister(port);
+	cfg.pID = (unsigned int)portModeRegister(port);
 	
 	GPIO_setPin(value,cfg.pID,bit);
 }
