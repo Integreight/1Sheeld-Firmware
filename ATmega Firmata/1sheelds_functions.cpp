@@ -139,7 +139,7 @@ void analogWrite(uint8 pin, int val)
 	{
 		timer = digitalPinToTimer(pin);
 		pwm_Setup(timer);
-		pwm_SetDutyCycle(val, timer);
+		pwm_SetDutyCycle((uint8)val, timer);
 
 	}
 	

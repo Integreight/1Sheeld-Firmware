@@ -11,12 +11,6 @@
 #include"sys.h"
 
 
-typedef enum {
-	
-	INPUT_GPIO=0x00,
-	OUTPUT_GPIO=0xFF
-}t_ePortDirection;
-
 typedef struct
 {
 	uint8 portInReg;//pin
@@ -25,20 +19,10 @@ typedef struct
 	
 }t_stPort;
 
-typedef enum {
-	
-	PinIn=0,
-	PinOUT=1
-}t_ePinDirection;
-
-
-
 typedef struct
 {
-	byte Portdir;	
-	uint8 initValue;
-	unsigned int pID;
-	t_ePinDirection pindir;	
+	         byte Portdir;	
+	unsigned int  pID;	
 }t_SetPortCfg;
 
 void GPIO_Cfg(t_SetPortCfg* cfg);

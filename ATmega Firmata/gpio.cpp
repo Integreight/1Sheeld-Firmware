@@ -13,59 +13,54 @@
 
 void GPIO_Cfg(t_SetPortCfg* cfg)
 {
-	t_stPort* stport;      //pointer to port structure
-	stport=(t_stPort *)cfg->pID; //make the pointer points to the Port Registers in memory
-		
-	//cfg->pID=cfg->dir;
+	t_stPort* stport;                          //pointer to port structure
+
+
+	stport              =(t_stPort *)cfg->pID; //make the pointer points to the Port Registers in memory		
 	stport->portDirReg |= cfg->Portdir;
-	
-	//DDRC=cfg->dir;
-	if(cfg->Portdir==OUTPUT_GPIO)
-		stport->portOutReg=cfg->initValue;
-		
-		//PORTC=cfg->initValue;	
 }
 
 void GPIO_CfgIN(t_SetPortCfg* cfg)
 {
-    	t_stPort* stport;      //pointer to port structure
-    	stport=(t_stPort *)cfg->pID; //make the pointer points to the Port Registers in memory
+    	t_stPort* stport;                          //pointer to port structure
     	
+		
+		stport              =(t_stPort *)cfg->pID; //make the pointer points to the Port Registers in memory
     	stport->portDirReg &= cfg->Portdir;
-    	
-    	if(cfg->Portdir==OUTPUT_GPIO)
-    	stport->portOutReg=cfg->initValue;
 }
 
 void GPIO_setPort(uint8 data,unsigned int pid)
 {
 	t_stPort* stport;
-	stport=(t_stPort *)pid;
 	
+	
+	stport=(t_stPort *)pid;
 	stport->portOutReg=data;
-		
 }
 
 
 uint8 GPIO_getPort(unsigned int pid)
 {
 	t_stPort* stport;
-	stport=(t_stPort *)pid;
 	
-	return stport->portInReg;
+	
+	stport=(t_stPort *)pid;
+	return (stport->portInReg);
 }
 uint8 GPIO_getPin(unsigned int pid,uint8 pinNum)
 {
 	t_stPort* stport;
+	
+	
 	stport=(t_stPort *)pid;
-	
 	return ((stport->portInReg)&(1<<pinNum));
-	
 }
 
 void GPIO_setPin(uint8 data,unsigned int pid,uint8 pinNum)
 {
 	t_stPort* stport;
+	
+	
 	stport=(t_stPort *)pid;
 	
 	switch(data)

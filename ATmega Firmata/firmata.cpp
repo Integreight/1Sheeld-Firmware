@@ -558,14 +558,13 @@ void FirmataClass::sysexCallback(byte command, byte argc, byte *argv)
 	  }
 	  break;
 
-/*	  case SYSEX_UART:
+      /*case SYSEX_UART:
 	  for (int s16DataCounter = 0; s16DataCounter < argc; s16DataCounter+=2) // run over and over
 	  {
 		  newData[s16DataCounter/2]=(argv[s16DataCounter]|(argv[s16DataCounter+1]<<7));
 		  UartTx0(newData[s16DataCounter/2]);
 	  }
-	
-	  break; */
+	  break;*/ 
 	  case CAPABILITY_QUERY:
 	  UartTx1(START_SYSEX);
 	  UartTx1(CAPABILITY_RESPONSE);

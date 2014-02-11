@@ -34,25 +34,24 @@ int main(void)
 	//Firmata.attach(SYSTEM_RESET, systemResetCallback);
 
 	Firmata.begin(57600);
-	
 	Firmata.systemResetCallback();  // reset to default config
-
 	//UartInit(0, BAUD_57600);
+	
 	while (1) // the super loop!
 	{
-		/*
-		s16DataLength  = serial0_Avilable();//mySerial.available();
+		
+		/*s16DataLength  = serial0_Avilable();
 		if(s16DataLength > 0)
 		{
 			
 			for(s16DataCounter = 0; s16DataCounter < s16DataLength; s16DataCounter++)
 			{
-				u8SoftData[s16DataCounter] = UartRx0();//mySerial.read();
+				u8SoftData[s16DataCounter] = UartRx0();
 			}
 			
 			// if data received transmit to HW UART of firmata by sysex 
 			Firmata.sendSysex(SYSEX_UART, s16DataLength, u8SoftData);
-		}
+		}*/
 		/*if (Serial.available()>0)
 		{
 			tempChar=Serial.read();
