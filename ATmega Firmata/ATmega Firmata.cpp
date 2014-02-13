@@ -20,7 +20,7 @@
 int main(void)
 {
 
-    uint8 duty=0;
+    
 	byte  u8SoftData[MAX_DATA_BYTES];
 	int   s16DataLength, s16DataCounter;
 
@@ -40,8 +40,13 @@ int main(void)
 	while (1) // the super loop!
 	{
 		
-		/*s16DataLength  = serial0_Avilable();
-		if(s16DataLength > 0)
+		while (serial0_Avilable()>0)
+		{
+			Firmata.sendSysexDataByte(UART_DATA,UartRx0());
+		}
+
+	/*	s16DataLength  = serial0_Avilable();
+		while(s16DataLength > 0)
 		{
 			
 			for(s16DataCounter = 0; s16DataCounter < s16DataLength; s16DataCounter++)

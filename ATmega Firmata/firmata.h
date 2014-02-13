@@ -99,7 +99,7 @@ class FirmataClass
 {
 	public:
 	//variables declarations//
-	unsigned int BAUD_RATE;// for the hardware serial terminal
+	uint16 BAUD_RATE;// for the hardware serial terminal
 	byte   isPulseInEnabled;
 
 	/* digital input ports */

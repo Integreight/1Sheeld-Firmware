@@ -557,14 +557,15 @@ void FirmataClass::sysexCallback(byte command, byte argc, byte *argv)
 		  analogWriteCallback(argv[0], val);
 	  }
 	  break;
-
-      /*case SYSEX_UART:
-	  for (int s16DataCounter = 0; s16DataCounter < argc; s16DataCounter+=2) // run over and over
+/* sami's
+      case SYSEX_UART:
+	  for ( s16DataCounter = 0; s16DataCounter < argc; s16DataCounter+=2) // run over and over
 	  {
 		  newData[s16DataCounter/2]=(argv[s16DataCounter]|(argv[s16DataCounter+1]<<7));
 		  UartTx0(newData[s16DataCounter/2]);
 	  }
-	  break;*/ 
+	  break;
+	 */ 
 	  case CAPABILITY_QUERY:
 	  UartTx1(START_SYSEX);
 	  UartTx1(CAPABILITY_RESPONSE);
@@ -600,38 +601,38 @@ void FirmataClass::sysexCallback(byte command, byte argc, byte *argv)
 		 UartTx1(END_SYSEX);
 	 }
 	 break;
-	/*  case UART_COMMAND:  //0x80
+	  case UART_COMMAND:  
 	  {
 		  if(argv[0]==UART_BEGIN)
 		  {
 			  if(argv[1]==0x00) BAUD_RATE=1200;
-			  else  if(argv[1]==0x01) BAUD_RATE =2400;
-			  else  if(argv[1]==0x02) BAUD_RATE =4800;
-			  else  if(argv[1]==0x03) BAUD_RATE =9600;
-			  else  if(argv[1]==0x04) BAUD_RATE =14400;
-			  else  if(argv[1]==0x05) BAUD_RATE =19200;
-			  else  if(argv[1]==0x06) BAUD_RATE =28800;
-			  else  if(argv[1]==0x07) BAUD_RATE =38400;
-			  else  if(argv[1]==0x08) BAUD_RATE =57600;
-			  else  if(argv[1]==0x09) BAUD_RATE =115200;
+			 // else  if(argv[1]==0x01) BAUD_RATE =2400;
+			 // else  if(argv[1]==0x02) BAUD_RATE =4800;
+			  else  if(argv[1]==0x03) BAUD_RATE =BAUD_9600;
+			  else  if(argv[1]==0x04) BAUD_RATE =BAUD_14400;
+			  else  if(argv[1]==0x05) BAUD_RATE =BAUD_19200;
+			  else  if(argv[1]==0x06) BAUD_RATE =BAUD_28800;
+			  else  if(argv[1]==0x07) BAUD_RATE =BAUD_38400;
+			  else  if(argv[1]==0x08) BAUD_RATE =BAUD_57600;
+			  else  if(argv[1]==0x09) BAUD_RATE =BAUD_115200;
 			  else BAUD_RATE =57600;
-			  UartInit(BAUD_RATE);
+			  UartInit(0,BAUD_RATE);
 
 		  }
-		  else if(argv[0]==UART_END) Serial.end();
+		  else if(argv[0]==UART_END) UartEnd(0);
 		  
 	  }break;
-	case UART_DATA://0x82
+	case UART_DATA:
 	{
 		byte newData [argc/2];
 		for (int i = 0; i < argc; i+=2) // run over and over
 		{
 			newData[i/2]=(argv[i]|(argv[i+1]<<7));
-			Serial.write(newData[i/2]);
+			UartTx0(newData[i/2]);
 		}
 		
 	}
-	break; */ // todo later
+	break;  // todo later
 	/*case PULSE_IN_INIT:  //0x86
 	{
 		delete(convertPWM);
