@@ -70,6 +70,20 @@ void UartInit(uint8 serialPort,uint16 baudRate){
 	
 }
 
+void UartEnd(uint8 serialPort)
+{
+	if (serialPort==0)
+	{
+		UCSR0B &=0x67;
+	}
+	else
+	{
+		UCSR1B &=0x67;
+	}
+
+	
+}
+
 void UartTx0(unsigned char data){
 	
 	while((UCSR0A&(1<<UDRE0))==0)

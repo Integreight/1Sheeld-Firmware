@@ -29,6 +29,7 @@
 //#include "sys.h"
 
 void UartInit(uint8 serialPort,uint16 baudRate);
+void UartEnd(uint8 serialPort);
 void UartTx0(unsigned char data);
 void UartTx1(unsigned char data);
 int  UartRx0();
