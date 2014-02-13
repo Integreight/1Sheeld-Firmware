@@ -8,6 +8,7 @@
 #define  F_CPU 16000000UL //
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <string.h>
 #include "gpio.h"
 #include "uart.h"
 #include "1sheelds_functions.h"
@@ -36,13 +37,14 @@ int main(void)
 	Firmata.begin(57600);
 	Firmata.systemResetCallback();  // reset to default config
 	//UartInit(0, BAUD_57600);
-	
+
 	while (1) // the super loop!
 	{
 		
 		while (serial0_Avilable()>0)
 		{
-			Firmata.sendSysexDataByte(UART_DATA,UartRx0());
+			//UartTx1(UartRx0());
+		Firmata.sendSysexDataByte(UART_DATA,UartRx0());
 		}
 
 	/*	s16DataLength  = serial0_Avilable();
@@ -99,7 +101,7 @@ int main(void)
 		while(Firmata.available()>0)
           {
              
-             Firmata.processInput();
+           Firmata.processInput();
           }
           
 		

@@ -392,6 +392,7 @@ void FirmataClass::sendSysexDataByte(byte command, int value){
 
 	startSysex();
 	UartTx1(command);
+	//UartTx1((byte)value);
 	sendValueAsTwo7bitBytes(value);
 	endSysex();
 
@@ -624,11 +625,15 @@ void FirmataClass::sysexCallback(byte command, byte argc, byte *argv)
 	  }break;
 	case UART_DATA:
 	{
-		byte newData [argc/2];
+		/*byte newData [argc/2];
 		for (int i = 0; i < argc; i+=2) // run over and over
 		{
 			newData[i/2]=(argv[i]|(argv[i+1]<<7));
 			UartTx0(newData[i/2]);
+		}*/
+		
+		for(int i=0;i<argc;i++){
+			UartTx0(argv[i]);
 		}
 		
 	}
