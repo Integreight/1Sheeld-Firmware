@@ -31,9 +31,7 @@ void UartInit(uint8 serialPort,uint16 baudRate){
 	{
 		case 0:
 		    UCSR0A=0x00;
-		    //UCSR0A=(1<<U2X0); // U2X=1 double speed transmission for less error 
-			#if UART_RX0_INTERRUPT == DISABLED	
-		    
+		  	#if UART_RX0_INTERRUPT == DISABLED	  
 			UCSR0B=UCSR0B|(1<<TXEN0)|(1<<RXEN0);		
 			UCSR0C=UCSR0C|(1<<URSEL0)|(1<<UCSZ00)|(1<<UCSZ01);
 			
@@ -47,14 +45,13 @@ void UartInit(uint8 serialPort,uint16 baudRate){
 			UBRR0L = (byte) (baudRate &0x00ff) ;
 			UBRR0H = (byte)((baudRate &0xff00)>>8);
 				*/
-			UBRR0L= 16;
+			UBRR0L= 16; // 57600 single speed
 			
 		break;
 		
 		case 1:
 		    UCSR1A=0x00;
-		    //UCSR1A=(1<<U2X1);
-			#if UART_RX1_INTERRUPT == DISABLED
+		 	#if UART_RX1_INTERRUPT == DISABLED
 			UCSR1B=UCSR1B|(1<<TXEN1)|(1<<RXEN1);		
 			UCSR1C=UCSR1C|(1<<URSEL1)|(1<<UCSZ10)|(1<<UCSZ11);
 			#else
@@ -64,7 +61,7 @@ void UartInit(uint8 serialPort,uint16 baudRate){
 		  /*  UBRR1L = (byte) (baudRate &0x00ff) ;
 		    UBRR1H =(byte)((baudRate &0xff00)>>8);
              */
-		  UBRR1L= 16;
+		  UBRR1L= 16; // 57600 single speed
 			
 		break;
 		
@@ -114,7 +111,7 @@ void UartTx1(unsigned char data){
 int UartRx0(){
 	
 	int data;
-	unsigned int i;
+	 int i;
 	if(index0 <= 0) return-1;
 	
 	else
@@ -150,7 +147,7 @@ ISR (USART0_RXC_vect){
 int UartRx1(){
 	
 	int data;
-	unsigned int i;
+	 int i;
 	if (index1 <= 0)
 	{
 		return -1 ;

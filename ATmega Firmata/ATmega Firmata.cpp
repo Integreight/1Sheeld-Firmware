@@ -21,65 +21,20 @@
 int main(void)
 {
 
-    
-	byte  u8SoftData[MAX_DATA_BYTES];
-	int   s16DataLength, s16DataCounter;
-
 	sei(); // global interrupt enable 
-	Firmata.setFirmwareVersion(FIRMATA_MAJOR_VERSION, FIRMATA_MINOR_VERSION);
-	//Firmata.attach(ANALOG_MESSAGE, analogWriteCallback);
-	//Firmata.attach(DIGITAL_MESSAGE, digitalWriteCallback);
-	//Firmata.attach(REPORT_DIGITAL, reportDigitalCallback);
-	//Firmata.attach(SET_PIN_MODE, setPinModeCallback);
-	//Firmata.attach(START_SYSEX, sysexCallback);
-	//Firmata.attach(SYSTEM_RESET, systemResetCallback);
-
-	Firmata.begin(57600);
+	//Firmata.setFirmwareVersion(FIRMATA_MAJOR_VERSION, FIRMATA_MINOR_VERSION);
+	Firmata.begin();
 	Firmata.systemResetCallback();  // reset to default config
-	//UartInit(0, BAUD_57600);
 
 	while (1) // the super loop!
 	{
 		
 		while (serial0_Avilable()>0)
 		{
-			//UartTx1(UartRx0());
 		Firmata.sendSysexDataByte(UART_DATA,UartRx0());
 		}
 
-	/*	s16DataLength  = serial0_Avilable();
-		while(s16DataLength > 0)
-		{
-			
-			for(s16DataCounter = 0; s16DataCounter < s16DataLength; s16DataCounter++)
-			{
-				u8SoftData[s16DataCounter] = UartRx0();
-			}
-			
-			// if data received transmit to HW UART of firmata by sysex 
-			Firmata.sendSysex(SYSEX_UART, s16DataLength, u8SoftData);
-		}*/
-		/*if (Serial.available()>0)
-		{
-			tempChar=Serial.read();
-			if(tempChar==STX&&!isUartStringStarted){
-				memset(&incomingString, 0, MAX_UART_STRING_SIZE );
-				stringPosition=0;
-				isUartStringStarted=1;
-			}
-			else if(tempChar==ETX&&isUartStringStarted){
-				incomingString[stringPosition]='\0';
-				Firmata.sendString(UART_DATA,incomingString);
-				isUartStringStarted=0;
-			}
-			else if(isUartStringStarted){
-				incomingString[stringPosition]=tempChar;
-				stringPosition++;
-			}
-			else{
-				Firmata.sendSysexDataByte(UART_DATA,tempChar);
-			}
-		}
+/*
 		if(isPulseInEnabled)
 		{
 			

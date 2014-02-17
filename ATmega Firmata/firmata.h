@@ -64,8 +64,6 @@
 #define SYSEX_SAMPLING_INTERVAL 0x7A // same as SAMPLING_INTERVAL
 
 // pin modes
-//#define INPUT                 0x00 // defined in 1sheeld_functions.h
-//#define OUTPUT                0x01 // defined in 1sheeld_functions.h
 #define ANALOG                  0x02 // analog pin in analogInput mode
 #define PWM                     0x03 // digital pin in PWM output mode
 #define SHIFT                   0x05 // shiftIn/shiftOut mode
@@ -87,13 +85,6 @@
 #define SYSEX_UART              0x0A
 
 
-//firmata callback function type
-//extern "C"{
-/*typedef void (*callbackFunction)(byte, int);
-typedef void (*systemResetCallbackFunction)(void);
-typedef void (*stringCallbackFunction)(char*);
-typedef void (*sysexCallbackFunction)(byte command, byte argc, byte*argv);
-//}*/
 
 class FirmataClass
 {
@@ -118,30 +109,15 @@ class FirmataClass
 	char isUartStringStarted;
 	FirmataClass();
 	void begin();
-	void begin(long);
-	/* querying functions */
-	void printVersion(void);
-	void blinkVersion(void);
-	void printFirmwareVersion(void);
 	//void setFirmwareVersion(byte major, byte minor);  // see macro below
-	void setFirmwareNameAndVersion(const char *name, byte major, byte minor);
+	//void setFirmwareNameAndVersion(const char *name, byte major, byte minor);
 	/* serial receive handling */
 	int available(void);
 	void processInput(void);
 	/* serial send handling */
-	void sendDigital(byte pin, int value); // TODO implement this
 	void sendDigitalPort(byte portNumber, int portData);
-	void sendString(const char* string);
 	void sendString(byte command, const char* string);
 	void sendSysex(byte command, byte bytec, byte* bytev);
-	/* attach & detach callback functions to messages */
-	/*void attach(byte command, callbackFunction newFunction);
-	void attach(byte command, systemResetCallbackFunction newFunction);
-	void attach(byte command, stringCallbackFunction newFunction);
-	void attach(byte command, sysexCallbackFunction newFunction);
-	void detach(byte command);*/
-	//fayz
-	void print(long data);
 	void sendSysexDataByte(byte command, int value);
 	void outputPort(byte portNumber, byte portValue, byte forceSend);
 	void checkDigitalInputs(void);
@@ -165,20 +141,10 @@ class FirmataClass
 	/* sysex */
 	boolean parsingSysex;
 	int sysexBytesRead;
-	/* callback functions */
-	/*callbackFunction currentAnalogCallback;
-	callbackFunction currentDigitalCallback;
-	callbackFunction currentReportAnalogCallback;
-	callbackFunction currentReportDigitalCallback;
-	callbackFunction currentPinModeCallback;
-	systemResetCallbackFunction currentSystemResetCallback;
-	stringCallbackFunction currentStringCallback;
-	sysexCallbackFunction currentSysexCallback;*/
 
 	/* private methods ------------------------------ */
 	void processSysexMessage(void);
 	void systemReset(void);
-	void pin13strobe(int count, int onInterval, int offInterval);
 	void sendValueAsTwo7bitBytes(int value);
 	void startSysex(void);
 	void endSysex(void);
