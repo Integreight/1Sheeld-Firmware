@@ -22,7 +22,7 @@
 #define FIRMATA_MINOR_VERSION   3 // for backwards compatible changes
 #define FIRMATA_BUGFIX_VERSION  1 // for bugfix releases
 #define VERSION_BLINK_PIN 13 //blink led
-#define MAX_DATA_BYTES 32 // max number of data bytes in non-Sysex messages
+#define MAX_DATA_BYTES 100 // max number of data bytes in non-Sysex messages
 
 // message command bytes (128-255/0x80-0xFF)
 #define DIGITAL_MESSAGE         0x90 // send data for a digital pin
