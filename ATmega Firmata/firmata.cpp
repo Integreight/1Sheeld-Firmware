@@ -20,20 +20,27 @@ extern "C" {
 //* Support Functions
 //******************************************************************************
 
+void FirmataClass::write(unsigned char data)
+{
+	if (muteFlag==0)
+	{
+		UartTx1(data);
+	}
+}
 void FirmataClass::sendValueAsTwo7bitBytes(int value)
 {
-  UartTx1(value & 0b01111111); // LSB
-  UartTx1(value >> 7 & 0b01111111); // MSB
+  write(value & 0b01111111); // LSB
+  write(value >> 7 & 0b01111111); // MSB
 }
 
 void FirmataClass::startSysex(void)
 {
-  UartTx1(START_SYSEX);
+  write(START_SYSEX);
 }
 
 void FirmataClass::endSysex(void)
 {
-  UartTx1(END_SYSEX);
+  write(END_SYSEX);
 }
 
 //constructor 
@@ -44,6 +51,7 @@ FirmataClass::FirmataClass()
 	isPulseInEnabled =0;
 	stringPosition=0;
 	isUartStringStarted=0;
+	muteFlag=0;
 	systemReset();
 }
 
@@ -58,30 +66,6 @@ void FirmataClass::begin()
 	UartInit(1,BAUD_57600);// 1 for rx1,tx1
 }
 
-
-
-/*void FirmataClass::setFirmwareNameAndVersion(const char *name, byte major, byte minor)
-{
-	const char *filename;
-	char *extension;
-
-	// parse out ".cpp" and "applet/" that comes from using __FILE__
-	extension = strstr(name, ".cpp");
-	filename = strrchr(name, '/') + 1; //points to slash, +1 gets to start of filename
-	// add two bytes for version numbers
-	if(extension && filename) {
-		firmwareVersionCount = extension - filename + 2;
-		} else {
-		firmwareVersionCount = strlen(name) + 2;
-		filename = name;
-	}
-	firmwareVersionVector = (byte *) malloc(firmwareVersionCount);
-	firmwareVersionVector[firmwareVersionCount] = 0;
-	firmwareVersionVector[0] = major;
-	firmwareVersionVector[1] = minor;
-	strncpy((char*)firmwareVersionVector + 2, filename, firmwareVersionCount - 2);
-}
-*/
 int FirmataClass::available(void)
 {
 	return serial1_Avilable();
@@ -175,16 +159,16 @@ void FirmataClass::processInput(void)
 
 void FirmataClass::sendDigitalPort(byte portNumber, int portData)
 {
-	UartTx1(DIGITAL_MESSAGE | (portNumber & 0xF));
-	UartTx1((byte)portData % 128); // Tx bits 0-6
-	UartTx1(portData >> 7);  // Tx bits 7-13
+	write(DIGITAL_MESSAGE | (portNumber & 0xF));
+	write((byte)portData % 128); // Tx bits 0-6
+	write(portData >> 7);  // Tx bits 7-13
 }
 
 void FirmataClass::sendSysex(byte command, byte bytec, byte* bytev)
 {
 	byte i;
 	startSysex();
-	UartTx1(command);
+	write(command);
 	for(i=0; i<bytec; i++) {
 		sendValueAsTwo7bitBytes(bytev[i]);
 	}
@@ -224,7 +208,7 @@ void FirmataClass::systemReset(void)
 void FirmataClass::sendSysexDataByte(byte command, int value){
 
 	startSysex();
-	UartTx1(command);
+	write(command);
 	sendValueAsTwo7bitBytes(value);
 	endSysex();
 
@@ -370,38 +354,38 @@ void FirmataClass::sysexCallback(byte command, byte argc, byte *argv)
 	  break;
  
 	  case CAPABILITY_QUERY:
-	  UartTx1(START_SYSEX);
-	  UartTx1(CAPABILITY_RESPONSE);
+	  write(START_SYSEX);
+	  write(CAPABILITY_RESPONSE);
 	  for (byte pin=0; pin < TOTAL_PINS; pin++) {
 		  if (IS_PIN_DIGITAL(pin)) 
 		  {
-			  UartTx1((byte)INPUT);			  
-			  UartTx1(1);
-			  UartTx1((byte)OUTPUT);
-			  UartTx1(1);
+			  write((byte)INPUT);			  
+			  write(1);
+			  write((byte)OUTPUT);
+			  write(1);
 		  }
 	      if (IS_PIN_PWM(pin)) {
-		      UartTx1(PWM);
-		      UartTx1(8);
+		      write(PWM);
+		      write(8);
 	      }
-		  UartTx1(127);
+		  write(127);
 	  }
-	  UartTx1(END_SYSEX);
+	  write(END_SYSEX);
 	  break;
 	
 	 case PIN_STATE_QUERY:
 	 if (argc > 0) {
 		 byte pin=argv[0];
-		 UartTx1(START_SYSEX);
-		 UartTx1(PIN_STATE_RESPONSE);
-		 UartTx1(pin);
+		 write(START_SYSEX);
+		 write(PIN_STATE_RESPONSE);
+		 write(pin);
 		 if (pin < TOTAL_PINS) {
-			 UartTx1((byte)pinConfig[pin]);
-			 UartTx1((byte)pinState[pin] & 0x7F);
-			 if (pinState[pin] & 0xFF80) UartTx1((byte)(pinState[pin] >> 7) & 0x7F);
-			 if (pinState[pin] & 0xC000) UartTx1((byte)(pinState[pin] >> 14) & 0x7F);
+			 write((byte)pinConfig[pin]);
+			 write((byte)pinState[pin] & 0x7F);
+			 if (pinState[pin] & 0xFF80) write((byte)(pinState[pin] >> 7) & 0x7F);
+			 if (pinState[pin] & 0xC000) write((byte)(pinState[pin] >> 14) & 0x7F);
 		 }
-		 UartTx1(END_SYSEX);
+		 write(END_SYSEX);
 	 }
 	 break;
 	  case UART_COMMAND:  
@@ -434,7 +418,23 @@ void FirmataClass::sysexCallback(byte command, byte argc, byte *argv)
 			UartTx0(newData[i/2]);
 		}
 	}
-	break;  // todo later
+	break; 
+	case FIRMATA_MUTE:
+	{
+		if (argv[0]==0)
+		{
+			muteFlag=0;
+		}
+		else if (argv[0]==1)
+		{
+			muteFlag=1;
+		}
+	}break;
+	case FIRMATA_VERSION:
+	{
+		sendSysexDataByte(FIRMATA_VERSION,VERSION);
+	}break;
+	 // todo later
 	/*case PULSE_IN_INIT:  //0x86
 	{
 		delete(convertPWM);

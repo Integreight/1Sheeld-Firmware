@@ -18,8 +18,7 @@
  * version numbers are important.  This number can be queried so that host
  * software can test whether it will be compatible with the currently
  * installed firmware. */
-#define FIRMATA_MAJOR_VERSION   2 // for non-compatible changes
-#define FIRMATA_MINOR_VERSION   3 // for backwards compatible changes
+#define VERSION   0 
 #define FIRMATA_BUGFIX_VERSION  1 // for bugfix releases
 #define VERSION_BLINK_PIN 13 //blink led
 #define MAX_DATA_BYTES 32 // max number of data bytes in non-Sysex messages
@@ -62,7 +61,8 @@
 #define SYSEX_I2C_REQUEST       0x76 // same as I2C_REQUEST
 #define SYSEX_I2C_REPLY         0x77 // same as I2C_REPLY
 #define SYSEX_SAMPLING_INTERVAL 0x7A // same as SAMPLING_INTERVAL
-
+#define FIRMATA_MUTE            0x64  // turn off firmata
+#define FIRMATA_VERSION         0X63 // our firmata version
 // pin modes
 #define ANALOG                  0x02 // analog pin in analogInput mode
 #define PWM                     0x03 // digital pin in PWM output mode
@@ -107,8 +107,10 @@ class FirmataClass
 	int stringPosition;
 	char tempChar;
 	char isUartStringStarted;
+	uint8 muteFlag;
 	FirmataClass();
 	void begin();
+	void write(unsigned char data);
 	//void setFirmwareVersion(byte major, byte minor);  // see macro below
 	//void setFirmwareNameAndVersion(const char *name, byte major, byte minor);
 	/* serial receive handling */
