@@ -18,7 +18,8 @@
  * version numbers are important.  This number can be queried so that host
  * software can test whether it will be compatible with the currently
  * installed firmware. */
-#define VERSION   0 
+#define VERSION_LOW   0xff 
+#define VERSION_HIGH   0 
 #define FIRMATA_BUGFIX_VERSION  1 // for bugfix releases
 #define VERSION_BLINK_PIN 13 //blink led
 #define MAX_DATA_BYTES 32 // max number of data bytes in non-Sysex messages
@@ -63,6 +64,7 @@
 #define SYSEX_SAMPLING_INTERVAL 0x7A // same as SAMPLING_INTERVAL
 #define FIRMATA_MUTE            0x64  // turn off firmata
 #define FIRMATA_VERSION         0X63 // our firmata version
+#define IS_ALIVE                0x62
 // pin modes
 #define ANALOG                  0x02 // analog pin in analogInput mode
 #define PWM                     0x03 // digital pin in PWM output mode

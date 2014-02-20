@@ -432,7 +432,13 @@ void FirmataClass::sysexCallback(byte command, byte argc, byte *argv)
 	}break;
 	case FIRMATA_VERSION:
 	{
-		sendSysexDataByte(FIRMATA_VERSION,VERSION);
+		unsigned char version[2]={ VERSION_HIGH , VERSION_LOW};
+		sendSysex(FIRMATA_VERSION,2,version);
+	}break;
+	 
+	case IS_ALIVE:
+	{
+		sendSysex(IS_ALIVE, argc, argv);
 	}break;
 	 // todo later
 	/*case PULSE_IN_INIT:  //0x86
