@@ -8,7 +8,9 @@
 #include <avr/interrupt.h>
 #include "uart.h"
 
+#include "timers.h"
 
+extern unsigned int count2;
 #if UART_RX0_INTERRUPT == ENABLED
 //volatile unsigned char uartRx0Flag=0;
 volatile unsigned char uartRx0databuffer[128];
@@ -88,6 +90,8 @@ void UartEnd(uint8 serialPort)
 
 void UartTx0(unsigned char data){
 	
+	
+	
 	while((UCSR0A&(1<<UDRE0))==0)
 	{
 		
@@ -112,7 +116,9 @@ int UartRx0(){
 	
 	int data;
 	 int i;
+	
 	if(index0 <= 0) return-1;
+	
 	
 	else
 	{
@@ -128,6 +134,8 @@ int UartRx0(){
 		*/
 	return data;
 	}
+	
+	
 }
 
 
@@ -135,9 +143,11 @@ int getuartRx0Flag(){
 	return index0;
 	
 }
+
 ISR (USART0_RXC_vect){
 	
 	//uartRx0Flag=1;
+	
 	uartRx0databuffer[index0]=UDR0;
 	index0++;
 }
@@ -148,6 +158,8 @@ int UartRx1(){
 	
 	int data;
 	 int i;
+	
+	
 	if (index1 <= 0)
 	{
 		return -1 ;
@@ -164,6 +176,7 @@ int UartRx1(){
 	/*if(index1<0)
 		index1=0;
 	*/	
+	timer_Ovf_disable();
 	return data;
 	}
 
@@ -178,6 +191,9 @@ int getuartRx1Flag(){
 ISR (USART1_RXC_vect){
 	
 	//uartRx1Flag=1;
+	if(count2==0)
+		timer_Ovf_enable();
+		
 	uartRx1databuffer[index1]=UDR1;
 	index1++;
 }

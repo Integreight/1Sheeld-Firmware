@@ -21,14 +21,23 @@
 int main(void)
 {
 
-	sei(); // global interrupt enable 
+	 // global interrupt enable 
 	//Firmata.setFirmwareVersion(FIRMATA_MAJOR_VERSION, FIRMATA_MINOR_VERSION);
+	
+	
 	Firmata.begin();
 	Firmata.systemResetCallback();  // reset to default config
-
+	SET_BIT(DDRA,6);
+	TCCR2|=(1<<CS20);
+	UartInit(1,BAUD_57600);
+	
+	
+	DDRC=0xff;
+	PORTC=0x01;
+	sei();
 	while (1) // the super loop!
 	{
-		
+		/*
 		while (serial0_Avilable()>0)
 		{
 		Firmata.sendSysexDataByte(UART_DATA,UartRx0());
@@ -52,15 +61,19 @@ int main(void)
 			
 		}*/
 
-		Firmata.checkDigitalInputs();
+	/*	Firmata.checkDigitalInputs();
 		while(Firmata.available()>0)
           {
              
            Firmata.processInput();
           }
           
-		
-
+		*/
+		if(getuartRx1Flag()>0)		
+		{	UartTx1(UartRx1());
+			
+			//TOG_BIT(PORTA,1);
+		}
   }
 
 }
