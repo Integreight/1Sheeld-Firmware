@@ -438,7 +438,9 @@ void FirmataClass::sysexCallback(byte command, byte argc, byte *argv)
 	 
 	case IS_ALIVE:
 	{
-		sendSysex(IS_ALIVE, argc, argv);
+		UartTx1(0xf0);
+		UartTx1(IS_ALIVE);
+		UartTx1(0xf7);
 	}break;
 	 // todo later
 	/*case PULSE_IN_INIT:  //0x86
