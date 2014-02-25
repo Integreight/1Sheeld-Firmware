@@ -7,10 +7,10 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "uart.h"
-
 #include "timers.h"
 
-extern unsigned int count2;
+
+
 #if UART_RX0_INTERRUPT == ENABLED
 //volatile unsigned char uartRx0Flag=0;
 volatile unsigned char uartRx0databuffer[128];
@@ -176,7 +176,7 @@ int UartRx1(){
 	/*if(index1<0)
 		index1=0;
 	*/	
-	timer_Ovf_disable();
+	//timer_Ovf_disable();
 	return data;
 	}
 
@@ -191,9 +191,9 @@ int getuartRx1Flag(){
 ISR (USART1_RXC_vect){
 	
 	//uartRx1Flag=1;
-	if(count2==0)
-		timer_Ovf_enable();
-		
+	
+	timer_Ovf_enable();
+	
 	uartRx1databuffer[index1]=UDR1;
 	index1++;
 }

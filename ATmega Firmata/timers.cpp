@@ -9,33 +9,31 @@
 #include "CommonMacros.h"
 #include "timers.h"
 
-unsigned int count2=0;
+unsigned  volatile int count2=0;
+unsigned volatile int count=0;
 void timer_Ovf_enable()
 {
 	SET_BIT(TIMSK,TOIE2);
+	count2 =0 ;
 }
 
 void timer_Ovf_disable()
 {
 	CLR_BIT(TIMSK,TOIE2);
-	
+	CLR_BIT(PORTA,6);
 }
 
 ISR(TIMER2_OVF_vect)
-{
-	unsigned int count=0;
-	
-	if(count%10==0)
+{	
+	if(count%10000==0)
 	{
 		TOG_BIT(PORTA,6);	
+		count2++;
 	} 
 	
-	if(count2%1000==0)
+	if(count2>=5)
 	{
-		CLR_BIT(TIMSK,TOIE2);
-		CLR_BIT(PORTA,6);
-		count2=0;
+		timer_Ovf_disable();
 	}
 	count++;
-	count2++;
 }
