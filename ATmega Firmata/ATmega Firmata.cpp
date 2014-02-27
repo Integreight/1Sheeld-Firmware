@@ -20,31 +20,29 @@
 
 int main(void)
 {
-
-	 // global interrupt enable 
 	//Firmata.setFirmwareVersion(FIRMATA_MAJOR_VERSION, FIRMATA_MINOR_VERSION);
+	Firmata.begin();
+	Firmata.systemResetCallback();  // reset to default config
 	
-	
-	//Firmata.begin();
-	//Firmata.systemResetCallback();  // reset to default config
+	// for rx tx leds initialization
 	SET_BIT(DDRA,6);
-	TCCR2|=(1<<CS20);
-	UartInit(1,BAUD_57600);
+	SET_BIT(DDRA,7);
+	SET_BIT(PORTA,6);
+	SET_BIT(PORTA,7);
 	
-	
-	DDRC=0xff;
-	PORTC=0x01;
+	TCCR2|=(1<<CS20)|(1<<CS21);
+
 	sei();
-	unsigned int val =0;
+
 	while (1) // the super loop!
 	{
-		/*
+		
 		while (serial0_Avilable()>0)
 		{
 		Firmata.sendSysexDataByte(UART_DATA,UartRx0());
 		}
 
-
+/*
 		if(isPulseInEnabled)
 		{
 			
@@ -62,30 +60,15 @@ int main(void)
 			
 		}*/
 
-	/*	Firmata.checkDigitalInputs();
+		Firmata.checkDigitalInputs();
 		while(Firmata.available()>0)
           {
              
            Firmata.processInput();
           }
           
-		*/
-	    
-	 // analogWrite(9,val);
-   //  analogWrite(11,val);
 
 
-		if(getuartRx1Flag()>0)		
-		{	UartTx1(UartRx1());
-			
-			//TOG_BIT(PORTA,1);
-		}
-		val+=5;
-		if (val>255)
-		{
-			val=0;
-		}
-		//analogWrite(9,166);
   }
 
 }

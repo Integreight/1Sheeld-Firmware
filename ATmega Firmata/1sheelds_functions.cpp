@@ -29,7 +29,9 @@ void pinMode(uint8 pin , uint8 pinMode)
 	
 	if(pinMode == INPUT)
 	{
-		CLR_BIT(cfg.Portdir,bit);
+		t_stPort* stport=(t_stPort *)cfg.pID; //make the pointer points to the Port Registers in memory
+    	cfg.Portdir=stport->portDirReg;
+	    CLR_BIT(cfg.Portdir,bit);
 	    GPIO_CfgIN(&cfg);
 	}
 	else 
@@ -61,7 +63,7 @@ void turnOffPWM(uint8 timer)
 		break;
 		
 		case TIMER_02:
-		TCCR2 = 0x00;
+		TCCR2 &= 0x03;
 		break;
 		
 		case TIMER_3A:

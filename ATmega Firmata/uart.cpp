@@ -57,7 +57,7 @@ void UartInit(uint8 serialPort,uint16 baudRate){
 			UCSR1B=UCSR1B|(1<<TXEN1)|(1<<RXEN1);		
 			UCSR1C=UCSR1C|(1<<URSEL1)|(1<<UCSZ10)|(1<<UCSZ11);
 			#else
-			UCSR1B=UCSR1B|(1<<TXEN1)|(1<<RXEN1)|(1<<RXCIE1);		
+			UCSR1B=UCSR1B|(1<<TXEN1)|(1<<RXEN1)|(1<<RXCIE1)|(1<<TXCIE1);		
 			UCSR1C=UCSR1C|(1<<URSEL1)|(1<<UCSZ10)|(1<<UCSZ11);
 			#endif 
 		  /*  UBRR1L = (byte) (baudRate &0x00ff) ;
@@ -193,11 +193,16 @@ ISR (USART1_RXC_vect){
 	//uartRx1Flag=1;
 	
 	timer_Ovf_enable();
+	enableRxLed();
 	
 	uartRx1databuffer[index1]=UDR1;
 	index1++;
 }
-
+ISR(USART1_TXC_vect)
+{
+		timer_Ovf_enable();
+		enableTxLed();
+}
 #else
 int UartRx0(){
 	

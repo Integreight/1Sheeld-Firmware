@@ -12,4 +12,6 @@
 
 void timer_Ovf_enable();
 void timer_Ovf_disable();
+void enableRxLed();
+void enableTxLed();
 #endif /* TIMERS_H_ */
