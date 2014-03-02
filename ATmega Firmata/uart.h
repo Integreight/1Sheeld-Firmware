@@ -26,6 +26,10 @@
 #define BAUD_76800  0x19
 #define BAUD_115200 0x10
 
+//Error codes
+#define UART_NO_DATA          0x0100              /**< no receive data available   */
+#define UART_BUFFER_OVERFLOW  0x0200              /**< receive ringbuffer overflow */
+
 //#include "sys.h"
 
 void UartInit(uint8 serialPort,uint16 baudRate);

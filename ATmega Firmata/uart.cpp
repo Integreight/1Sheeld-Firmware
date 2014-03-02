@@ -17,8 +17,17 @@ volatile int index0=0;
 
 #if UART_RX1_INTERRUPT == ENABLED
 //volatile unsigned char uartRx1Flag=0;
+#define UART_RX1_BUFFER_SIZE 64
+#define UART_RX1_BUFFER_MASK ( UART_RX1_BUFFER_SIZE - 1)
+#define UART1_STATUS   UCSR1A
+#define UART1_CONTROL  UCSR1B
+#define UART1_DATA     UDR1
 volatile unsigned char uartRx1databuffer[BUFFER_SIZE];
+static volatile uint8_t UART1_RxBuf[UART_RX1_BUFFER_SIZE];
 volatile int index1=0;
+static volatile uint16_t UART1_RxHead;
+static volatile uint16_t UART1_RxTail;
+static volatile uint8_t  UART1_LastRxError;
 #endif 
 
 void UartInit(uint8 serialPort,uint16 baudRate){
@@ -146,26 +155,21 @@ ISR (USART0_RXC_vect){
 
 int UartRx1(){
 	
-	int data;
-	 int i;
-	if (index1 <= 0)
-	{
-		return -1 ;
+	uint16_t tmptail;
+	uint8_t data;
+
+	if ( UART1_RxHead == UART1_RxTail ) {
+		return UART_NO_DATA;   /* no data available */
 	}
-	else
-	{
-	data=uartRx1databuffer[0];
-	
-	
-	for(i=0;i<index1;i++)
-		uartRx1databuffer[i]=uartRx1databuffer[i+1];
-	
-	index1--;	
-	/*if(index1<0)
-		index1=0;
-	*/	
-	return data;
-	}
+
+	/* calculate /store buffer index */
+	tmptail = (UART1_RxTail + 1) & UART_RX1_BUFFER_MASK;
+	UART1_RxTail = tmptail;
+
+	/* get data from receive buffer */
+	data = UART1_RxBuf[tmptail];
+
+	return (UART1_LastRxError << 8) + data;
 
 }
 
@@ -178,8 +182,34 @@ int getuartRx1Flag(){
 ISR (USART1_RXC_vect){
 	
 	//uartRx1Flag=1;
-	uartRx1databuffer[index1]=UDR1;
-	index1++;
+	//uartRx1databuffer[index1]=UDR1;
+	//index1++;
+	uint16_t tmphead;
+	uint8_t data;
+	uint8_t usr;
+	uint8_t lastRxError;
+
+	/* read UART status register and UART data register */
+	usr  = UART1_STATUS;
+	data = UART1_DATA;
+
+	/* */
+	lastRxError = (usr & (_BV(FE1)|_BV(DOR1)) );
+
+	/* calculate buffer index */
+	tmphead = ( UART1_RxHead + 1) & UART_RX1_BUFFER_MASK;
+
+	if ( tmphead == UART1_RxTail ) {
+		/* error: receive buffer overflow */
+		lastRxError = UART_BUFFER_OVERFLOW >> 8;
+		} else {
+		/* store new index */
+		UART1_RxHead = tmphead;
+		/* store received data in buffer */
+		UART1_RxBuf[tmphead] = data;
+	}
+	UART1_LastRxError = lastRxError;
+	
 }
 
 #else
