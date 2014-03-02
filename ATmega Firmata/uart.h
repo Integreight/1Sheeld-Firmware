@@ -13,7 +13,19 @@
 
 #define UART_RX0_INTERRUPT ENABLED
 #define UART_RX1_INTERRUPT ENABLED 
-#define BUFFER_SIZE 64
+#define BUFFER_SIZE        64
+#define UART_RX1_BUFFER_SIZE 64
+#define UART_RX1_BUFFER_MASK ( UART_RX1_BUFFER_SIZE - 1)
+#define  UART_TX1_BUFFER_SIZE 64
+#define UART_TX1_BUFFER_MASK ( UART_TX1_BUFFER_SIZE - 1)
+#define UART1_STATUS   UCSR1A
+#define UART1_CONTROL  UCSR1B
+#define UART1_DATA     UDR1
+#define UART1_UDRIE    UDRIE1
+#define UART0_RX0_BUFFER_SIZE 64
+#define UART0_RX0_BUFFER_MASK ( UART0_RX0_BUFFER_SIZE - 1)
+#define UART0_STATUS   UCSR0A
+#define UART0_DATA     UDR0
 
 // baud rate register values for U2X=1
 #define BAUD_4800   0x1A0
@@ -27,8 +39,8 @@
 #define BAUD_115200 0x10
 
 //Error codes
-#define UART_NO_DATA          0x0100              /**< no receive data available   */
-#define UART_BUFFER_OVERFLOW  0x0200              /**< receive ringbuffer overflow */
+#define UART_NO_DATA          -1              /**< no receive data available   */
+#define UART_BUFFER_OVERFLOW  -2              /**< receive ringbuffer overflow */
 
 //#include "sys.h"
 
@@ -42,8 +54,5 @@ int  UartRx1();
     int getuartRx1Flag();
     int getuartRx0Flag();
 #endif
-
-
-
 
 #endif /* UART_H_ */
