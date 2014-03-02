@@ -12,22 +12,37 @@
 
 
 #if UART_RX0_INTERRUPT == ENABLED
-//volatile unsigned char uartRx0Flag=0;
-volatile unsigned char uartRx0databuffer[128];
-volatile int index0=0;
+static volatile uint8_t  UART0_RxBuf[UART_RX1_BUFFER_SIZE];
+static volatile uint8_t  UART0_TxBuf[UART_TX1_BUFFER_SIZE];
+static volatile uint8_t  UART0_LastRxError;
+static volatile uint16_t UART0_TxHead;
+static volatile uint16_t UART0_TxTail;
+static volatile uint16_t UART0_RxHead;
+static volatile uint16_t UART0_RxTail;
 #endif 
 
 #if UART_RX1_INTERRUPT == ENABLED
-//volatile unsigned char uartRx1Flag=0;
-volatile unsigned char uartRx1databuffer[BUFFER_SIZE];
-volatile int index1=0;
+static volatile uint8_t UART1_RxBuf[UART_RX1_BUFFER_SIZE];
+static volatile uint8_t UART1_TxBuf[UART_TX1_BUFFER_SIZE];
+static volatile uint8_t  UART1_LastRxError;
+static volatile uint16_t UART1_TxHead;
+static volatile uint16_t UART1_TxTail;
+static volatile uint16_t UART1_RxHead;
+static volatile uint16_t UART1_RxTail;
 #endif 
 
 void UartInit(uint8 serialPort,uint16 baudRate){
 	
 	
 			//UBRR0H=0x00;
-
+    UART1_TxHead = 0;
+	UART1_TxTail = 0;
+	UART1_RxHead = 0;
+	UART1_RxTail = 0;
+	UART0_TxHead = 0;
+	UART0_TxTail = 0;
+	UART0_RxHead = 0;
+	UART0_RxTail = 0;
 	
 	switch(serialPort)
 	{
@@ -113,90 +128,112 @@ void UartTx1(unsigned char data){
 #if UART_RX0_INTERRUPT == ENABLED
 
 int UartRx0(){
-	
-	int data;
-	 int i;
-	
-	if(index0 <= 0) return-1;
-	
-	
-	else
-	{
-	data=uartRx0databuffer[0];
-	
-	
-	for(i=0;i<index0;i++)
-		uartRx0databuffer[i]=uartRx0databuffer[i+1];
-	
-	index0--;	
-	/*if(index0<0)
-		index0=0;
-		*/
-	return data;
+	uint16_t tmptail;
+	uint8_t data;
+
+	if ( UART0_RxHead == UART0_RxTail ) {
+		return UART_NO_DATA;   /* no data available */
 	}
-	
-	
+
+	/* calculate /store buffer index */
+	tmptail = (UART0_RxTail + 1) & UART0_RX0_BUFFER_MASK;
+	UART0_RxTail = tmptail;
+
+	/* get data from receive buffer */
+	data = UART0_RxBuf[tmptail];
+
+	return (UART0_LastRxError << 8) + data;
 }
 
 
 int getuartRx0Flag(){
-	return index0;
 	
+	return (UART0_RX0_BUFFER_SIZE + UART0_RxHead - UART0_RxTail) & UART0_RX0_BUFFER_MASK;
 }
 
 ISR (USART0_RXC_vect){
-	
-	//uartRx0Flag=1;
-	
-	uartRx0databuffer[index0]=UDR0;
-	index0++;
+   uint16_t tmphead;
+   uint8_t data;
+   uint8_t usr;
+   uint8_t lastRxError;
+   
+   /* read UART status register and UART data register */
+   usr  = UART0_STATUS;
+   data = UART0_DATA;
+   
+   /* */
+   lastRxError = (usr & (_BV(FE0)|_BV(DOR0)) );
+   
+   /* calculate buffer index */
+   tmphead = ( UART0_RxHead + 1) & UART0_RX0_BUFFER_MASK;
+   
+   if ( tmphead == UART0_RxTail ) {
+	   /* error: receive buffer overflow */
+	   lastRxError = UART_BUFFER_OVERFLOW >> 8;
+	   } else {
+	   /* store new index */
+	   UART0_RxHead = tmphead;
+	   /* store received data in buffer */
+	   UART0_RxBuf[tmphead] = data;
+   }
+   UART0_LastRxError = lastRxError;	
 }
 
 
 
 int UartRx1(){
-	
-	int data;
-	 int i;
-	
-	
-	if (index1 <= 0)
-	{
-		return -1 ;
+	uint16_t tmptail;
+	uint8_t data;
+
+	if ( UART1_RxHead == UART1_RxTail ) {
+		return UART_NO_DATA;   /* no data available */
 	}
-	else
-	{
-	data=uartRx1databuffer[0];
-	
-	
-	for(i=0;i<index1;i++)
-		uartRx1databuffer[i]=uartRx1databuffer[i+1];
-	
-	index1--;	
-	/*if(index1<0)
-		index1=0;
-	*/	
-	//timer_Ovf_disable();
-	return data;
-	}
+
+	/* calculate /store buffer index */
+	tmptail = (UART1_RxTail + 1) & UART_RX1_BUFFER_MASK;
+	UART1_RxTail = tmptail;
+
+	/* get data from receive buffer */
+	data = UART1_RxBuf[tmptail];
+
+	return (UART1_LastRxError << 8) + data;
 
 }
 
 
 int getuartRx1Flag(){
-	return index1;
-	
+	return (UART_RX1_BUFFER_SIZE + UART1_RxHead - UART1_RxTail) & UART_RX1_BUFFER_MASK;
 }
 
 ISR (USART1_RXC_vect){
-	
-	//uartRx1Flag=1;
+	uint16_t tmphead;
+	uint8_t data;
+	uint8_t usr;
+	uint8_t lastRxError;
+
+	/* read UART status register and UART data register */
+	usr  = UART1_STATUS;
+	data = UART1_DATA;
+
+	/* */
+	lastRxError = (usr & (_BV(FE1)|_BV(DOR1)) );
+
+	/* calculate buffer index */
+	tmphead = ( UART1_RxHead + 1) & UART_RX1_BUFFER_MASK;
+
+	if ( tmphead == UART1_RxTail ) {
+		/* error: receive buffer overflow */
+		lastRxError = UART_BUFFER_OVERFLOW >> 8;
+		} else {
+		/* store new index */
+		UART1_RxHead = tmphead;
+		/* store received data in buffer */
+		UART1_RxBuf[tmphead] = data;
+	}
+	UART1_LastRxError = lastRxError;
 	
 	timer_Ovf_enable();
 	enableRxLed();
-	
-	uartRx1databuffer[index1]=UDR1;
-	index1++;
 }
 ISR(USART1_TXC_vect)
 {
