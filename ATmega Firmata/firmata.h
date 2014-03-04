@@ -118,6 +118,7 @@ class FirmataClass
 	/* serial receive handling */
 	int available(void);
 	void processInput(void);
+	void processUart0Input(void);
 	/* serial send handling */
 	void sendDigitalPort(byte portNumber, int portData);
 	void sendString(byte command, const char* string);

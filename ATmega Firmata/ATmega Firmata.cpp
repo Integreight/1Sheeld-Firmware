@@ -33,14 +33,7 @@ int main(void)
 	while (1) // the super loop!
 	{
 		
-		int availableData=serial0_Avilable();
-		if(availableData>0){
-			byte arr[availableData];
-			for(int i=0;i<availableData;i++){
-				arr[i]=UartRx0();
-			}
-			Firmata.sendSysex(UART_DATA,availableData,arr);
-		}
+		Firmata.processUart0Input();
 
 /*
 		if(isPulseInEnabled)
@@ -63,7 +56,6 @@ int main(void)
 		Firmata.checkDigitalInputs();
 		while(Firmata.available()>0)
           {
-             
            Firmata.processInput();
           }
           
