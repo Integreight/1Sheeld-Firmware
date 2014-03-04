@@ -29,9 +29,13 @@ int main(void)
 	while (1) // the super loop!
 	{
 		
-		while (serial0_Avilable()>0)
-		{
-		Firmata.sendSysexDataByte(UART_DATA,UartRx0());
+		int availableData=serial0_Avilable();
+		if(availableData>0){
+			byte arr[availableData];
+			for(int i=0;i<availableData;i++){
+				arr[i]=UartRx0();
+			}
+			Firmata.sendSysex(UART_DATA,availableData,arr);
 		}
 
 /*
