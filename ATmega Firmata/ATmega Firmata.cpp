@@ -29,11 +29,16 @@ int main(void)
 	//Firmata.setFirmwareVersion(FIRMATA_MAJOR_VERSION, FIRMATA_MINOR_VERSION);
 	Firmata.begin();
 	Firmata.systemResetCallback();  // reset to default config
-
+	
 	while (1) // the super loop!
 	{
 		
 		Firmata.processUart0Input();
+		Firmata.checkDigitalInputs();
+		while(Firmata.available()>0)
+        {
+           Firmata.processInput();
+         }
 
 /*
 		if(isPulseInEnabled)
@@ -53,11 +58,7 @@ int main(void)
 			
 		}*/
 
-		Firmata.checkDigitalInputs();
-		while(Firmata.available()>0)
-          {
-           Firmata.processInput();
-          }
+		
           
 		
 
