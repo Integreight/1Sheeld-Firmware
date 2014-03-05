@@ -77,6 +77,17 @@ void FirmataClass::processSysexMessage(void)
 		sysexCallback(storedInputData[0], sysexBytesRead - 1, storedInputData + 1);
 }
 
+void FirmataClass::processUart0Input(){
+	int availableData=serial0_Avilable();
+	if(availableData>0){
+		byte arr[availableData];
+		for(int i=0;i<availableData;i++){
+			arr[i]=UartRx0();
+		}
+		Firmata.sendSysex(UART_DATA,availableData,arr);
+	}
+}
+
 void FirmataClass::processInput(void)
 {
 	int inputData = UartRx1(); // this is 'int' to handle -1 when no data

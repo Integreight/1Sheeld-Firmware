@@ -27,7 +27,7 @@ int main(void)
 	//Firmata.setFirmwareVersion(FIRMATA_MAJOR_VERSION, FIRMATA_MINOR_VERSION);
 	Firmata.begin();
 	Firmata.systemResetCallback();  // reset to default config
-	
+
 	// for rx tx leds initialization
 	SET_BIT(DDRA,6);
 	SET_BIT(DDRA,7);
@@ -38,17 +38,16 @@ int main(void)
 
 	sei();
 
+
 	while (1) // the super loop!
 	{
 		
-		int availableData=serial0_Avilable();
-		if(availableData>0){
-			byte arr[availableData];
-			for(int i=0;i<availableData;i++){
-				arr[i]=UartRx0();
-			}
-			Firmata.sendSysex(UART_DATA,availableData,arr);
-		}
+		Firmata.processUart0Input();
+		Firmata.checkDigitalInputs();
+		while(Firmata.available()>0)
+        {
+           Firmata.processInput();
+         }
 
 /*
 		if(isPulseInEnabled)
@@ -68,12 +67,7 @@ int main(void)
 			
 		}*/
 
-		Firmata.checkDigitalInputs();
-		while(Firmata.available()>0)
-          {
-             
-           Firmata.processInput();
-          }
+		
           
 
 

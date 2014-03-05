@@ -12,8 +12,7 @@
 
 
 #if UART_RX0_INTERRUPT == ENABLED
-static volatile uint8_t  UART0_RxBuf[UART_RX1_BUFFER_SIZE];
-static volatile uint8_t  UART0_TxBuf[UART_TX1_BUFFER_SIZE];
+static volatile uint8_t  UART0_RxBuf[UART0_RX0_BUFFER_SIZE];
 static volatile uint8_t  UART0_LastRxError;
 static volatile uint16_t UART0_TxHead;
 static volatile uint16_t UART0_TxTail;
@@ -23,7 +22,6 @@ static volatile uint16_t UART0_RxTail;
 
 #if UART_RX1_INTERRUPT == ENABLED
 static volatile uint8_t UART1_RxBuf[UART_RX1_BUFFER_SIZE];
-static volatile uint8_t UART1_TxBuf[UART_TX1_BUFFER_SIZE];
 static volatile uint8_t  UART1_LastRxError;
 static volatile uint16_t UART1_TxHead;
 static volatile uint16_t UART1_TxTail;
