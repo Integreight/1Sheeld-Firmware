@@ -187,7 +187,7 @@ void writePort(byte port, byte value, byte bitmask)
 	if ((bitmask & 0x80)) digitalWrite((pin+7), (value & 0x80));
 }
 
-int serial0_Avilable()
+uint16_t serial0_Avilable()
 {
 	
 	

@@ -12,31 +12,24 @@
 #if UART_RX0_INTERRUPT == ENABLED
 static volatile uint8_t  UART0_RxBuf[UART0_RX0_BUFFER_SIZE];
 static volatile uint8_t  UART0_LastRxError;
-static volatile uint16_t UART0_TxHead;
-static volatile uint16_t UART0_TxTail;
 static volatile uint16_t UART0_RxHead;
 static volatile uint16_t UART0_RxTail;
 #endif 
 
 #if UART_RX1_INTERRUPT == ENABLED
-static volatile uint8_t UART1_RxBuf[UART_RX1_BUFFER_SIZE];
+static volatile uint8_t  UART1_RxBuf[UART_RX1_BUFFER_SIZE];
 static volatile uint8_t  UART1_LastRxError;
-static volatile uint16_t UART1_TxHead;
-static volatile uint16_t UART1_TxTail;
 static volatile uint16_t UART1_RxHead;
 static volatile uint16_t UART1_RxTail;
 #endif 
+
 
 void UartInit(uint8 serialPort,uint16 baudRate){
 	
 	
 			//UBRR0H=0x00;
-    UART1_TxHead = 0;
-	UART1_TxTail = 0;
-	UART1_RxHead = 0;
+    UART1_RxHead = 0;
 	UART1_RxTail = 0;
-	UART0_TxHead = 0;
-	UART0_TxTail = 0;
 	UART0_RxHead = 0;
 	UART0_RxTail = 0;
 	
@@ -106,28 +99,26 @@ void UartTx0(unsigned char data){
 		
 	}
 	UDR0=data;
-	
 }
 
-void UartTx1(unsigned char data){
-	
-	while((UCSR1A&(1<<UDRE1))==0)
+
+void UartTx1(uint8_t data){
+    while((UCSR1A&(1<<UDRE1))==0)
 	{
 		
 	}
 	UDR1=data;
-	
 }
 
 #if UART_RX0_INTERRUPT == ENABLED
 
-int UartRx0(){
+uint16_t UartRx0(){
 	
 	uint16_t tmptail;
 	uint8_t data;
 
 	if ( UART0_RxHead == UART0_RxTail ) {
-		return UART_NO_DATA;   /* no data available */
+		return UART_NO_DATA;   /* no data  */
 	}
 
 	/* calculate /store buffer index */
@@ -141,7 +132,7 @@ int UartRx0(){
 }
 
 
-int getuartRx0Flag(){
+uint16_t getuartRx0Flag(){
 	
 	return (UART0_RX0_BUFFER_SIZE + UART0_RxHead - UART0_RxTail) & UART0_RX0_BUFFER_MASK;
 }
@@ -193,7 +184,6 @@ int UartRx1(){
 	data = UART1_RxBuf[tmptail];
 
 	return (UART1_LastRxError << 8) + data;
-
 }
 
 
@@ -228,7 +218,6 @@ ISR (USART1_RXC_vect){
 		UART1_RxBuf[tmphead] = data;
 	}
 	UART1_LastRxError = lastRxError;
-	
 }
 
 #else
