@@ -116,12 +116,7 @@ void UartTx1(uint8_t data){
 
 #if UART_RX0_INTERRUPT == ENABLED
 
-<<<<<<< HEAD
-int UartRx0(){
-=======
 uint16_t UartRx0(){
-	
->>>>>>> fixingUart0Problem
 	uint16_t tmptail;
 	uint8_t data;
 
@@ -224,8 +219,6 @@ ISR (USART1_RXC_vect){
 		UART1_RxBuf[tmphead] = data;
 	}
 	UART1_LastRxError = lastRxError;
-<<<<<<< HEAD
-	
 	timer_Ovf_enable();
 	enableRxLed();
 }
@@ -233,8 +226,6 @@ ISR(USART1_TXC_vect)
 {
 		timer_Ovf_enable();
 		enableTxLed();
-=======
->>>>>>> fixingUart0Problem
 }
 #else
 int UartRx0(){
