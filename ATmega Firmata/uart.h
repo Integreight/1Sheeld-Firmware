@@ -13,12 +13,12 @@
 
 #define UART_RX0_INTERRUPT ENABLED
 #define UART_RX1_INTERRUPT ENABLED 
-#define UART_RX1_BUFFER_SIZE 64
-#define UART_RX1_BUFFER_MASK ( UART_RX1_BUFFER_SIZE - 1)
+#define UART_RX1_BUFFER_SIZE     128
+#define UART_RX1_BUFFER_MASK     ( UART_RX1_BUFFER_SIZE - 1)
 #define UART1_STATUS   UCSR1A
 #define UART1_DATA     UDR1
-#define UART0_RX0_BUFFER_SIZE 256
-#define UART0_RX0_BUFFER_MASK ( UART0_RX0_BUFFER_SIZE - 1)
+#define UART0_RX0_BUFFER_SIZE    256
+#define UART0_RX0_BUFFER_MASK    ( UART0_RX0_BUFFER_SIZE - 1)
 #define UART0_STATUS   UCSR0A
 #define UART0_DATA     UDR0
 
@@ -42,12 +42,12 @@
 void UartInit(uint8 serialPort,uint16 baudRate);
 void UartEnd(uint8 serialPort);
 void UartTx0(unsigned char data);
-void UartTx1(unsigned char data);
-int  UartRx0();
+void UartTx1(uint8_t data);
+uint16_t  UartRx0();
 int  UartRx1();
 #if UART_RX0_INTERRUPT == ENABLED
     int getuartRx1Flag();
-    int getuartRx0Flag();
+    uint16_t getuartRx0Flag();
 #endif
 
 #endif /* UART_H_ */

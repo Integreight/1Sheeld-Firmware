@@ -78,10 +78,10 @@ void FirmataClass::processSysexMessage(void)
 }
 
 void FirmataClass::processUart0Input(){
-	int availableData=serial0_Avilable();
+	uint16_t availableData=serial0_Avilable();
 	if(availableData>0){
 		byte arr[availableData];
-		for(int i=0;i<availableData;i++){
+		for(uint16_t i=0;i<availableData;i++){
 			arr[i]=UartRx0();
 		}
 		Firmata.sendSysex(UART_DATA,availableData,arr);

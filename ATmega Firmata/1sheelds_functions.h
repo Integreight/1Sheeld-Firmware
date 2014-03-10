@@ -17,7 +17,7 @@ void   pinMode(uint8 , uint8);
 void   analogWrite(uint8, int);
 void   writePort(byte, byte, byte);
 uint8  readPort(byte, byte);
-int serial0_Avilable();
+uint16_t serial0_Avilable();
 int serial1_Avilable();
 void turnOffPWM(uint8 timer);
 
