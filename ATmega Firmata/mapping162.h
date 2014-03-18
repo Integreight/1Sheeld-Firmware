@@ -87,7 +87,7 @@ const uint16_t PROGMEM port_to_output_PGM[] = {
 	(uint16_t) &PORTD,
 	(uint16_t) &PORTE,
 };
-
+*/
 const uint16_t PROGMEM port_to_input_PGM[] = {
     (uint16_t) &PINA,
 	(uint16_t) &PINB,
@@ -95,7 +95,7 @@ const uint16_t PROGMEM port_to_input_PGM[] = {
 	(uint16_t) &PIND,
 	(uint16_t) &PINE,
 };
-*/
+
 
 const uint16_t PROGMEM port_to_register_PGM[] = {
 	(uint16_t) 0x39,
@@ -141,6 +141,45 @@ const uint8_t PROGMEM digital_pin_to_port_PGM[] = {
 	PC, // PC7
 	PE, // PE0
 	PE, // PE1
+};
+
+const uint8_t PROGMEM digital_pin_to_bit_mask_PWM_PGM[] = {
+	_BV(0),
+	_BV(1),
+	_BV(0),
+	_BV(4),
+	_BV(1),
+	_BV(5),
+	_BV(2), // PORT
+	_BV(2),
+	_BV(3), /* 8, port B */
+	_BV(0),
+	_BV(4),
+	_BV(1),
+	_BV(4),
+	_BV(5),
+	_BV(5), /* 14, port A */
+	_BV(4),
+	_BV(3),
+	_BV(2),
+	_BV(1),
+	_BV(0),
+	_BV(6),
+	_BV(7),
+	_BV(6),
+	_BV(2),
+	_BV(3),
+	_BV(2),
+	_BV(3),
+	_BV(7),
+	_BV(5),
+	_BV(6),
+	_BV(7),
+	_BV(6),
+	_BV(7),
+	_BV(0),
+	_BV(1),
+
 };
 
 const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[] = {
@@ -226,4 +265,10 @@ const uint8_t PROGMEM digital_pin_to_timer_PGM[] = {
 #define analogInPinToBit(P) (P)
 #define portModeRegister(P) ( ( pgm_read_word( port_to_register_PGM + (P))) )
 
+#define digitalPinToBitMaskPWM(P) ( pgm_read_byte( digital_pin_to_bit_mask_PWM_PGM + (P) ) )
+// for pulseIn
+#define clockCyclesPerMicrosecond() ( F_CPU / 1000000L )
+#define clockCyclesToMicroseconds(a) ( (a) / clockCyclesPerMicrosecond() )
+#define microsecondsToClockCycles(a) ( (a) * clockCyclesPerMicrosecond() )
+#define portInputRegister(P) ( (volatile uint8_t *)( pgm_read_word( port_to_input_PGM + (P))) )
 #endif /* MAPPING_H_ */
