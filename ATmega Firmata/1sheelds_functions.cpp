@@ -9,7 +9,7 @@
 #include "pwm.h"
 #include "uart.h"
 #include "mapping162.h"
-
+#define F_CPU 16000000UL
 
 void pinMode(uint8 pin , uint8 pinMode)
 {
@@ -42,6 +42,48 @@ void pinMode(uint8 pin , uint8 pinMode)
 	
 }
 
+unsigned long pulseIn(uint8_t pin, uint8_t state)
+{
+
+	uint8_t bit = digitalPinToBitMaskPWM(pin);
+	uint8_t port = digitalPinToPort(pin);
+	uint8_t stateMask = (state ?bit : 0);
+	unsigned long width = 0; // keep initialization out of time critical area
+	
+	unsigned long numloops = 0;
+	unsigned long maxloops = microsecondsToClockCycles(1000000L) / 16;
+	
+	while ((*portInputRegister(port) & bit) == stateMask)
+	if (numloops++ == maxloops)
+	return 0;
+
+	while ((*portInputRegister(port) & bit) != stateMask)
+	if (numloops++ == maxloops)		return 0;
+	
+	// wait for the pulse to stop
+	while ((*portInputRegister(port) & bit) == stateMask) {
+		if (numloops++ == maxloops)
+		return 0;
+		width++;
+	}
+
+	// convert the reading to microseconds. The loop has been determined
+	// to be 20 clock cycles long and have about 16 clocks between the edge
+	// and the start of the loop. There will be some error introduced by
+	// the interrupt handlers.
+	return clockCyclesToMicroseconds(width * 21 + 16);
+}
+unsigned long readPWM (int pin)
+{
+	double period =0;
+	double duty =0;
+	double fraction =0;
+	period = (double)pulseIn(pin, HIGH)+ (double)pulseIn(pin, LOW);
+	duty = (double)pulseIn(pin, HIGH);
+	fraction =duty / period ;
+	return ((floor)(fraction *255));
+
+}
 void turnOffPWM(uint8 timer)
 {
 	
