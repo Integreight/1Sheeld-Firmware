@@ -65,6 +65,7 @@
 #define FIRMATA_MUTE            0x64  // turn off firmata
 #define FIRMATA_VERSION         0X63 // our firmata version
 #define IS_ALIVE                0x62
+         
 // pin modes
 #define ANALOG                  0x02 // analog pin in analogInput mode
 #define PWM                     0x03 // digital pin in PWM output mode
@@ -93,8 +94,8 @@ class FirmataClass
 	public:
 	//variables declarations//
 	uint16 BAUD_RATE;// for the hardware serial terminal
-	byte   isPulseInEnabled;
-
+    byte isPulseInEnabled;
+    byte pinPWM;
 	/* digital input ports */
 	byte reportPINs[TOTAL_PORTS];       // 1 = report this port, 0 = silence
 	byte previousPINs[TOTAL_PORTS];     // previous 8 bits sent

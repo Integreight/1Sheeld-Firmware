@@ -453,24 +453,18 @@ void FirmataClass::sysexCallback(byte command, byte argc, byte *argv)
 		UartTx1(IS_ALIVE);
 		UartTx1(0xf7);
 	}break;
-	 // todo later
-	/*case PULSE_IN_INIT:  //0x86
+	
+	case PULSE_IN_INIT: 
 	{
-		delete(convertPWM);
-		byte pin_no;
-		if(argv[0]==0x03)
-		pin_no=3;
-		else  if(argv[0]==0x05)
-		pin_no =5;
 		
-		convertPWM   = new  ConvertPWM(pin_no); // make ana object of ConvertPWM with pin 8 to read pulse in
+        pinPWM = argv[0];
 		
 		if(argv[1]==0x00)
 		isPulseInEnabled =1;
 		else  if(argv[1]==0x04)
 		isPulseInEnabled =0;
 		
-	}break; */ 
+	}break; 
 	}
 }
 void FirmataClass::systemResetCallback()
