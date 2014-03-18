@@ -12,37 +12,38 @@ void pwm_Setup(uint8 timer)
 {
 	switch(timer)
 	{
+		// make 64 prescalar
 		case TIMER_00 :
-			TCCR0|=(1<<WGM00)|(1<<WGM01)|(1<<CS00)|(1<<COM01);
-			break;
+		TCCR0|=(1<<WGM00)|(1<<WGM01)|(1<<CS00)|(1<<COM01)|(1<<CS01);
+		break;
 		
 		case TIMER_1A:
-			TCCR1A|=(1<<WGM10)|(1<<COM1A1);
-			TCCR1B|=(1<<WGM12)|(1<<CS10);	
-			break;
+		TCCR1A|=(1<<WGM10)|(1<<COM1A1);
+		TCCR1B|=(1<<WGM12)|(1<<CS10)|(1<<CS11);
+		break;
 		
 		case TIMER_1B:
-			TCCR1A|=(1<<WGM10)|(1<<COM1B1);
-			TCCR1B|=(1<<WGM12)|(1<<CS10);	
-			break;
+		TCCR1A|=(1<<WGM10)|(1<<COM1B1);
+		TCCR1B|=(1<<WGM12)|(1<<CS10)|(1<<CS11);
+		break;
 		
 		case TIMER_02:
-			TCCR2|=(1<<WGM20)|(1<<WGM21)|(1<<CS20)|(1<<COM01);
-			break;
+		TCCR2|=(1<<WGM20)|(1<<WGM21)|(1<<CS21)|(1<<CS20)|(1<<COM01);
+		break;
 		
 		case TIMER_3A:
-			TCCR3A|=(1<<WGM30)|(1<<COM3A1);
-			TCCR3B|=(1<<WGM32)|(1<<CS30);
-			break;
+		TCCR3A|=(1<<WGM30)|(1<<COM3A1);
+		TCCR3B|=(1<<WGM32)|(1<<CS30)|(1<<CS31);
+		break;
 		
 		case TIMER_3B:
-			TCCR3A|=(1<<WGM30)|(1<<COM3B1);
-			TCCR3B|=(1<<WGM32)|(1<<CS30);
-			break;	
+		TCCR3A|=(1<<WGM30)|(1<<COM3B1);
+		TCCR3B|=(1<<WGM32)|(1<<CS30)|(1<<CS31);
+		break;
 		
 		default:
-			break;	
-				 	
+		break;
+		
 	}
 }
 
