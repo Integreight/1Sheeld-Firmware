@@ -231,6 +231,11 @@ void writePort(byte port, byte value, byte bitmask)
 	if ((bitmask & 0x80)) digitalWrite((pin+7), (value & 0x80));
 }
 
+void unusedPinsInput()
+{
+	for (int i =25;i<35;i++)
+		pinMode(i,INPUT);
+}
 uint16_t serial0_Avilable()
 {
 	

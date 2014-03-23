@@ -84,11 +84,11 @@ void UartEnd(uint8 serialPort)
 {
 	if (serialPort==0)
 	{
-		UCSR0B &=0x67;
+		UCSR0B &=0x07;
 	}
 	else
 	{
-		UCSR1B &=0x67;
+		UCSR1B &=0x07;
 	}
 
 	
