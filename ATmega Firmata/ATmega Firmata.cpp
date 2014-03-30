@@ -27,11 +27,7 @@ int freeRam () {
 
 int main(void)
 {
-	//bt reset
-	SET_BIT(DDRC,6);
-	SET_BIT(PORTC,6);
-	_delay_ms(10);
-	CLR_BIT(PORTC,6);
+	resetBluetooth();
 	Firmata.begin();
 	Firmata.systemResetCallback();  // reset to default config
 	unusedPinsInput();
@@ -66,6 +62,7 @@ int main(void)
 			
 		}
 	}
+
 
 }
 
