@@ -4,7 +4,7 @@
  * Created: 26/1/2014 2:30:59 PM
  *  Author: iMustafa
  */ 
-#define F_CPU 16000000UL
+#define F_CPU 7372800UL
 
 #include "firmata.h"
 #include "uart.h"

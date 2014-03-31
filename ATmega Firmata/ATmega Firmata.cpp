@@ -5,7 +5,7 @@
  *  Author: iMustafa
  */ 
 
-#define  F_CPU 16000000UL //
+#define  F_CPU 7372800UL //
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <string.h>
