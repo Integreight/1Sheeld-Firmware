@@ -5,7 +5,7 @@
  *  Author: iMustafa
  */ 
 
-#define  F_CPU 16000000UL //
+#define  F_CPU 7372800UL //
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <string.h>
@@ -27,19 +27,21 @@ int freeRam () {
 
 int main(void)
 {
-	resetBluetooth();
+
 	Firmata.begin();
 	Firmata.systemResetCallback();  // reset to default config
 	unusedPinsInput();
+	// bluetooth reset sysex message 
+	Firmata.write(START_SYSEX);
+	Firmata.write(RESET_BLUETOOTH);
+	Firmata.write(END_SYSEX);
 	//make 2 pins output for rx tx leds and 
 	SET_BIT(DDRA,6);
 	SET_BIT(DDRA,7);
 	SET_BIT(PORTA,6);
 	SET_BIT(PORTA,7);
 	TCCR2|=(1<<CS20)|(1<<CS21); // clock prescalar =32
-    // for bt reset 
-	
-	
+
 	sei(); // enable global interrupt
 	
 	while (1) // the super loop!

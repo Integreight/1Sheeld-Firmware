@@ -9,7 +9,7 @@
 #include "pwm.h"
 #include "uart.h"
 #include "mapping162.h"
-#define F_CPU 16000000UL
+#define F_CPU 7372800UL
 #include <util/delay.h>
 
 void pinMode(uint8 pin , uint8 pinMode)
@@ -148,10 +148,10 @@ uint8  digitalRead(uint8 pin)
 void resetBluetooth()
 {
 	//bt reset
-	SET_BIT(DDRC,6);
-	SET_BIT(PORTC,6);
+	SET_BIT(DDRE,0);
+	SET_BIT(PORTE,0);
 	_delay_ms(5);
-	CLR_BIT(PORTC,6);
+	CLR_BIT(PORTE,0);
 }
 void   digitalWrite(uint8 pin, uint8 value)
 {
