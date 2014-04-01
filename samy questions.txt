@@ -1,5 +1,0 @@
-mapping162.h:
--------------
-1- Explain the macro "analogInputToDigitalPin". 
-2- Please explain this whole file for me "macros and arrays"
-3- we have warnings
