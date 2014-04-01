@@ -53,7 +53,7 @@ void UartInit(uint8 serialPort,uint16 baudRate){
 			UBRR0L = (byte) (baudRate &0x00ff) ;
 			UBRR0H = (byte)((baudRate &0xff00)>>8);
 				*/
-			UBRR0L= 7; // 57600 single speed
+			UBRR0L= 16; // 57600 single speed
 			
 		break;
 		
@@ -69,7 +69,7 @@ void UartInit(uint8 serialPort,uint16 baudRate){
 		  /*  UBRR1L = (byte) (baudRate &0x00ff) ;
 		    UBRR1H =(byte)((baudRate &0xff00)>>8);
              */
-		  UBRR1L= 7; // 57600 single speed
+		  UBRR1L= 16; // 57600 single speed
 			
 		break;
 		

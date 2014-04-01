@@ -9,9 +9,8 @@
 #include "pwm.h"
 #include "uart.h"
 #include "mapping162.h"
-#define F_CPU 7372800UL
+#define F_CPU 16000000UL
 #include <util/delay.h>
-
 
 void pinMode(uint8 pin , uint8 pinMode)
 {
