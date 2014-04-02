@@ -31,7 +31,7 @@ void enableTxLed(){
 
 ISR(TIMER2_OVF_vect)
 {	
-	if(count%200==0)
+	if(count%100==0)
 	{
 		if(countRx>0&&countRx<=6){
 			TOG_BIT(PORTA,6);	
