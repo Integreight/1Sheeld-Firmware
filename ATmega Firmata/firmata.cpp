@@ -496,7 +496,7 @@ void FirmataClass::systemResetCallback()
 	
 	for (byte i=0; i < TOTAL_PINS; i++)
     {
-		setPinModeCallback(i, OUTPUT);
+		setPinModeCallback(i, INPUT);
 	}
 }
 

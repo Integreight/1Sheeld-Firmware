@@ -86,7 +86,7 @@
 #define UART_END 0x00
 
 #define TOTAL_PORTS             5
-#define TOTAL_PINS              35
+#define TOTAL_PINS              20
 #define SYSEX_UART              0x0A
 
 
