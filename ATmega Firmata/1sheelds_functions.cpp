@@ -242,8 +242,10 @@ void writePort(byte port, byte value, byte bitmask)
 
 void unusedPinsInput()
 {
-	for (int i =25;i<35;i++)
-		pinMode(i,OUTPUT);
+	for (int i =25;i<35;i++){
+		pinMode(i,INPUT);
+		digitalWrite(i,HIGH); }// enable internal pull-up
+		digitalWrite(22,HIGH);
 }
 uint16_t serial0_Avilable()
 {
