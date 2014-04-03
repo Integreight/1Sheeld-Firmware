@@ -10,6 +10,7 @@
 #include "uart.h"
 #include <util/delay.h>
 #include "mapping162.h"
+#include <avr/wdt.h>
 
 extern "C" {
 	#include <string.h>
@@ -59,6 +60,15 @@ FirmataClass::FirmataClass()
 //* Public Methods
 //******************************************************************************
 
+void FirmataClass::forceHardReset()
+{
+	cli();
+	// disable interrupts
+	wdt_enable(WDTO_15MS);
+	// enable watchdog
+	while(1);
+	// wait for watchdog to reset processor
+}
 
 /* begin method for overriding default serial bitrate */
 void FirmataClass::begin()
@@ -452,6 +462,11 @@ void FirmataClass::sysexCallback(byte command, byte argc, byte *argv)
 		UartTx1(0xf0);
 		UartTx1(IS_ALIVE);
 		UartTx1(0xf7);
+	}break;
+	
+	case RESET_MICRO:
+	{
+		forceHardReset();
 	}break;
 	
 	case PULSE_IN_INIT: 

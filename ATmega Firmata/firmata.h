@@ -65,6 +65,7 @@
 #define FIRMATA_MUTE            0x64  // turn off firmata
 #define FIRMATA_VERSION         0X63 // our firmata version
 #define IS_ALIVE                0x62
+#define RESET_MICRO             0x60
          
 // pin modes
 #define ANALOG                  0x02 // analog pin in analogInput mode
@@ -154,6 +155,7 @@ class FirmataClass
 	void sendValueAsTwo7bitBytes(int value);
 	void startSysex(void);
 	void endSysex(void);
+	void forceHardReset();
 };
 
 extern FirmataClass Firmata;
