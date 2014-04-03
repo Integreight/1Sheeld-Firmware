@@ -170,6 +170,9 @@ void FirmataClass::processInput(void)
 			parsingSysex = true;
 			sysexBytesRead = 0;
 			break;
+			case REPORT_VERSION:
+			printVersion();
+			break;
 			case SYSTEM_RESET:
 			systemReset();
 			break;
@@ -225,6 +228,12 @@ void FirmataClass::systemReset(void)
  
 }
 
+void FirmataClass::printVersion()
+{
+	write(REPORT_VERSION);
+	write(VERSION_MAJOR);
+	write(VERSION_MINOR);
+}
 // =============================================================================
 void FirmataClass::sendSysexDataByte(byte command, int value){
 
@@ -451,12 +460,7 @@ void FirmataClass::sysexCallback(byte command, byte argc, byte *argv)
 			muteFlag=1;
 		}
 	}break;
-	case FIRMATA_VERSION:
-	{
-		unsigned char version[2]={ VERSION_HIGH , VERSION_LOW};
-		sendSysex(FIRMATA_VERSION,2,version);
-	}break;
-	 
+
 	case IS_ALIVE:
 	{
 		UartTx1(0xf0);
