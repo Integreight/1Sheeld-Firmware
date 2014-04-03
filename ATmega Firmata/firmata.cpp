@@ -10,6 +10,7 @@
 #include "uart.h"
 #include <util/delay.h>
 #include "mapping162.h"
+#include <avr/wdt.h>
 
 extern "C" {
 	#include <string.h>
@@ -59,6 +60,15 @@ FirmataClass::FirmataClass()
 //* Public Methods
 //******************************************************************************
 
+void FirmataClass::forceHardReset()
+{
+	cli();
+	// disable interrupts
+	wdt_enable(WDTO_15MS);
+	// enable watchdog
+	while(1);
+	// wait for watchdog to reset processor
+}
 
 /* begin method for overriding default serial bitrate */
 void FirmataClass::begin()
@@ -160,6 +170,9 @@ void FirmataClass::processInput(void)
 			parsingSysex = true;
 			sysexBytesRead = 0;
 			break;
+			case REPORT_VERSION:
+			printVersion();
+			break;
 			case SYSTEM_RESET:
 			systemReset();
 			break;
@@ -215,6 +228,12 @@ void FirmataClass::systemReset(void)
  
 }
 
+void FirmataClass::printVersion()
+{
+	write(REPORT_VERSION);
+	write(VERSION_MAJOR);
+	write(VERSION_MINOR);
+}
 // =============================================================================
 void FirmataClass::sendSysexDataByte(byte command, int value){
 
@@ -441,17 +460,17 @@ void FirmataClass::sysexCallback(byte command, byte argc, byte *argv)
 			muteFlag=1;
 		}
 	}break;
-	case FIRMATA_VERSION:
-	{
-		unsigned char version[2]={ VERSION_HIGH , VERSION_LOW};
-		sendSysex(FIRMATA_VERSION,2,version);
-	}break;
-	 
+
 	case IS_ALIVE:
 	{
 		UartTx1(0xf0);
 		UartTx1(IS_ALIVE);
 		UartTx1(0xf7);
+	}break;
+	
+	case RESET_MICRO:
+	{
+		forceHardReset();
 	}break;
 	
 	case PULSE_IN_INIT: 
@@ -481,7 +500,7 @@ void FirmataClass::systemResetCallback()
 	
 	for (byte i=0; i < TOTAL_PINS; i++)
     {
-		setPinModeCallback(i, OUTPUT);
+		setPinModeCallback(i, INPUT);
 	}
 }
 
