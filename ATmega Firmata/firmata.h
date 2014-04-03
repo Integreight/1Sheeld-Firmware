@@ -66,6 +66,8 @@
 #define FIRMATA_VERSION         0X63 // our firmata version
 #define IS_ALIVE                0x62
 #define RESET_BLUETOOTH         0x61          
+#define RESET_MICRO             0x60
+         
 // pin modes
 #define ANALOG                  0x02 // analog pin in analogInput mode
 #define PWM                     0x03 // digital pin in PWM output mode
@@ -154,6 +156,7 @@ class FirmataClass
 	void sendValueAsTwo7bitBytes(int value);
 	void startSysex(void);
 	void endSysex(void);
+	void forceHardReset();
 };
 
 extern FirmataClass Firmata;
