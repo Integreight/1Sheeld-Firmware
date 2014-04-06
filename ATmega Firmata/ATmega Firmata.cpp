@@ -30,7 +30,7 @@ int main(void)
 
 	Firmata.begin();
 	Firmata.systemResetCallback();  // reset to default config
-	unusedPinsInput();
+	unusedPinsAsOutput();
 	// bluetooth reset sysex message 
 	Firmata.write(START_SYSEX);
 	Firmata.write(RESET_BLUETOOTH);

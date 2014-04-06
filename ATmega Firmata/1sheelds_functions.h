@@ -22,7 +22,7 @@ uint8  readPort(byte, byte);
 uint16_t serial0_Avilable();
 int serial1_Avilable();
 void turnOffPWM(uint8 timer);
-void unusedPinsInput();
+void unusedPinsAsOutput();
 void resetBluetooth();
 
 #endif /* 1SHEELDS_FUNCTIONS_H_ */
