@@ -14,6 +14,7 @@
 #include "1sheelds_functions.h"
 #include "pwm.h"
 #include "firmata.h"
+#include "timers.h"
 #include <util/delay.h>
 
 unsigned long val=0;
@@ -27,21 +28,19 @@ int freeRam () {
 
 int main(void)
 {
-
+	// for millis fn 
+	TCCR0=(1<<CS00)|(1<<CS01);
+	SET_BIT(TIMSK,TOIE0);
+	resetBluetooth();
 	Firmata.begin();
 	Firmata.systemResetCallback();  // reset to default config
-	unusedPinsInput();
-	// bluetooth reset sysex message 
-	Firmata.write(START_SYSEX);
-	Firmata.write(RESET_BLUETOOTH);
-	Firmata.write(END_SYSEX);
+	unusedPinsAsOutput();
 	//make 2 pins output for rx tx leds and 
 	SET_BIT(DDRA,6);
 	SET_BIT(DDRA,7);
 	SET_BIT(PORTA,6);
 	SET_BIT(PORTA,7);
 	TCCR2|=(1<<CS20)|(1<<CS21); // clock prescalar =32
-
 	sei(); // enable global interrupt
 	
 	while (1) // the super loop!
