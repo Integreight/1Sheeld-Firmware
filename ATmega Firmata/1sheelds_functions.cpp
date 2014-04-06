@@ -92,7 +92,7 @@ void turnOffPWM(uint8 timer)
 	switch(timer)
 	{
 		case TIMER_00 :
-		TCCR0&=3;//for millis
+		TCCR0=0;//for millis
 		break;
 		
 		case TIMER_1A:
