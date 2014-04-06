@@ -267,7 +267,7 @@ const uint8_t PROGMEM digital_pin_to_timer_PGM[] = {
 
 #define digitalPinToBitMaskPWM(P) ( pgm_read_byte( digital_pin_to_bit_mask_PWM_PGM + (P) ) )
 // for pulseIn
-#define clockCyclesPerMicrosecond() ( F_CPU / 1000000L )
+#define clockCyclesPerMicrosecond() ( F_CPU /(double) 1000000L )
 #define clockCyclesToMicroseconds(a) ( (a) / clockCyclesPerMicrosecond() )
 #define microsecondsToClockCycles(a) ( (a) * clockCyclesPerMicrosecond() )
 #define portInputRegister(P) ( (volatile uint8_t *)( pgm_read_word( port_to_input_PGM + (P))) )

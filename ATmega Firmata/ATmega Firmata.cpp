@@ -15,9 +15,7 @@
 #include "pwm.h"
 #include "firmata.h"
 #include "timers.h"
-#include <util/delay.h>
 
-unsigned long val=0;
 int freeRam () {
 	extern int __heap_start, *__brkval;
 	int v;
