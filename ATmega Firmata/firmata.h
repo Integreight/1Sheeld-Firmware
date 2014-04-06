@@ -136,6 +136,8 @@ class FirmataClass
 	void sysexCallback(byte command, byte argc, byte *argv);
 	void systemResetCallback();
 	void requestBluetoothReset();
+	//for bluetooth reset 
+	bool didRespond();
     private:
 	//serial
 	uint16 baudRate;
@@ -150,7 +152,8 @@ class FirmataClass
 	/* sysex */
 	boolean parsingSysex;
 	int sysexBytesRead;
-
+    //for bluetooth reset
+	bool responseFlag ;
 	/* private methods ------------------------------ */
 	void processSysexMessage(void);
 	void systemReset(void);

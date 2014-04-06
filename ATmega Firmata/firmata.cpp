@@ -210,6 +210,11 @@ void FirmataClass::requestBluetoothReset()
 	write(RESET_BLUETOOTH);
 	write(END_SYSEX);
 }
+
+bool FirmataClass::didRespond()
+{
+	return responseFlag;
+}
 //******************************************************************************
 //* Private Methods
 //******************************************************************************
@@ -229,7 +234,7 @@ void FirmataClass::systemReset(void)
 
   parsingSysex = false;
   sysexBytesRead = 0;
-
+  responseFlag=false;
   systemResetCallback();
  
 }
@@ -492,7 +497,12 @@ void FirmataClass::sysexCallback(byte command, byte argc, byte *argv)
 	}break; 
 	case RESET_BLUETOOTH:
 	{
-		resetBluetooth();
+		if (argv[0])
+		{
+			resetBluetooth();
+		}
+		
+		responseFlag=true;
 	}break;
 	}
 }
