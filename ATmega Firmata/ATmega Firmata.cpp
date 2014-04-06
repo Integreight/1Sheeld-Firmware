@@ -30,7 +30,7 @@ int main(void)
 	resetBluetooth();
 	Firmata.begin();
 	Firmata.systemResetCallback();  // reset to default config
-	unusedPinsInput();
+	unusedPinsAsOutput();
 	//make 2 pins output for rx tx leds and 
 	SET_BIT(DDRA,6);
 	SET_BIT(DDRA,7);
