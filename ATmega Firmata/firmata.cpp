@@ -204,6 +204,12 @@ void FirmataClass::sendString(byte command, const char* string)
 	sendSysex(command, strlen(string), (byte *)string);
 }
 
+void FirmataClass::requestBluetoothReset()
+{
+	write(START_SYSEX);
+	write(RESET_BLUETOOTH);
+	write(END_SYSEX);
+}
 //******************************************************************************
 //* Private Methods
 //******************************************************************************

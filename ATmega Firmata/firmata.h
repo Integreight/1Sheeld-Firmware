@@ -135,6 +135,7 @@ class FirmataClass
 	void reportDigitalCallback(byte port, int value);
 	void sysexCallback(byte command, byte argc, byte *argv);
 	void systemResetCallback();
+	void requestBluetoothReset();
     private:
 	//serial
 	uint16 baudRate;
