@@ -14,6 +14,7 @@
 #include "1sheelds_functions.h"
 #include "pwm.h"
 #include "firmata.h"
+#include "timers.h"
 #include <util/delay.h>
 
 unsigned long val=0;
@@ -27,6 +28,9 @@ int freeRam () {
 
 int main(void)
 {
+	// for millis fn 
+	TCCR0=(1<<CS00)|(1<<CS01);
+	SET_BIT(TIMSK,TOIE0);
 	resetBluetooth();
 	Firmata.begin();
 	Firmata.systemResetCallback();  // reset to default config
@@ -37,7 +41,7 @@ int main(void)
 	SET_BIT(PORTA,6);
 	SET_BIT(PORTA,7);
 	TCCR2|=(1<<CS20)|(1<<CS21); // clock prescalar =32
-    // for bt reset 
+    
 	
 	
 	sei(); // enable global interrupt
