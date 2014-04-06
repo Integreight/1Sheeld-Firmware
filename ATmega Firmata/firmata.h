@@ -68,7 +68,6 @@
 #define RESET_BLUETOOTH         0x61          
 #define RESET_MICRO             0x60
          
-
 // pin modes
 #define ANALOG                  0x02 // analog pin in analogInput mode
 #define PWM                     0x03 // digital pin in PWM output mode
