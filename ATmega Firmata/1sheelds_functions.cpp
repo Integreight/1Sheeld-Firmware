@@ -240,8 +240,9 @@ void writePort(byte port, byte value, byte bitmask)
 	if ((bitmask & 0x80)) digitalWrite((pin+7), (value & 0x80));
 }
 
-void unusedPinsInput()
+void unusedPinsAsOutput()
 {
+	pinMode(22,OUTPUT); 
 	for (int i =25;i<35;i++)
 		pinMode(i,OUTPUT);
 }
