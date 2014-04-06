@@ -65,12 +65,9 @@
 #define FIRMATA_MUTE            0x64  // turn off firmata
 #define FIRMATA_VERSION         0X63 // our firmata version
 #define IS_ALIVE                0x62
-<<<<<<< HEAD
 #define RESET_BLUETOOTH         0x61          
-=======
 #define RESET_MICRO             0x60
          
->>>>>>> rxtxfahmy
 // pin modes
 #define ANALOG                  0x02 // analog pin in analogInput mode
 #define PWM                     0x03 // digital pin in PWM output mode
