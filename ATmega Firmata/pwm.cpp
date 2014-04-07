@@ -12,7 +12,7 @@ void pwm_Setup(uint8 timer)
 {
 	switch(timer)
 	{
-		// make 64 prescalar
+		// make 64 prescalar for all timers except timer3=16 and timer 2=32 
 		case TIMER_00 :
 		TCCR0|=(1<<WGM00)|(1<<WGM01)|(1<<CS00)|(1<<COM01)|(1<<CS01);
 		break;
@@ -33,12 +33,12 @@ void pwm_Setup(uint8 timer)
 		
 		case TIMER_3A:
 		TCCR3A|=(1<<WGM30)|(1<<COM3A1);
-		TCCR3B|=(1<<WGM32)|(1<<CS30)|(1<<CS31);
+		TCCR3B|=(1<<WGM32)|(1<<CS32)|(1<<CS31);
 		break;
 		
 		case TIMER_3B:
 		TCCR3A|=(1<<WGM30)|(1<<COM3B1);
-		TCCR3B|=(1<<WGM32)|(1<<CS30)|(1<<CS31);
+		TCCR3B|=(1<<WGM32)|(1<<CS32)|(1<<CS31);
 		break;
 		
 		default:
