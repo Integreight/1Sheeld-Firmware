@@ -137,7 +137,8 @@ class FirmataClass
 	void systemResetCallback();
 	void requestBluetoothReset();
 	//for bluetooth reset 
-	bool didRespond();
+	bool getResponseFlag();
+	void setResponseFlag(bool);
     private:
 	//serial
 	uint16 baudRate;

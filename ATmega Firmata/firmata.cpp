@@ -211,9 +211,14 @@ void FirmataClass::requestBluetoothReset()
 	write(END_SYSEX);
 }
 
-bool FirmataClass::didRespond()
+bool FirmataClass::getResponseFlag()
 {
 	return responseFlag;
+}
+
+void FirmataClass::setResponseFlag(bool state)
+{
+	responseFlag=state;
 }
 //******************************************************************************
 //* Private Methods
