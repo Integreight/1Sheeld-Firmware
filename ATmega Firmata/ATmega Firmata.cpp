@@ -18,7 +18,7 @@
 
 unsigned long currentMillis;        // store the current value from millis()
 unsigned long newMillis;
-unsigned long responseInterval =2000 ;
+unsigned long responseInterval =200UL ;
 int freeRam () {
 	extern int __heap_start, *__brkval;
 	int v;
