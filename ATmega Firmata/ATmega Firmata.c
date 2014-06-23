@@ -1,5 +1,5 @@
 /*
- * ATmega_Firmata.c
+ * ATmega_c
  *
  * Created: 2/12/2013 9:43:21 AM
  *  Author: iMustafa
@@ -19,11 +19,6 @@
 unsigned long currentMillis;        // store the current value from millis()
 unsigned long newMillis;
 unsigned long responseInterval =200UL ;
-int freeRam () {
-	extern int __heap_start, *__brkval;
-	int v;
-	return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval);
-}
 
 
 
@@ -33,10 +28,10 @@ int main(void)
 	TCCR0=(1<<CS00)|(1<<CS01);
 	SET_BIT(TIMSK,TOIE0);
 	sei(); // enable global interrupt
-	Firmata.begin();
-	Firmata.systemResetCallback();  // reset to default config
+	begin();
+	systemResetCallback();  // reset to default config
 	unusedPinsAsOutput();
-	Firmata.requestBluetoothReset();
+	requestBluetoothReset();
 	currentMillis=millis();
 	//make 2 pins output for rx tx leds and 
 	SET_BIT(DDRA,6);
@@ -48,25 +43,25 @@ int main(void)
 	while (1) // the super loop!
 	{
 		
-		Firmata.processUart0Input();
-		Firmata.checkDigitalInputs();
-		while(Firmata.available()>0)
+		processUart0Input();
+		checkDigitalInputs();
+		while(available()>0)
         {
-           Firmata.processInput();
+           processInput();
         }
 		newMillis = millis();
 		//wait 1 sec if android didin't respond, reset bluetooth
-		if (((newMillis-currentMillis)>=responseInterval) && (!Firmata.getResponseFlag()) )
+		if (((newMillis-currentMillis)>=responseInterval) && (!getResponseFlag()) )
 		{
 		   resetBluetooth();
-           Firmata.setResponseFlag(true);
+           setResponseFlag(true);
 		}
 
-		/*if(Firmata.isPulseInEnabled)
+		/*if(isPulseInEnabled)
 		{
-			pinMode(Firmata.pinPWM,INPUT);
-			unsigned int value =readPWM(Firmata.pinPWM);
-            Firmata.sendSysexDataByte(PULSE_IN_DATA,value);
+			pinMode(pinPWM,INPUT);
+			unsigned int value =readPWM(pinPWM);
+            sendSysexDataByte(PULSE_IN_DATA,value);
 			
 		}*/
 	}

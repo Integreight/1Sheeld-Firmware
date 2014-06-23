@@ -5,6 +5,7 @@
  *  Author: HP
  */
 
+#include "1sheelds_functions.h"
 #include "gpio.h"
 #include "pwm.h"
 #include "uart.h"

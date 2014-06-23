@@ -12,55 +12,39 @@
 #include "mapping162.h"
 #include <avr/wdt.h>
 
-extern "C" {
-	#include <string.h>
-	#include <stdlib.h>
-}
-
 //******************************************************************************
 //* Support Functions
 //******************************************************************************
 
-void FirmataClass::write(unsigned char data)
+void write(unsigned char data)
 {
 	if (muteFlag==0)
 	{
 		UartTx1(data);
 	}
 }
-void FirmataClass::sendValueAsTwo7bitBytes(int value)
+void sendValueAsTwo7bitBytes(int value)
 {
   write(value & 0b01111111); // LSB
   write(value >> 7 & 0b01111111); // MSB
 }
 
-void FirmataClass::startSysex(void)
+void startSysex(void)
 {
   write(START_SYSEX);
 }
 
-void FirmataClass::endSysex(void)
+void endSysex(void)
 {
   write(END_SYSEX);
 }
 
-//constructor 
-FirmataClass::FirmataClass()
-{
-	firmwareVersionCount = 0;
-	firmwareVersionVector = 0;
-	isPulseInEnabled =0;
-	stringPosition=0;
-	isUartStringStarted=0;
-	muteFlag=0;
-	systemReset();
-}
 
 //******************************************************************************
 //* Public Methods
 //******************************************************************************
 
-void FirmataClass::forceHardReset()
+void forceHardReset()
 {
 	cli();
 	// disable interrupts
@@ -71,34 +55,41 @@ void FirmataClass::forceHardReset()
 }
 
 /* begin method for overriding default serial bitrate */
-void FirmataClass::begin()
+void begin()
 {
+	firmwareVersionCount = 0;
+	firmwareVersionVector = 0;
+	isPulseInEnabled =0;
+	stringPosition=0;
+	isUartStringStarted=0;
+	muteFlag=0;
+	systemReset();
 	UartInit(1,BAUD_57600);// 1 for rx1,tx1
 }
 
-int FirmataClass::available(void)
+int available(void)
 {
 	return serial1_Avilable();
 }
 
-void FirmataClass::processSysexMessage(void)
+void processSysexMessage(void)
 {
 
 		sysexCallback(storedInputData[0], sysexBytesRead - 1, storedInputData + 1);
 }
 
-void FirmataClass::processUart0Input(){
+void processUart0Input(){
 	uint16_t availableData=serial0_Avilable();
 	if(availableData>0){
 		byte arr[availableData];
 		for(uint16_t i=0;i<availableData;i++){
 			arr[i]=UartRx0();
 		}
-		Firmata.sendSysex(UART_DATA,availableData,arr);
+		sendSysex(UART_DATA,availableData,arr);
 	}
 }
 
-void FirmataClass::processInput(void)
+void processInput(void)
 {
 	int inputData = UartRx1(); // this is 'int' to handle -1 when no data
 	int command;
@@ -181,14 +172,14 @@ void FirmataClass::processInput(void)
 	}
 }
 
-void FirmataClass::sendDigitalPort(byte portNumber, int portData)
+void sendDigitalPort(byte portNumber, int portData)
 {
 	write(DIGITAL_MESSAGE | (portNumber & 0xF));
 	write((byte)portData % 128); // Tx bits 0-6
 	write(portData >> 7);  // Tx bits 7-13
 }
 
-void FirmataClass::sendSysex(byte command, byte bytec, byte* bytev)
+void sendSysex(byte command, byte bytec, byte* bytev)
 {
 	byte i;
 	startSysex();
@@ -199,24 +190,24 @@ void FirmataClass::sendSysex(byte command, byte bytec, byte* bytev)
 	endSysex();
 }
 
-void FirmataClass::sendString(byte command, const char* string)
+void sendString(byte command, const char* string)
 {
 	sendSysex(command, strlen(string), (byte *)string);
 }
 
-void FirmataClass::requestBluetoothReset()
+void requestBluetoothReset()
 {
 	write(START_SYSEX);
 	write(RESET_BLUETOOTH);
 	write(END_SYSEX);
 }
 
-bool FirmataClass::getResponseFlag()
+boolean getResponseFlag()
 {
 	return responseFlag;
 }
 
-void FirmataClass::setResponseFlag(bool state)
+void setResponseFlag(boolean state)
 {
 	responseFlag=state;
 }
@@ -224,7 +215,7 @@ void FirmataClass::setResponseFlag(bool state)
 //* Private Methods
 //******************************************************************************
 // resets the system state upon a SYSTEM_RESET message from the host software
-void FirmataClass::systemReset(void)
+void systemReset(void)
 {
   byte i;
 
@@ -244,14 +235,14 @@ void FirmataClass::systemReset(void)
  
 }
 
-void FirmataClass::printVersion()
+void printVersion()
 {
 	write(REPORT_VERSION);
 	write(VERSION_MINOR);
 	write(VERSION_MAJOR);
 }
 // =============================================================================
-void FirmataClass::sendSysexDataByte(byte command, int value){
+void sendSysexDataByte(byte command, int value){
 
 	startSysex();
 	write(command);
@@ -267,13 +258,13 @@ void FirmataClass::sendSysexDataByte(byte command, int value){
  *============================================================================*/
 
 
-void FirmataClass::outputPort(byte portNumber, byte portValue, byte forceSend)
+void outputPort(byte portNumber, byte portValue, byte forceSend)
 {
   // pins not configured as INPUT are cleared to zeros
   portValue = portValue & portConfigInputs[portNumber];
   // only send if the value is different than previously sent
   if(forceSend || previousPINs[portNumber] != portValue) {
-    Firmata.sendDigitalPort(portNumber, portValue);
+    sendDigitalPort(portNumber, portValue);
     previousPINs[portNumber] = portValue;
   }
   
@@ -282,7 +273,7 @@ void FirmataClass::outputPort(byte portNumber, byte portValue, byte forceSend)
 /* -----------------------------------------------------------------------------
  * check all the active digital inputs for change of state, then add any events
  * to the Serial output queue using Serial.print() */
-void FirmataClass::checkDigitalInputs(void)
+void checkDigitalInputs(void)
 {
   /* Using non-looping code allows constants to be given to readPort().
    * The compiler will apply substantial optimizations if the inputs
@@ -298,7 +289,7 @@ void FirmataClass::checkDigitalInputs(void)
 /* sets the pin mode to the correct state and sets the relevant bits in the
  * two bit-arrays that track Digital I/O and PWM status
  */
-void FirmataClass::setPinModeCallback(byte pin, int mode)
+void setPinModeCallback(byte pin, int mode)
 {
   if (IS_PIN_DIGITAL(pin)) {
     if (mode == INPUT) {
@@ -332,12 +323,12 @@ void FirmataClass::setPinModeCallback(byte pin, int mode)
     }
     break;
   default:
-    Firmata.sendString(STRING_DATA,"Unknown pin mode"); // TODO: put error msgs in EEPROM
+    sendString(STRING_DATA,"Unknown pin mode"); // TODO: put error msgs in EEPROM
   }
   // TODO: save status to EEPROM here, if changed
 }
 
-void FirmataClass::analogWriteCallback(byte pin, int value)
+void analogWriteCallback(byte pin, int value)
 {
 	if (pin < TOTAL_PINS) {
 
@@ -348,7 +339,7 @@ void FirmataClass::analogWriteCallback(byte pin, int value)
 	}
 }
 
-void FirmataClass::digitalWriteCallback(byte port, int value)
+void digitalWriteCallback(byte port, int value)
 {
 	byte pin, lastPin, mask=1, pinWriteMask=0;
 
@@ -372,7 +363,7 @@ void FirmataClass::digitalWriteCallback(byte port, int value)
 	}
 }
 
-void FirmataClass::reportDigitalCallback(byte port, int value)
+void reportDigitalCallback(byte port, int value)
 {
 	if (port < TOTAL_PORTS) {
 		reportPINs[port] = (byte)value;
@@ -384,7 +375,7 @@ void FirmataClass::reportDigitalCallback(byte port, int value)
  * SYSEX-BASED commands
  *============================================================================*/
 
-void FirmataClass::sysexCallback(byte command, byte argc, byte *argv)
+void sysexCallback(byte command, byte argc, byte *argv)
 {
 
 		   
@@ -511,7 +502,7 @@ void FirmataClass::sysexCallback(byte command, byte argc, byte *argv)
 	}break;
 	}
 }
-void FirmataClass::systemResetCallback()
+void systemResetCallback()
 {	
 	for (byte i=0; i < TOTAL_PORTS; i++) {
 		reportPINs[i] = false;      // by default, reporting off
@@ -524,6 +515,3 @@ void FirmataClass::systemResetCallback()
 		setPinModeCallback(i, INPUT);
 	}
 }
-
-// make one instance for the user to use
-FirmataClass Firmata ;

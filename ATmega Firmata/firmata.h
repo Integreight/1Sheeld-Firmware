@@ -91,9 +91,7 @@
 
 
 
-class FirmataClass
-{
-	public:
+
 	//variables declarations//
 	uint16 BAUD_RATE;// for the hardware serial terminal
     byte isPulseInEnabled;
@@ -113,7 +111,21 @@ class FirmataClass
 	char tempChar;
 	char isUartStringStarted;
 	uint8 muteFlag;
-	FirmataClass();
+	//serial
+	uint16 baudRate;
+	/* firmware name and version */
+	byte firmwareVersionCount;
+	byte *firmwareVersionVector;
+	/* input message handling */
+	byte waitForData; // this flag says the next serial input will be data
+	byte executeMultiByteCommand; // execute this after getting multi-byte data
+	byte multiByteChannel; // channel data for multiByteCommands
+	byte storedInputData[MAX_DATA_BYTES]; // multi-byte data
+	/* sysex */
+	boolean parsingSysex;
+	int sysexBytesRead;
+	//for bluetooth reset
+	boolean responseFlag ;
 	void begin();
 	void write(unsigned char data);
 	//void setFirmwareVersion(byte major, byte minor);  // see macro below
@@ -137,24 +149,9 @@ class FirmataClass
 	void systemResetCallback();
 	void requestBluetoothReset();
 	//for bluetooth reset 
-	bool getResponseFlag();
-	void setResponseFlag(bool);
-    private:
-	//serial
-	uint16 baudRate;
-	/* firmware name and version */
-	byte firmwareVersionCount;
-	byte *firmwareVersionVector;
-	/* input message handling */
-	byte waitForData; // this flag says the next serial input will be data
-	byte executeMultiByteCommand; // execute this after getting multi-byte data
-	byte multiByteChannel; // channel data for multiByteCommands
-	byte storedInputData[MAX_DATA_BYTES]; // multi-byte data
-	/* sysex */
-	boolean parsingSysex;
-	int sysexBytesRead;
-    //for bluetooth reset
-	bool responseFlag ;
+	boolean getResponseFlag();
+	void setResponseFlag(boolean);
+
 	/* private methods ------------------------------ */
 	void processSysexMessage(void);
 	void systemReset(void);
@@ -163,19 +160,4 @@ class FirmataClass
 	void endSysex(void);
 	void forceHardReset();
 	void printVersion();
-};
-
-extern FirmataClass Firmata;
-
-/*==============================================================================
- * MACROS
- *============================================================================*/
-
-/* shortcut for setFirmwareNameAndVersion() that uses __FILE__ to set the
- * firmware name.  It needs to be a macro so that __FILE__ is included in the
- * firmware source file rather than the library source file.
- */
-#define setFirmwareVersion(x, y)   setFirmwareNameAndVersion(__FILE__, x, y)
-
-
 #endif /* FIRMATA_H_ */
