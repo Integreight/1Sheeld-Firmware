@@ -247,8 +247,8 @@ void FirmataClass::systemReset(void)
 void FirmataClass::printVersion()
 {
 	write(REPORT_VERSION);
-	write(VERSION_MAJOR);
 	write(VERSION_MINOR);
+	write(VERSION_MAJOR);
 }
 // =============================================================================
 void FirmataClass::sendSysexDataByte(byte command, int value){
