@@ -116,7 +116,7 @@ void UartTx1(uint8_t data){
 
 #if UART_RX0_INTERRUPT == ENABLED
 
-uint16_t UartRx0(){
+int UartRx0(){
 	uint16_t tmptail;
 	uint8_t data;
 
