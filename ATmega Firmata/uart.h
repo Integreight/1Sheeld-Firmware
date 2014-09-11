@@ -43,7 +43,7 @@ void UartInit(uint8 serialPort,uint16 baudRate);
 void UartEnd(uint8 serialPort);
 void UartTx0(unsigned char data);
 void UartTx1(uint8_t data);
-uint16_t  UartRx0();
+int  UartRx0();
 int  UartRx1();
 #if UART_RX0_INTERRUPT == ENABLED
     int getuartRx1Flag();
