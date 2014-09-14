@@ -36,7 +36,7 @@ int  UartRx0();
 int  UartRx1();
 #if UART_RX0_INTERRUPT == ENABLED
     int getuartRx1Flag();
-    uint16_t getuartRx0Flag();
+    int getuartRx0Flag();
 #endif
 
 #endif /* UART_H_ */

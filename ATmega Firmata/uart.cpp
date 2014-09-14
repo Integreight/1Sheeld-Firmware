@@ -123,7 +123,7 @@ int UartRx0(){
 }
 
 
-uint16_t getuartRx0Flag(){
+int getuartRx0Flag(){
 	
 	return (UART0_RX0_BUFFER_SIZE + UART0_RxHead - UART0_RxTail) & UART0_RX0_BUFFER_MASK;
 }
