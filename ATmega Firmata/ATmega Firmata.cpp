@@ -25,13 +25,24 @@ int freeRam () {
 	return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval);
 }
 
+void millis_setup()
+{
+	TCCR0=(1<<CS00)|(1<<CS01);
+	SET_BIT(TIMSK,TOIE0);
+}
 
-
+void UartLedSetup()
+{
+	SET_BIT(DDRA,6);
+	SET_BIT(DDRA,7);
+	SET_BIT(PORTA,6);
+	SET_BIT(PORTA,7);
+	TCCR2|=(1<<CS20)|(1<<CS21); // clock prescalar =32
+}
 int main(void)
 {
 	// for millis fn 
-	TCCR0=(1<<CS00)|(1<<CS01);
-	SET_BIT(TIMSK,TOIE0);
+	millis_setup();
 	sei(); // enable global interrupt
 	Firmata.begin();
 	Firmata.systemResetCallback();  // reset to default config
@@ -39,12 +50,7 @@ int main(void)
 	Firmata.requestBluetoothReset();
 	currentMillis=millis();
 	//make 2 pins output for rx tx leds and 
-	SET_BIT(DDRA,6);
-	SET_BIT(DDRA,7);
-	SET_BIT(PORTA,6);
-	SET_BIT(PORTA,7);
-	TCCR2|=(1<<CS20)|(1<<CS21); // clock prescalar =32
-	
+	UartLedSetup();
 	while (1) // the super loop!
 	{
 		
