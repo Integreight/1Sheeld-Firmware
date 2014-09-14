@@ -1,10 +1,15 @@
 ﻿/*
- * pwm.h
- *
- * Created: 01/01/2014 09:47:59 م
- *  Author: HP
- */ 
 
+  Project:       1Sheeld Firmware 
+  File:          pwm.h
+
+  Compiler:      Arduino avr-gcc 4.3.2
+
+  Author:        Integreight
+                 
+  Date:          2014.5
+
+*/
 
 #ifndef PWM_H_
 #define PWM_H_

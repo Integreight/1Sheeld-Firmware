@@ -1,9 +1,15 @@
 /*
- * ATmega_Firmata.c
- *
- * Created: 2/12/2013 9:43:21 AM
- *  Author: iMustafa
- */ 
+
+  Project:       1Sheeld Firmware 
+  File:          ATmega Firmata.cpp
+
+  Compiler:      Arduino avr-gcc 4.3.2
+
+  Author:        Integreight
+                 
+  Date:          2014.5
+
+*/
 
 #define  F_CPU 7372800UL //
 #include <avr/io.h>

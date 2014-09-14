@@ -1,9 +1,16 @@
 /*
- * firmata.cpp
- *
- * Created: 26/1/2014 2:30:59 PM
- *  Author: iMustafa
- */ 
+
+  Project:       1Sheeld Firmware 
+  File:          firmata.cpp
+
+  Compiler:      Arduino avr-gcc 4.3.2
+
+  Author:        Integreight
+                 
+  Date:          2014.5
+
+*/
+
 #define F_CPU 7372800UL
 
 #include "firmata.h"

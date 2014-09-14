@@ -1,10 +1,15 @@
 ﻿/*
- * timers.h
- *
- * Created: 24/02/2014 07:35:59 م
- *  Author: HP
- */ 
 
+  Project:       1Sheeld Firmware 
+  File:          timers.h
+
+  Compiler:      Arduino avr-gcc 4.3.2
+
+  Author:        Integreight
+                 
+  Date:          2014.5
+
+*/
 
 #ifndef TIMERSa_H_
 #define TIMERSa_H_

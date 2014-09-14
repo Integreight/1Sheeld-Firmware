@@ -1,13 +1,15 @@
 ﻿/*
- * IncFile1.h
- *
- * Created: 16/02/2013 11:08:06 م
- *  Author: HP
- * Write any macro that is not related to specific file
- *
- */ 
 
+  Project:       1Sheeld Firmware 
+  File:          CommonMacros.h
+  
+  Compiler:      Arduino avr-gcc 4.3.2
 
+  Author:        Integreight
+                 
+  Date:          2014.5
+
+*/
 
 #ifndef COMMON_MACROS_H_
 #define COMMON_MACROS_H_
