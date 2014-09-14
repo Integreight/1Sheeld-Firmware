@@ -25,11 +25,6 @@
 unsigned long currentMillis;        // store the current value from millis()
 unsigned long newMillis;
 unsigned long responseInterval =200UL ;
-int freeRam () {
-	extern int __heap_start, *__brkval;
-	int v;
-	return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval);
-}
 
 void millis_setup()
 {
@@ -59,7 +54,6 @@ int main(void)
 	UartLedSetup();
 	while (1) // the super loop!
 	{
-		
 		Firmata.processUart0Input();
 		Firmata.checkDigitalInputs();
 		while(Firmata.available()>0)
@@ -73,16 +67,6 @@ int main(void)
 		   resetBluetooth();
            Firmata.setResponseFlag(true);
 		}
-
-		/*if(Firmata.isPulseInEnabled)
-		{
-			pinMode(Firmata.pinPWM,INPUT);
-			unsigned int value =readPWM(Firmata.pinPWM);
-            Firmata.sendSysexDataByte(PULSE_IN_DATA,value);
-			
-		}*/
 	}
-
-
 }
 
