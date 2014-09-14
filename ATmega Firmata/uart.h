@@ -22,24 +22,13 @@
 #define UART0_STATUS   UCSR0A
 #define UART0_DATA     UDR0
 
-// baud rate register values for U2X=1
-#define BAUD_4800   0x1A0
-#define BAUD_9600   0xCF
-#define BAUD_14400  0x8A
-#define BAUD_19200  0x67
-#define BAUD_28800  0x44
-#define BAUD_38400  0x33
-#define BAUD_57600  0x22
-#define BAUD_76800  0x19
-#define BAUD_115200 0x10
-
 //Error codes
 #define UART_NO_DATA          -1              /**< no receive data available   */
 #define UART_BUFFER_OVERFLOW  -2              /**< receive ringbuffer overflow */
 
 //#include "sys.h"
 
-void UartInit(uint8 serialPort,uint16 baudRate);
+void UartInit(uint8 serialPort);
 void UartEnd(uint8 serialPort);
 void UartTx0(unsigned char data);
 void UartTx1(uint8_t data);
