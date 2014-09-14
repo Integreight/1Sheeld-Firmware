@@ -1,9 +1,16 @@
 /*
- * firmata.cpp
- *
- * Created: 26/1/2014 2:30:59 PM
- *  Author: iMustafa
- */ 
+
+  Project:       1Sheeld Firmware 
+  File:          firmata.cpp
+
+  Compiler:      Arduino avr-gcc 4.3.2
+
+  Author:        Integreight
+                 
+  Date:          2014.5
+
+*/
+
 #define F_CPU 7372800UL
 
 #include "firmata.h"
@@ -64,7 +71,7 @@ void begin()
 	isUartStringStarted=0;
 	muteFlag=0;
 	systemReset();
-	UartInit(1,BAUD_57600);// 1 for rx1,tx1
+	UartInit(1);// 1 for rx1,tx1 with
 }
 
 int available(void)
@@ -429,19 +436,7 @@ void sysexCallback(byte command, byte argc, byte *argv)
 	  {
 		  if(argv[0]==UART_BEGIN)
 		  {
-			  if(argv[1]==0x00) BAUD_RATE=1200;
-			 // else  if(argv[1]==0x01) BAUD_RATE =2400;
-			 // else  if(argv[1]==0x02) BAUD_RATE =4800;
-			  else  if(argv[1]==0x03) BAUD_RATE =BAUD_9600;
-			  else  if(argv[1]==0x04) BAUD_RATE =BAUD_14400;
-			  else  if(argv[1]==0x05) BAUD_RATE =BAUD_19200;
-			  else  if(argv[1]==0x06) BAUD_RATE =BAUD_28800;
-			  else  if(argv[1]==0x07) BAUD_RATE =BAUD_38400;
-			  else  if(argv[1]==0x08) BAUD_RATE =BAUD_57600;
-			  else  if(argv[1]==0x09) BAUD_RATE =BAUD_115200;
-			  else BAUD_RATE =57600;
-			  UartInit(0,BAUD_RATE);
-
+			  UartInit(0);
 		  }
 		  else if(argv[0]==UART_END) UartEnd(0);
 		  

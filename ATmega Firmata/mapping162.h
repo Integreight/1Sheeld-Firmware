@@ -1,10 +1,15 @@
 ﻿/*
- * mapping.h
- *
- * Created: 05/01/2014 06:17:13 م
- *  Author: HP
- */ 
 
+  Project:       1Sheeld Firmware 
+  File:          mapping162.h
+
+  Compiler:      Arduino avr-gcc 4.3.2
+
+  Author:        Integreight
+                 
+  Date:          2014.5
+
+*/
 
 #ifndef MAPPING162_H_
 #define MAPPING162_H_

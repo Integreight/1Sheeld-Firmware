@@ -1,9 +1,15 @@
 ﻿/*
- * _1sheelds_functions.c
- *
- * Created: 24/12/2013 08:53:17 م
- *  Author: HP
- */
+
+  Project:       1Sheeld Firmware 
+  File:          1sheelds_functions.cpp
+
+  Compiler:      Arduino avr-gcc 4.3.2
+
+  Author:        Integreight
+                 
+  Date:          2014.5
+
+*/
 
 #include "1sheelds_functions.h"
 #include "gpio.h"

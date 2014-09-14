@@ -1,10 +1,15 @@
 /*
- * firmata.h
- *
- * Created: 26/1/2014 2:31:25 PM
- *  Author: iMustafa
- */ 
 
+  Project:       1Sheeld Firmware 
+  File:          firmata.h
+
+  Compiler:      Arduino avr-gcc 4.3.2
+
+  Author:        Integreight
+                 
+  Date:          2014.5
+
+*/
 
 #ifndef FIRMATA_H_
 #define FIRMATA_H_

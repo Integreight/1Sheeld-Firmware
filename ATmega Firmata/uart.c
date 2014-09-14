@@ -1,9 +1,16 @@
 /*
- * uart.c
- *
- * Created: 03/06/2012 12:46:48 Õ
- *  Author: HP
- */ 
+
+  Project:       1Sheeld Firmware 
+  File:          uart.cpp
+
+  Compiler:      Arduino avr-gcc 4.3.2
+
+  Author:        Integreight
+                 
+  Date:          2014.5
+
+*/
+
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "uart.h"
@@ -26,10 +33,8 @@ static volatile uint16_t UART1_RxTail;
 #endif 
 
 
-void UartInit(uint8 serialPort,uint16 baudRate){
+void UartInit(uint8 serialPort){
 	
-	
-			//UBRR0H=0x00;
     UART1_RxHead = 0;
 	UART1_RxTail = 0;
 	UART0_RxHead = 0;
@@ -42,17 +47,10 @@ void UartInit(uint8 serialPort,uint16 baudRate){
 		  	#if UART_RX0_INTERRUPT == DISABLED	  
 			UCSR0B=(1<<TXEN0)|(1<<RXEN0);		
 			UCSR0C=(1<<URSEL0)|(1<<UCSZ00)|(1<<UCSZ01);
-			
 			#else
-		
 		    UCSR0B=(1<<TXEN0)|(1<<RXEN0)|(1<<RXCIE0);		
 			UCSR0C=(1<<URSEL0)|(1<<UCSZ00)|(1<<UCSZ01);
-		
 			#endif
-			/*
-			UBRR0L = (byte) (baudRate &0x00ff) ;
-			UBRR0H = (byte)((baudRate &0xff00)>>8);
-				*/
 			UBRR0L= 3; // 115200 single speed
 			
 		break;
@@ -66,9 +64,6 @@ void UartInit(uint8 serialPort,uint16 baudRate){
 			UCSR1B=(1<<TXEN1)|(1<<RXEN1)|(1<<RXCIE1)|(1<<TXCIE1);		
 			UCSR1C=(1<<URSEL1)|(1<<UCSZ10)|(1<<UCSZ11);
 			#endif 
-		  /*  UBRR1L = (byte) (baudRate &0x00ff) ;
-		    UBRR1H =(byte)((baudRate &0xff00)>>8);
-             */
 		    UBRR1L= 3; // 115200 single speed
 			
 		break;
@@ -135,7 +130,7 @@ int UartRx0(){
 }
 
 
-uint16_t getuartRx0Flag(){
+int getuartRx0Flag(){
 	
 	return (UART0_RX0_BUFFER_SIZE + UART0_RxHead - UART0_RxTail) & UART0_RX0_BUFFER_MASK;
 }
