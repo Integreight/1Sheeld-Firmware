@@ -12,12 +12,6 @@
 */
 
 #include "1sheelds_functions.h"
-#include "gpio.h"
-#include "pwm.h"
-#include "uart.h"
-#include "mapping162.h"
-#define F_CPU 7372800UL
-#include <util/delay.h>
 
 void pinMode(uint8 pin , uint8 pinMode)
 {
@@ -30,8 +24,6 @@ void pinMode(uint8 pin , uint8 pinMode)
 	{
 		return;
 	}
-	
-	
 	
 	cfg.pID =  portModeRegister(port);
 	
@@ -253,19 +245,13 @@ void unusedPinsAsOutput()
 	for (int i =25;i<35;i++)
 		pinMode(i,OUTPUT);
 }
-uint16_t serial0_Avilable()
-{
-	
-	
+int serial0_Avilable()
+{	
 	return getuartRx0Flag();
-	
 }
 
 
 int serial1_Avilable()
 {
-	
-	
-	return getuartRx1Flag();
-	
+	return getuartRx1Flag();	
 }

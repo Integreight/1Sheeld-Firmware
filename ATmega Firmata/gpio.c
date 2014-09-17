@@ -12,9 +12,6 @@
 */
 
 #include "gpio.h"
-#include "CommonMacros.h"
-
-
 
 void GPIO_Cfg(t_SetPortCfg* cfg)
 {

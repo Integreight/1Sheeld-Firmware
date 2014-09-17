@@ -11,8 +11,6 @@
 
 */
 
-#include <avr/io.h>
-#include "sys.h"
 #include "pwm.h"
 
 void pwm_Setup(uint8 timer)

@@ -11,11 +11,8 @@
 
 */
 
-#include <avr/io.h>
-#include <avr/interrupt.h>
-#include "CommonMacros.h"
 #include "timers.h"
-#define F_CPU 7372800UL
+
 unsigned  volatile int countRx=0;
 unsigned  volatile int countTx=0;
 unsigned volatile int count=0;

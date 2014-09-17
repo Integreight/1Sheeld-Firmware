@@ -11,6 +11,8 @@
 
 */
 
+#include "CommonMacros.h"
+
 #ifndef GPIO_H_
 #define GPIO_H_
 #include"sys.h"

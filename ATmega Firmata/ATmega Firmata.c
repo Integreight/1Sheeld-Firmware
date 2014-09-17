@@ -11,14 +11,10 @@
 
 */
 
-#define  F_CPU 7372800UL //
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <string.h>
-#include "gpio.h"
-#include "uart.h"
 #include "1sheelds_functions.h"
-#include "pwm.h"
 #include "firmata.h"
 #include "timers.h"
 

@@ -11,13 +11,9 @@
 
 */
 
-#define F_CPU 7372800UL
-
 #include "firmata.h"
-#include "uart.h"
-#include <util/delay.h>
-#include "mapping162.h"
 #include <avr/wdt.h>
+#include <util/delay.h>
 
 //******************************************************************************
 //* Support Functions
