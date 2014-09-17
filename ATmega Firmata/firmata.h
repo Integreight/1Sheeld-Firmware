@@ -14,6 +14,8 @@
 #ifndef FIRMATA_H_
 #define FIRMATA_H_
 
+#include <string.h>
+#include <stdlib.h>
 #include "sys.h"
 #include "1sheelds_functions.h"
 #include "mapping162.h"

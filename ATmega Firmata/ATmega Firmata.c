@@ -11,9 +11,6 @@
 
 */
 
-#include <avr/io.h>
-#include <avr/interrupt.h>
-#include <string.h>
 #include "1sheelds_functions.h"
 #include "firmata.h"
 #include "timers.h"
