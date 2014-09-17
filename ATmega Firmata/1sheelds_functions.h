@@ -30,7 +30,7 @@ unsigned long pulseIn(uint8_t pin, uint8_t state);
 unsigned long readPWM (int pin);
 void   writePort(byte, byte, byte);
 uint8  readPort(byte, byte);
-uint16_t serial0_Avilable();
+int serial0_Avilable();
 int serial1_Avilable();
 void turnOffPWM(uint8 timer);
 void unusedPinsAsOutput();

@@ -244,19 +244,13 @@ void unusedPinsAsOutput()
 	for (int i =25;i<35;i++)
 		pinMode(i,OUTPUT);
 }
-uint16_t serial0_Avilable()
-{
-	
-	
+int serial0_Avilable()
+{	
 	return getuartRx0Flag();
-	
 }
 
 
 int serial1_Avilable()
 {
-	
-	
-	return getuartRx1Flag();
-	
+	return getuartRx1Flag();	
 }
