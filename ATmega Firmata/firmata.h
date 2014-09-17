@@ -17,7 +17,7 @@
 #include "sys.h"
 #include "1sheelds_functions.h"
 #include "mapping162.h"
-
+#include "uart.h"
 
 /* Version numbers for the protocol.  The protocol is still changing, so these
  * version numbers are important.  This number can be queried so that host

@@ -10,13 +10,7 @@
   Date:          2014.5
 
 */
-
-#include "gpio.h"
-#include "pwm.h"
-#include "uart.h"
-#include "mapping162.h"
-#define F_CPU 7372800UL
-#include <util/delay.h>
+#include "1sheelds_functions.h"
 
 void pinMode(uint8 pin , uint8 pinMode)
 {
@@ -29,8 +23,6 @@ void pinMode(uint8 pin , uint8 pinMode)
 	{
 		return;
 	}
-	
-	
 	
 	cfg.pID =  portModeRegister(port);
 	

@@ -14,19 +14,13 @@
 #ifndef MAPPING162_H_
 #define MAPPING162_H_
 
-
-
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
 #include <avr/pgmspace.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "CommonMacros.h"
 #include "gpio.h"
 
-
-
+#define F_CPU 7372800UL
 
 #define digitalPinHasPWM(p)         ( ((p) == 3) || ((p) == 5) || ((p) == 6) ||  (p) == 9||  (p) == 10||  (p) == 11)
 #define IS_PIN_DIGITAL(p)       ((p) >= 2 && (p) <= 19)
@@ -75,24 +69,7 @@ static const uint8_t SCK  = 30;
 //                  +----+
 //
 
-/*
-// pin numbers 
-const uint16_t PROGMEM port_to_mode_PGM[] = {
-	(uint16_t) &DDRA,
-	(uint16_t) &DDRB,
-	(uint16_t) &DDRC,
-	(uint16_t) &DDRD,
-	(uint16_t) &DDRE,
-};
 
-const uint16_t PROGMEM port_to_output_PGM[] = {
-    (uint16_t) &PORTA,
-	(uint16_t) &PORTB,
-	(uint16_t) &PORTC,
-	(uint16_t) &PORTD,
-	(uint16_t) &PORTE,
-};
-*/
 const uint16_t PROGMEM port_to_input_PGM[] = {
     (uint16_t) &PINA,
 	(uint16_t) &PINB,

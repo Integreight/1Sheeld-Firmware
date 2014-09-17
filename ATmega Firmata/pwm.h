@@ -11,10 +11,11 @@
 
 */
 
+#include <avr/io.h>
+#include "sys.h"
+
 #ifndef PWM_H_
 #define PWM_H_
-
-
 #define TIMER_00		0
 #define TIMER_1A		1
 #define TIMER_1B		2
