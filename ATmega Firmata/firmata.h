@@ -146,7 +146,7 @@
 	* @param None.
 	* @return None. 
     */
-	void begin();
+	void initFirmata();
 	/**
 	* @brief Sends a byte "data" using the Serial communication.
 	* @param data bytes to be sent.

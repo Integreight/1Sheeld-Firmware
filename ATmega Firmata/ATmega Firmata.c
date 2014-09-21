@@ -19,13 +19,13 @@ unsigned long currentMillis;        // store the current value from millis()
 unsigned long newMillis;
 unsigned long responseInterval =200UL ;
 
-void millis_setup()
+void setupMillisTimers()
 {
 	TCCR0=(1<<CS00)|(1<<CS01);
 	SET_BIT(TIMSK,TOIE0);
 }
 
-void UartLedSetup()
+void setupUartLeds()
 {
 	SET_BIT(DDRA,6);
 	SET_BIT(DDRA,7);
@@ -36,15 +36,15 @@ void UartLedSetup()
 int main(void)
 {
 	// for millis fn 
-	millis_setup();
+	setupMillisTimers();
 	sei(); // enable global interrupt
-	begin();
+	initFirmata();
 	systemResetCallback();  // reset to default config
-	unusedPinsAsOutput();
+	setUnusedPinsAsOutput();
 	requestBluetoothReset();
 	currentMillis=millis();
 	//make 2 pins output for rx tx leds and 
-	UartLedSetup();
+	setupUartLeds();
 	while (1) // the super loop!
 	{		
 		processUart0Input();

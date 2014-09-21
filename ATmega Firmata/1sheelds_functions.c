@@ -13,7 +13,7 @@
 
 #include "1sheelds_functions.h"
 
-void pinMode(uint8 pin , uint8 pinMode)
+void setPinMode(uint8 pin , uint8 pinMode)
 {
 	uint8 bit = digitalPinToBitMask(pin);
 	uint8 port = digitalPinToPort(pin);
@@ -175,7 +175,7 @@ void   digitalWrite(uint8 pin, uint8 value)
 void analogWrite(uint8 pin, int val)
 {
 	uint8 timer = 0xff;
-	pinMode(pin, OUTPUT);
+	setPinMode(pin, OUTPUT);
 	
 	if ((val == 0) || (val <0))
 	{
@@ -190,8 +190,8 @@ void analogWrite(uint8 pin, int val)
 	else
 	{
 		timer = digitalPinToTimer(pin);
-		pwm_Setup(timer);
-		pwm_SetDutyCycle((uint8)val, timer);
+		initPwm(timer);
+		setPwmDutyCycle((uint8)val, timer);
 
 	}
 	
@@ -239,19 +239,19 @@ void writePort(byte port, byte value, byte bitmask)
 	if ((bitmask & 0x80)) digitalWrite((pin+7), (value & 0x80));
 }
 
-void unusedPinsAsOutput()
+void setUnusedPinsAsOutput()
 {
-	pinMode(22,OUTPUT); 
+	setPinMode(22,OUTPUT); 
 	for (int i =25;i<35;i++)
-		pinMode(i,OUTPUT);
+		setPinMode(i,OUTPUT);
 }
-int serial0_Avilable()
+int getAvailableDataCountOnSerial0()
 {	
-	return getuartRx0Flag();
+	return getAvailableDataCountOnUart0();
 }
 
 
-int serial1_Avilable()
+int getAvailableDataCountOnSerial1()
 {
-	return getuartRx1Flag();	
+	return getAvailableDataCountOnUart1();	
 }

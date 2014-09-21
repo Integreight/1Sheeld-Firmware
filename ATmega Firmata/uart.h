@@ -46,50 +46,50 @@
 	(i:e check the UART Example table of the Controller)  
  * @return None 
  */
-void UartInit(uint8 serialPort);
+void initUart(uint8 serialPort);
 /**
  * @brief Ends the UART Functionality.
  * @param serialPort specify serialport "0" or "1"  
  * @return None 
  */
-void UartEnd(uint8 serialPort);
+void terminateUart(uint8 serialPort);
 /**
  * @brief Transmits the byte placed in it's buffer0.
  * @param data data to be placed in the transmitter's buffer0  
  * @return None 
  */
-void UartTx0(unsigned char data);
+void writeOnUart0(uint8_t data);
 /**
  * @brief Transmits the byte placed in it's buffer1.
  * @param data data to be placed in the transmitter's buffer1.  
  * @return None 
  */
-void UartTx1(uint8_t data);
+void writeOnUart1(uint8_t data);
 /**
  * @brief Receives byte from it's buffer0.
  * @param None.  
  * @return the data received in bytes.  
  */
-int  UartRx0();
+int  readFromUart0();
 /**
  * @brief Receives byte from it's buffer1.
  * @param None.  
  * @return the data received in bytes.  
  */
-int  UartRx1();
+int  readFromUart1();
 #if UART_RX0_INTERRUPT == ENABLED
 	/**
 	  * @brief Flag to check if a certain data came from the outside world to buffer1.
 	  * @param None.  
 	  * @return A boolean whether "1" true or "0" false.  
 	  */
-    int getuartRx1Flag();
+    int getAvailableDataCountOnUart1();
 	/**
 	  * @brief Flag to check if a certain data came from the outside world to buffer0.
 	  * @param None.  
 	  * @return A boolean whether "1" true or "0" false.  
 	  */
-    int getuartRx0Flag();
+    int getAvailableDataCountOnUart0();
 #endif
 
 #endif /* UART_H_ */

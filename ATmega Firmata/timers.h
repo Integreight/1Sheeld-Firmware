@@ -41,25 +41,25 @@
  * @param None.
  * @return None. 
  */
-void timer_Ovf_enable();
+void enableTimerOverflow();
 /**
  * @brief Disable the Interrupt Overflow.
  * @param None.
  * @return None. 
  */
-void timer_Ovf_disable();
+void disableTimerOverflow();
 /**
  * @brief turns on the Tx Leds on 1Sheeld board.
  * @param None.
  * @return None. 
  */
-void enableRxLed();
+void enableRxLedBlinking();
 /**
  * @brief turns on the Rx Leds on 1Sheeld board.
  * @param None.
  * @return None. 
  */
-void enableTxLed();
+void enableTxLedBlinking();
 /**
  * @brief Returns the number of milliseconds since the Arduino board began running the current program.
  * @param None.

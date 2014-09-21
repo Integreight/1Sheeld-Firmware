@@ -33,7 +33,7 @@ static volatile uint16_t UART1_RxTail;
 #endif 
 
 
-void UartInit(uint8 serialPort){
+void initUart(uint8 serialPort){
 	
     UART1_RxHead = 0;
 	UART1_RxTail = 0;
@@ -75,7 +75,7 @@ void UartInit(uint8 serialPort){
 	
 }
 
-void UartEnd(uint8 serialPort)
+void terminateUart(uint8 serialPort)
 {
 	if (serialPort==0)
 	{
@@ -89,7 +89,7 @@ void UartEnd(uint8 serialPort)
 	
 }
 
-void UartTx0(unsigned char data){
+void writeOnUart0(uint8_t data){
 	
 	
 	
@@ -101,7 +101,7 @@ void UartTx0(unsigned char data){
 }
 
 
-void UartTx1(uint8_t data){
+void writeOnUart1(uint8_t data){
     while((UCSR1A&(1<<UDRE1))==0)
 	{
 		
@@ -111,7 +111,7 @@ void UartTx1(uint8_t data){
 
 #if UART_RX0_INTERRUPT == ENABLED
 
-int UartRx0(){
+int readFromUart0(){
 	uint16_t tmptail;
 	uint8_t data;
 
@@ -130,7 +130,7 @@ int UartRx0(){
 }
 
 
-int getuartRx0Flag(){
+int getAvailableDataCountOnUart0(){
 	
 	return (UART0_RX0_BUFFER_SIZE + UART0_RxHead - UART0_RxTail) & UART0_RX0_BUFFER_MASK;
 }
@@ -165,7 +165,7 @@ ISR (USART0_RXC_vect){
 
 
 
-int UartRx1(){
+int readFromUart1(){
 	uint16_t tmptail;
 	uint8_t data;
 
@@ -184,7 +184,7 @@ int UartRx1(){
 }
 
 
-int getuartRx1Flag(){
+int getAvailableDataCountOnUart1(){
 	return (UART_RX1_BUFFER_SIZE + UART1_RxHead - UART1_RxTail) & UART_RX1_BUFFER_MASK;
 }
 
@@ -214,22 +214,22 @@ ISR (USART1_RXC_vect){
 		UART1_RxBuf[tmphead] = data;
 	}
 	UART1_LastRxError = lastRxError;
-	timer_Ovf_enable();
-	enableRxLed();
+	enableTimerOverflow();
+	enableRxLedBlinking();
 }
 ISR(USART1_TXC_vect)
 {
-		timer_Ovf_enable();
-		enableTxLed();
+		enableTimerOverflow();
+		enableTxLedBlinking();
 }
 #else
-int UartRx0(){
+int readFromUart0(){
 	
 	while ( (UCSR0A & (1<<RXC0))==0);
 	return UDR0;
 }
 
-int UartRx1(){
+int readFromUart1(){
 	
 	
 	while ( !(UCSR1A & (1<<RXC1)) );
