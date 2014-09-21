@@ -1,15 +1,22 @@
 ﻿/*
 
-  Project:       1Sheeld Firmware 
+  Project:       1Sheeld Firmware
   File:          timers.h
 
   Compiler:      Arduino avr-gcc 4.3.2
 
   Author:        Integreight
-                 
+  
   Date:          2014.5
 
 */
+
+/**
+ * @file timers.h
+ * @brief This Library illustrates 1Sheeld's timers 	
+ * @author Integreight
+ * @version 1.1
+ */
 
 #ifndef TIMERSa_H_
 #define TIMERSa_H_
@@ -29,9 +36,34 @@
 #define FRACT_INC (((unsigned long)MICROSECONDS_PER_TIMER0_OVERFLOW % 1000) >> 3)
 #define FRACT_MAX (1000 >> 3)
 
+/**
+ * @brief Enable the Interrupt Overflow.
+ * @param None.
+ * @return None. 
+ */
 void timer_Ovf_enable();
+/**
+ * @brief Disable the Interrupt Overflow.
+ * @param None.
+ * @return None. 
+ */
 void timer_Ovf_disable();
+/**
+ * @brief turns on the Tx Leds on 1Sheeld board.
+ * @param None.
+ * @return None. 
+ */
 void enableRxLed();
+/**
+ * @brief turns on the Rx Leds on 1Sheeld board.
+ * @param None.
+ * @return None. 
+ */
 void enableTxLed();
+/**
+ * @brief Returns the number of milliseconds since the Arduino board began running the current program.
+ * @param None.
+ * @return Number of milliseconds since the program started (unsigned long). 
+ */
 unsigned long millis();
 #endif /* TIMERS_H_ */

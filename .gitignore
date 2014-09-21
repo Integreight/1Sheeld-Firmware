@@ -1,3 +1,6 @@
 *.atsuo
 Debug
-Release 
+Release
+
+#Doxygen
+docs/

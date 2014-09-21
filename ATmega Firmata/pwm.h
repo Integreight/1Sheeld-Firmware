@@ -1,15 +1,22 @@
 ﻿/*
 
-  Project:       1Sheeld Firmware 
+  Project:       1Sheeld Firmware
   File:          pwm.h
 
   Compiler:      Arduino avr-gcc 4.3.2
 
   Author:        Integreight
-                 
+  
   Date:          2014.5
 
 */
+
+/**
+ * @file pwm.h
+ * @brief This Library deals with the Timers to generate Pulses 	
+ * @author Integreight
+ * @version 1.1
+ */
 
 #include <avr/io.h>
 #include "sys.h"
@@ -24,8 +31,18 @@
 #define TIMER_3B		5
 
 
-
+/**
+ * @brief Setup the prescalers of the Timers except timer3=16 and timer 2=32.
+ * @param timer number of the  timer selected.
+ * @return None. 
+ */
 void pwm_Setup(uint8);
+/**
+ * @brief Set the duty cycle of the signal.
+ * @param dutyCycle value of the signals duty.
+ * @param timerNo number of timer selected.
+ * @return None. 
+ */
 void pwm_SetDutyCycle(uint8, uint8);
 
 

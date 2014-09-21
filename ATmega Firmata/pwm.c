@@ -52,10 +52,10 @@ void pwm_Setup(uint8 timer)
 	}
 }
 
-void pwm_SetDutyCycle(uint8 dutyCycle, uint8 timer_No )
+void pwm_SetDutyCycle(uint8 dutyCycle, uint8 timerNo )
 {
 	
-	switch(timer_No)
+	switch(timerNo)
 	{
 		case TIMER_00 :
 			OCR0 = dutyCycle;
