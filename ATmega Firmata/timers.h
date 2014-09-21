@@ -3,7 +3,7 @@
   Project:       1Sheeld Firmware
   File:          timers.h
 
-  Compiler:      Arduino avr-gcc 4.3.2
+  Compiler:      avr-gcc 3.4.2
 
   Author:        Integreight
   
