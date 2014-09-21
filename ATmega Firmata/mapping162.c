@@ -1,9 +1,16 @@
 /*
- * mapping162.c
- *
- * Created: 17/6/2014 7:34:42 PM
- *  Author: iMustafa
- */ 
+
+  Project:       1Sheeld Firmware 
+  File:          mapping162.c
+
+  Compiler:      avr-gcc 3.4.2
+
+  Author:        Integreight
+                 
+  Date:          2014.5
+
+*/
+
 #include "mapping162.h"
 
 #define F_CPU 7372800UL
