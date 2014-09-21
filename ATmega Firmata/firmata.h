@@ -1,10 +1,9 @@
-/*
- * firmata.h
- *
- * Created: 26/1/2014 2:31:25 PM
- *  Author: iMustafa
+/**
+ * @file firmata.h
+ * @brief This Library illustrates the firmata protocols functions   	
+ * @author Integreight
+ * @version 1.1
  */ 
-
 
 #ifndef FIRMATA_H_
 #define FIRMATA_H_
@@ -126,38 +125,184 @@
 	int sysexBytesRead;
 	//for bluetooth reset
 	boolean responseFlag ;
+	
+	/**
+	* @brief Begins the Firmata protocol.
+	* @param None.
+	* @return None. 
+    */
 	void begin();
+	/**
+	* @brief Sends a byte "data" using the Serial communication.
+	* @param data bytes to be sent.
+	* @return None. 
+	*/
 	void write(unsigned char data);
 	//void setFirmwareVersion(byte major, byte minor);  // see macro below
 	//void setFirmwareNameAndVersion(const char *name, byte major, byte minor);
-	/* serial receive handling */
+	/**
+	* @brief Checks the availability of data on the serial port.
+	* @param None.
+	* @return number of data on the serial buffer. 
+	*/
 	int available(void);
+	/**
+	* @brief process the input data coming from the android application.
+	* @param None.
+	* @return None. 
+	*/
 	void processInput(void);
+	/**
+	* @brief process the input data coming from the arduino.
+	* @param None.
+	* @return None. 
+	*/
 	void processUart0Input(void);
-	/* serial send handling */
+	/**
+	* @brief Sending digital messages supported by firmata protocol.
+	* @param portNumber port number to carry the data.
+	* @param portData Data to be adjusted on the port.
+	* @return None. 
+	*/
 	void sendDigitalPort(byte portNumber, int portData);
+	/**
+	* @brief Sending strings using Sysex message Format.
+	* @param command Command type.
+	* @param *string String to be sent.
+	* @return None. 
+	*/
 	void sendString(byte command, const char* string);
+	/**
+	* @brief Supporting Sysex message format.
+	* @param command Command type.
+	* @param bytec Length of data will be sent.
+	* @param *bytev Array carrying the data.
+	* @return None. 
+	*/
 	void sendSysex(byte command, byte bytec, byte* bytev);
+	/**
+	* @brief Supports individual byte sending using Sysex message format .
+	* @param command Command type.
+	* @param value Data"byte" to be sent.
+	* @return None. 
+	*/
 	void sendSysexDataByte(byte command, int value);
+	/**
+	* @brief Set the port with certain read values.
+	* @param portNumber port number to carry data.
+	* @param portValue Value to be adjusted on port.
+	* @param forceSend Variable to controll the variation of values on port.
+	* @return None. 
+	*/
 	void outputPort(byte portNumber, byte portValue, byte forceSend);
+	/**
+	* @brief Checks the values on ports
+	* @param None.
+	* @return None. 
+	*/
 	void checkDigitalInputs(void);
+	/**
+	* @brief sets the pin mode to the correct state and sets the relevant bits in the two bit-arrays that track Digital I/O and PWM status
+	* @param pin number of pin to be set.
+	* @param mode mode of the pin "Input/Output".
+	* @return None. 
+	*/
 	void setPinModeCallback(byte pin, int mode);
+	/**
+	* @brief sets analog values to analog pins.
+	* @param pin number of pin to be set.
+	* @param value analog values to be set on the pin.
+	* @return None. 
+	*/
 	void analogWriteCallback(byte pin, int value);
+	/**
+	* @brief sets digital values to pins.
+	* @param pin number of pin to be set.
+	* @param value digital value to be set on the pin.
+	* @return None. 
+	*/
 	void digitalWriteCallback(byte port, int value);
+	/**
+	* @brief Report values on pins.
+	* @param port number of port to be reported.
+	* @param value digital value to be set on port.
+	* @return None. 
+	*/
 	void reportDigitalCallback(byte port, int value);
+	/**
+	* @brief processing the Sysec base messages.
+	* @param command Command type.
+	* @param argc length of the data.
+	* @param *argv Array of Sysex data.
+	* @return None. 
+	*/
 	void sysexCallback(byte command, byte argc, byte *argv);
+	/**
+	* @brief Reset only Sysex based message variables.
+	* @param None.
+	* @return None. 
+	*/
 	void systemResetCallback();
+	/**
+	* @brief Sends a request to the android to reset system.
+	* @param None.
+	* @return None. 
+	*/
 	void requestBluetoothReset();
-	//for bluetooth reset 
+	/**
+	* @brief Flag for the bluetooth request reset.
+	* @param None.
+	* @return boolean. 
+	*/
 	boolean getResponseFlag();
+    /**
+	* @brief Reset the flag for the bluetooth request reset.
+	* @param state boolean.
+	* @return None. 
+	*/
 	void setResponseFlag(boolean);
 
 	/* private methods ------------------------------ */
+	/**
+	* @brief Process the Input Sysex messages.
+	* @param None.
+	* @return None. 
+	*/
 	void processSysexMessage(void);
+	/**
+	* @brief Resets the whole sytem.
+	* @param None.
+	* @return None. 
+	*/
 	void systemReset(void);
+	/**
+	* @brief Send byte as two 7bit bytes.
+	* @param None.
+	* @return None. 
+	*/
 	void sendValueAsTwo7bitBytes(int value);
+	/**
+	* @brief Encapsulate start sysex commands to farmes.
+	* @param None.
+	* @return None. 
+	*/
 	void startSysex(void);
+	/**
+	* @brief Encapsulate end sysex commands to farmes.
+	* @param None.
+	* @return None. 
+	*/
 	void endSysex(void);
+	/**
+	* @brief Enable watchdog timer to force a hard reset to system.
+	* @param None.
+	* @return None. 
+	*/
 	void forceHardReset();
+	/**
+	* @brief Send commands to android to print the version.
+	* @param None.
+	* @return None. 
+	*/
 	void printVersion();
 #endif /* FIRMATA_H_ */
