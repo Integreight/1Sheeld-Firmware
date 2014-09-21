@@ -23,7 +23,7 @@ void write(unsigned char data)
 {
 	if (muteFlag==0)
 	{
-		UartTx1(data);
+		writeOnUart1(data);
 	}
 }
 void sendValueAsTwo7bitBytes(int value)
@@ -58,7 +58,7 @@ void forceHardReset()
 }
 
 /* begin method for overriding default serial bitrate */
-void begin()
+void initFirmata()
 {
 	firmwareVersionCount = 0;
 	firmwareVersionVector = 0;
@@ -67,12 +67,12 @@ void begin()
 	isUartStringStarted=0;
 	muteFlag=0;
 	systemReset();
-	UartInit(1);// 1 for rx1,tx1 with
+	initUart(1);// 1 for rx1,tx1 with
 }
 
 int available(void)
 {
-	return serial1_Avilable();
+	return getAvailableDataCountOnSerial1();
 }
 
 void processSysexMessage(void)
@@ -82,11 +82,11 @@ void processSysexMessage(void)
 }
 
 void processUart0Input(){
-	uint16_t availableData=serial0_Avilable();
+	uint16_t availableData=getAvailableDataCountOnSerial0();
 	if(availableData>0){
 		byte arr[availableData];
 		for(uint16_t i=0;i<availableData;i++){
-			arr[i]=UartRx0();
+			arr[i]=readFromUart0();
 		}
 		sendSysex(UART_DATA,availableData,arr);
 	}
@@ -94,7 +94,7 @@ void processUart0Input(){
 
 void processInput(void)
 {
-	int inputData = UartRx1(); // this is 'int' to handle -1 when no data
+	int inputData = readFromUart1(); // this is 'int' to handle -1 when no data
 	int command;
 	
 	// TODO make sure it handles -1 properly
@@ -305,7 +305,7 @@ void setPinModeCallback(byte pin, int mode)
   switch(mode) {
   case INPUT:
     if (IS_PIN_DIGITAL(pin)) {
-      pinMode(pin, INPUT); // disable output driver
+      setPinMode(pin, INPUT); // disable output driver
       digitalWrite(pin, LOW); // disable internal pull-ups
       pinConfig[pin] = INPUT;
     }
@@ -313,14 +313,14 @@ void setPinModeCallback(byte pin, int mode)
   case OUTPUT:
     if (IS_PIN_DIGITAL(pin)) {
       digitalWrite(pin, LOW); // disable PWM
-      pinMode(pin, OUTPUT);
+      setPinMode(pin, OUTPUT);
       pinConfig[pin] = OUTPUT;
 
     }
     break;
   case PWM:
     if (IS_PIN_PWM(pin)) {
-      pinMode(pin, OUTPUT);
+      setPinMode(pin, OUTPUT);
       analogWrite(pin, 0);
       pinConfig[pin] = PWM;
     }
@@ -432,9 +432,9 @@ void sysexCallback(byte command, byte argc, byte *argv)
 	  {
 		  if(argv[0]==UART_BEGIN)
 		  {
-			  UartInit(0);
+			  initUart(0);
 		  }
-		  else if(argv[0]==UART_END) UartEnd(0);
+		  else if(argv[0]==UART_END) terminateUart(0);
 		  
 	  }break;
 	case UART_DATA:
@@ -443,7 +443,7 @@ void sysexCallback(byte command, byte argc, byte *argv)
 		for (int i = 0; i < argc; i+=2) // run over and over
 		{
 			newData[i/2]=(argv[i]|(argv[i+1]<<7));
-			UartTx0(newData[i/2]);
+			writeOnUart0(newData[i/2]);
 		}
 	}
 	break; 
@@ -461,9 +461,9 @@ void sysexCallback(byte command, byte argc, byte *argv)
 
 	case IS_ALIVE:
 	{
-		UartTx1(0xf0);
-		UartTx1(IS_ALIVE);
-		UartTx1(0xf7);
+		writeOnUart1(0xf0);
+		writeOnUart1(IS_ALIVE);
+		writeOnUart1(0xf7);
 	}break;
 	
 	case RESET_MICRO:

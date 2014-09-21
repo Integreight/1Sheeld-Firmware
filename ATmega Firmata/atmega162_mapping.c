@@ -1,7 +1,7 @@
 /*
 
   Project:       1Sheeld Firmware 
-  File:          mapping162.c
+  File:          atmega162_mapping.c
 
   Compiler:      avr-gcc 3.4.2
 
@@ -11,7 +11,7 @@
 
 */
 
-#include "mapping162.h"
+#include "atmega162_mapping.h"
 
 #define F_CPU 7372800UL
 

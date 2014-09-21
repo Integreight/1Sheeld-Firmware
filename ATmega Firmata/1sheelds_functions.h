@@ -22,7 +22,7 @@
 #include "gpio.h"
 #include "pwm.h"
 #include "uart.h"
-#include "mapping162.h"
+#include "atmega162_mapping.h"
 #include <util/delay.h>
 
 #ifndef SHEELDS_FUNCTIONS_H_
@@ -46,7 +46,7 @@ void   digitalWrite(uint8, uint8);
  * @param pinMode Mode "Direction" to be set (Input/Output)
  * @return None 
  */
-void   pinMode(uint8 , uint8);
+void   setPinMode(uint8 , uint8);
 /**
  * @brief Function to set the pin whether it's Input or Output
  * @param pin number of the  pin "analog pin" selected 
@@ -87,13 +87,13 @@ uint8  readPort(byte, byte);
  * @param None
  * @return the numbers of byte available to read  
  */
-int serial0_Avilable();
+int getAvailableDataCountOnSerial0();
 /**
  * @brief Get the number of bytes (characters) available for reading from the serial1 port
  * @param None
  * @return the numbers of byte available to read  
  */
-int serial1_Avilable();
+int getAvailableDataCountOnSerial1();
 /**
  * @brief turning of the certain timers used by the library 
  * @param timer number of the timer to be turned off  
@@ -105,7 +105,7 @@ void turnOffPWM(uint8);
  * @param None
  * @return  None  
  */
-void unusedPinsAsOutput();
+void setUnusedPinsAsOutput();
 /**
  * @brief Reset the bluetooth using software  
  * @param None

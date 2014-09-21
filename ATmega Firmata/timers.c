@@ -19,17 +19,17 @@ unsigned volatile int count=0;
 volatile unsigned long timer0_overflow_count = 0;
 volatile unsigned long timer0_millis = 0;
 static unsigned char timer0_fract = 0;
-void timer_Ovf_enable()
+void enableTimerOverflow()
 {
 	SET_BIT(TIMSK,TOIE2);
 }
 
-void enableRxLed(){
+void enableRxLedBlinking(){
 	//isRxEnabled=1;
 	countRx =1 ;
 }
 
-void enableTxLed(){
+void enableTxLedBlinking(){
 	//isTxEnabled=1;
 	countTx =1 ;
 }

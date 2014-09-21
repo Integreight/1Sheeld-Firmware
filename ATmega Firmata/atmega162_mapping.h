@@ -1,7 +1,7 @@
 ﻿/*
 
   Project:       1Sheeld Firmware 
-  File:          mapping162.h
+  File:          atmega162_mapping.h
 
   Compiler:      avr-gcc 3.4.2
 

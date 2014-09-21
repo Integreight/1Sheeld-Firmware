@@ -36,14 +36,14 @@
  * @param timer number of the  timer selected.
  * @return None. 
  */
-void pwm_Setup(uint8);
+void initPwm(uint8);
 /**
  * @brief Set the duty cycle of the signal.
  * @param dutyCycle value of the signals duty.
  * @param timerNo number of timer selected.
  * @return None. 
  */
-void pwm_SetDutyCycle(uint8, uint8);
+void setPwmDutyCycle(uint8, uint8);
 
 
 

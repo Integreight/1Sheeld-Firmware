@@ -36,7 +36,7 @@ typedef struct
 
 typedef struct
 {
-	         byte Portdir;	
+	byte Portdir;	
 	unsigned int  pID;	
 }t_SetPortCfg;
 

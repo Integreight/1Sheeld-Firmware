@@ -25,7 +25,7 @@
 #include <stdlib.h>
 #include "sys.h"
 #include "1sheelds_functions.h"
-#include "mapping162.h"
+#include "atmega162_mapping.h"
 #include "uart.h"
 
 /* Version numbers for the protocol.  The protocol is still changing, so these
@@ -146,7 +146,7 @@
 	* @param None.
 	* @return None. 
     */
-	void begin();
+	void initFirmata();
 	/**
 	* @brief Sends a byte "data" using the Serial communication.
 	* @param data bytes to be sent.

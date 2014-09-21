@@ -23,7 +23,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "CommonMacros.h"
-#include "mapping162.h"
+#include "atmega162_mapping.h"
 // the prescaler is set so that timer0 ticks every 64 clock cycles, and the
 // the overflow handler is called every 256 ticks.
 #define MICROSECONDS_PER_TIMER0_OVERFLOW (clockCyclesToMicroseconds(64 * 256))
@@ -41,25 +41,25 @@
  * @param None.
  * @return None. 
  */
-void timer_Ovf_enable();
+void enableTimerOverflow();
 /**
  * @brief Disable the Interrupt Overflow.
  * @param None.
  * @return None. 
  */
-void timer_Ovf_disable();
+void disableTimerOverflow();
 /**
  * @brief turns on the Tx Leds on 1Sheeld board.
  * @param None.
  * @return None. 
  */
-void enableRxLed();
+void enableRxLedBlinking();
 /**
  * @brief turns on the Rx Leds on 1Sheeld board.
  * @param None.
  * @return None. 
  */
-void enableTxLed();
+void enableTxLedBlinking();
 /**
  * @brief Returns the number of milliseconds since the Arduino board began running the current program.
  * @param None.

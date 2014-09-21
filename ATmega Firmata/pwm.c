@@ -13,7 +13,7 @@
 
 #include "pwm.h"
 
-void pwm_Setup(uint8 timer)
+void initPwm(uint8 timer)
 {
 	switch(timer)
 	{
@@ -52,7 +52,7 @@ void pwm_Setup(uint8 timer)
 	}
 }
 
-void pwm_SetDutyCycle(uint8 dutyCycle, uint8 timerNo )
+void setPwmDutyCycle(uint8 dutyCycle, uint8 timerNo )
 {
 	
 	switch(timerNo)
