@@ -22,7 +22,7 @@
 #include "gpio.h"
 #include "pwm.h"
 #include "uart.h"
-#include "mapping162.h"
+#include "atmega162_mapping.h"
 #include <util/delay.h>
 
 #ifndef SHEELDS_FUNCTIONS_H_

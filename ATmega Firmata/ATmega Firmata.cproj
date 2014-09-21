@@ -118,10 +118,10 @@
     <Compile Include="gpio.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="mapping162.h">
+    <Compile Include="atmega162_mapping.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="mapping162.c">
+    <Compile Include="atmega162_mapping.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="pwm.c">
