@@ -38,7 +38,6 @@ int main(void)
 	setupMillisTimers();
 	sei();
 	initFirmata();
-	systemResetCallback();
 	setUnusedPinsAsOutput();
 	requestBluetoothReset();
 	currentMillis=millis();
