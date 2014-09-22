@@ -13,7 +13,7 @@
 
 /**
  * @file Uart.h
- * @brief UART driver for handling the Serial Data  	
+ * @brief UART driver for handling the serial data on ATmega162  	
  * @author Integreight
  * @version 1.1
  */ 
@@ -40,54 +40,52 @@
 
 
 /**
- * @brief Initialize UART control and status registers and buffers.
- * @param serialPort specify serialport "0" or "1"
- * @param baudRate specify baudrate of the serial data 
-	(i:e check the UART Example table of the Controller)  
+ * @brief Initialize the serial port, it's status registers and buffers.
+ * @param serialPort specify which serial port to initialize 0 or 1
  * @return None 
  */
 void initUart(uint8 serialPort);
 /**
- * @brief Ends the UART Functionality.
- * @param serialPort specify serialport "0" or "1"  
+ * @brief Disables the serial port, it's status registers and buffers. and returns rx and tx pins to their defaults.
+ * @param serialPort specify which serial port to disable 0 or 1 
  * @return None 
  */
 void terminateUart(uint8 serialPort);
 /**
- * @brief Transmits the byte placed in it's buffer0.
- * @param data data to be placed in the transmitter's buffer0  
+ * @brief Transmits a byte to serial port 0.
+ * @param data the byte to be sent  
  * @return None 
  */
 void writeOnUart0(uint8_t data);
 /**
- * @brief Transmits the byte placed in it's buffer1.
- * @param data data to be placed in the transmitter's buffer1.  
+ * @brief Transmits a byte to serial port 1.
+ * @param data the byte to be sent  
  * @return None 
  */
 void writeOnUart1(uint8_t data);
 /**
- * @brief Receives byte from it's buffer0.
+ * @brief Receives a byte from serial port 0.
  * @param None.  
- * @return the data received in bytes.  
+ * @return the received byte.  
  */
 int  readFromUart0();
 /**
- * @brief Receives byte from it's buffer1.
+ * @brief Receives a byte from serial port 1.
  * @param None.  
- * @return the data received in bytes.  
+ * @return the received byte.  
  */
 int  readFromUart1();
 #if UART_RX0_INTERRUPT == ENABLED
 	/**
-	  * @brief Flag to check if a certain data came from the outside world to buffer1.
+	  * @brief Gets the count of the available data in the buffer of serial 1.
 	  * @param None.  
-	  * @return A boolean whether "1" true or "0" false.  
+	  * @return the data count.  
 	  */
     int getAvailableDataCountOnUart1();
 	/**
-	  * @brief Flag to check if a certain data came from the outside world to buffer0.
+	  * @brief Gets the count of the available data in the buffer of serial 0.
 	  * @param None.  
-	  * @return A boolean whether "1" true or "0" false.  
+	  * @return the data count.  
 	  */
     int getAvailableDataCountOnUart0();
 #endif

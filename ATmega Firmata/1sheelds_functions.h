@@ -54,13 +54,13 @@ void   setPinMode(uint8 , uint8);
  * @return None 
  */
 void   analogWrite(uint8, int);
-/**
- * @brief Reads a pulse "either High or Low" on a selected pin
- * @param pin number of the  pin "analog pin" selected 
- * @param state the type of pulse state to read "High or Low"
- * @return the length of the pulse or 0 if no pulse started before the timeout 
- */
-unsigned long pulseIn(uint8_t , uint8_t);
+///**
+// * @brief Reads a pulse "either High or Low" on a selected pin
+// * @param pin number of the  pin "analog pin" selected 
+// * @param state the type of pulse state to read "High or Low"
+// * @return the length of the pulse or 0 if no pulse started before the timeout 
+// */
+//unsigned long pulseIn(uint8_t , uint8_t);
 /**
  * @brief Reads a pulse "either High or Low" on a selected pin
  * @param pin number of the  pin "analog pin" selected 

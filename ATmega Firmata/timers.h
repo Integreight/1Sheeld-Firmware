@@ -13,7 +13,7 @@
 
 /**
  * @file timers.h
- * @brief This Library illustrates 1Sheeld's timers 	
+ * @brief Timers driver for configuring timers on ATmega162  	
  * @author Integreight
  * @version 1.1
  */
@@ -37,31 +37,31 @@
 #define FRACT_MAX (1000 >> 3)
 
 /**
- * @brief Enable the Interrupt Overflow.
+ * @brief Enables timer overflow interrupt.
  * @param None.
  * @return None. 
  */
 void enableTimerOverflow();
 /**
- * @brief Disable the Interrupt Overflow.
+ * @brief Disables timer overflow interrupt.
  * @param None.
  * @return None. 
  */
 void disableTimerOverflow();
 /**
- * @brief turns on the Tx Leds on 1Sheeld board.
+ * @brief Turns on Rx Leds blinking on 1Sheeld board.
  * @param None.
  * @return None. 
  */
 void enableRxLedBlinking();
 /**
- * @brief turns on the Rx Leds on 1Sheeld board.
+ * @brief Turns on Tx Leds blinking on 1Sheeld board.
  * @param None.
  * @return None. 
  */
 void enableTxLedBlinking();
 /**
- * @brief Returns the number of milliseconds since the Arduino board began running the current program.
+ * @brief Returns the number of milliseconds since 1Sheeld board began running.
  * @param None.
  * @return Number of milliseconds since the program started (unsigned long). 
  */

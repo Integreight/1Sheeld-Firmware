@@ -13,7 +13,7 @@
 
 /**
  * @file gpio.h
- * @brief This Library deals with the input/output registers  	
+ * @brief GPIO driver for configuring and dealing with GPIOs on ATmega162 
  * @author Integreight
  * @version 1.1
  */

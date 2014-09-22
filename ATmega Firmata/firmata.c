@@ -60,11 +60,7 @@ void forceHardReset()
 /* begin method for overriding default serial bitrate */
 void initFirmata()
 {
-	firmwareVersionCount = 0;
-	firmwareVersionVector = 0;
-	isPulseInEnabled =0;
-	stringPosition=0;
-	isUartStringStarted=0;
+	//isPulseInEnabled =0;
 	muteFlag=0;
 	systemReset();
 	initUart(1);// 1 for rx1,tx1 with
@@ -205,14 +201,14 @@ void requestBluetoothReset()
 	write(END_SYSEX);
 }
 
-boolean getResponseFlag()
+boolean getBtResponseFlag()
 {
-	return responseFlag;
+	return rbResetResponseFlag;
 }
 
-void setResponseFlag(boolean state)
+void setBtResponseFlag(boolean state)
 {
-	responseFlag=state;
+	rbResetResponseFlag=state;
 }
 //******************************************************************************
 //* Private Methods
@@ -233,7 +229,7 @@ void systemReset(void)
 
   parsingSysex = false;
   sysexBytesRead = 0;
-  responseFlag=false;
+  rbResetResponseFlag=false;
   systemResetCallback();
  
 }
@@ -241,8 +237,8 @@ void systemReset(void)
 void printVersion()
 {
 	write(REPORT_VERSION);
-	write(VERSION_MINOR);
-	write(VERSION_MAJOR);
+	write(ONESHEELD_MINOR_FIRMWARE_VERSION);
+	write(ONESHEELD_MAJOR_FIRMWARE_VERSION);
 }
 // =============================================================================
 void sendSysexDataByte(byte command, int value){
@@ -326,7 +322,7 @@ void setPinModeCallback(byte pin, int mode)
     }
     break;
   default:
-    sendString(STRING_DATA,"Unknown pin mode"); // TODO: put error msgs in EEPROM
+    break;
   }
   // TODO: save status to EEPROM here, if changed
 }
@@ -380,40 +376,8 @@ void reportDigitalCallback(byte port, int value)
 
 void sysexCallback(byte command, byte argc, byte *argv)
 {
-
-		   
-		        
   switch(command) {
-	  case EXTENDED_ANALOG:
-	  if (argc > 1) {
-		  int val = argv[1];
-		  if (argc > 2) val |= (argv[2] << 7);
-		  if (argc > 3) val |= (argv[3] << 14);
-		  analogWriteCallback(argv[0], val);
-	  }
-	  break;
- 
-	  case CAPABILITY_QUERY:
-	  write(START_SYSEX);
-	  write(CAPABILITY_RESPONSE);
-	  for (byte pin=0; pin < TOTAL_PINS; pin++) {
-		  if (IS_PIN_DIGITAL(pin)) 
-		  {
-			  write((byte)INPUT);			  
-			  write(1);
-			  write((byte)OUTPUT);
-			  write(1);
-		  }
-	      if (IS_PIN_PWM(pin)) {
-		      write(PWM);
-		      write(8);
-	      }
-		  write(127);
-	  }
-	  write(END_SYSEX);
-	  break;
-	
-	 case PIN_STATE_QUERY:
+	  case PIN_STATE_QUERY:
 	 if (argc > 0) {
 		 byte pin=argv[0];
 		 write(START_SYSEX);
@@ -471,7 +435,7 @@ void sysexCallback(byte command, byte argc, byte *argv)
 		forceHardReset();
 	}break;
 	
-	case PULSE_IN_INIT: 
+	/*case PULSE_IN_INIT: 
 	{
 		
         pinPWM = argv[0];
@@ -481,7 +445,7 @@ void sysexCallback(byte command, byte argc, byte *argv)
 		else  if(argv[1]==0x04)
 		isPulseInEnabled =0;
 		
-	}break; 
+	}break; */
 	case RESET_BLUETOOTH:
 	{
 		if (argv[0])
@@ -489,7 +453,7 @@ void sysexCallback(byte command, byte argc, byte *argv)
 			resetBluetooth();
 		}
 		
-		responseFlag=true;
+		rbResetResponseFlag=true;
 	}break;
 	}
 }

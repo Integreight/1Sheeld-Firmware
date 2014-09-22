@@ -15,7 +15,7 @@
 #include "firmata.h"
 #include "timers.h"
 
-unsigned long currentMillis;        // store the current value from millis()
+unsigned long currentMillis;
 unsigned long newMillis;
 unsigned long responseInterval =200UL ;
 
@@ -34,18 +34,16 @@ void setupUartLeds()
 	TCCR2|=(1<<CS20)|(1<<CS21); // clock prescalar =32
 }
 int main(void)
-{
-	// for millis fn 
+{ 
 	setupMillisTimers();
-	sei(); // enable global interrupt
+	sei();
 	initFirmata();
-	systemResetCallback();  // reset to default config
+	systemResetCallback();
 	setUnusedPinsAsOutput();
 	requestBluetoothReset();
 	currentMillis=millis();
-	//make 2 pins output for rx tx leds and 
 	setupUartLeds();
-	while (1) // the super loop!
+	while (1)
 	{		
 		processUart0Input();
 		checkDigitalInputs();
@@ -54,11 +52,10 @@ int main(void)
            processInput();
         }
 		newMillis = millis();
-		//wait 1 sec if android didin't respond, reset bluetooth
-		if (((newMillis-currentMillis)>=responseInterval) && (!getResponseFlag()) )
+		if (((newMillis-currentMillis)>=responseInterval) && (!getBtResponseFlag()) )
 		{
 		   resetBluetooth();
-           setResponseFlag(true);
+           setBtResponseFlag(true);
 		}
 	}
 }

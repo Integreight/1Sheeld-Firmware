@@ -32,15 +32,15 @@
 
 
 /**
- * @brief Setup the prescalers of the Timers except timer3=16 and timer 2=32.
- * @param timer number of the  timer selected.
+ * @brief Setup the prescalers of the timers except timer3=16 and timer 2=32.
+ * @param timer The number of timer 0 --> 5.
  * @return None. 
  */
 void initPwm(uint8);
 /**
- * @brief Set the duty cycle of the signal.
- * @param dutyCycle value of the signals duty.
- * @param timerNo number of timer selected.
+ * @brief Set the duty cycle of the signal on timers.
+ * @param dutyCycle value of the signals duty cycle.
+ * @param timerNo The number of timer 0 --> 5.
  * @return None. 
  */
 void setPwmDutyCycle(uint8, uint8);

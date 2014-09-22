@@ -41,7 +41,7 @@ void setPinMode(uint8 pin , uint8 pinMode)
 	}
 	
 }
-
+/*
 unsigned long pulseIn(uint8_t pin, uint8_t state)
 {
 
@@ -83,7 +83,7 @@ unsigned long readPWM (int pin)
 	fraction =duty / period ;
 	return ((floor)(fraction *255));
 
-}
+}*/
 void turnOffPWM(uint8 timer)
 {
 	

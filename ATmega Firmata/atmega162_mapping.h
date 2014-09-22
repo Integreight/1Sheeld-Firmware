@@ -11,8 +11,8 @@
 
 */
 
-#ifndef MAPPING162_H_
-#define MAPPING162_H_
+#ifndef ATMEGA162_MAPPING_H_
+#define ATMEGA162_MAPPING_H_
 
 #include <avr/pgmspace.h>
 #include <avr/io.h>
