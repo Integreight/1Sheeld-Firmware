@@ -46,13 +46,13 @@ static const uint8_t SCK  = 30;
 
 //ATMEGA 162
 //                  +-\/-+
-// PWM  (D 9) PB0  1|    |40  VCC
-// PWM  (D11) PB1  2|    |39  PA0 (D14)
-//      (D23) PB2  3|    |38  PA1 (D15)
-//      (D24) PB3  4|    |37  PA2 (D16)
-// PWM  (D10) PB4  5|    |36  PA3 (D17)
-//      (D28) PB5  6|    |35  PA4 (D18)
-//      (D29) PB6  7|    |34  PA5 (D19)
+// PWM  (D11) PB0  1|    |40  VCC
+// PWM  (D 9) PB1  2|    |39  PA0 (D19)
+//      (D23) PB2  3|    |38  PA1 (D18)
+//      (D24) PB3  4|    |37  PA2 (D17)
+// PWM  (D10) PB4  5|    |36  PA3 (D16)
+//      (D28) PB5  6|    |35  PA4 (D15)
+//      (D29) PB6  7|    |34  PA5 (D14)
 //      (D30) PB7  8|    |33  PA6 (D20)
 //            RST  9|    |32  PA7 (D21)
 //      (D 0) PD0 10|    |31  PE0 (D33)
