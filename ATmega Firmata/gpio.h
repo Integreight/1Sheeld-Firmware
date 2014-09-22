@@ -45,33 +45,20 @@ typedef struct
  * @param *cfg pointer to the t_SetPortCfg structure .
  * @return None. 
  */
-void GPIO_Cfg(t_SetPortCfg* cfg);
+void setPinModeOutput(t_SetPortCfg* cfg, uint8 bit);
 /**
  * @brief Reset the registers to Input.
  * @param *cfg pointer to the t_SetPortCfg structure .
  * @return None. 
  */
-void GPIO_CfgIN(t_SetPortCfg* cfg);
-/**
- * @brief Sets a certain value to the Port.
- * @param data data to be adjusted on the port.
- * @param pid the port number "id".
- * @return None. 
- */
-void GPIO_setPort(uint8 data,unsigned int pid);
-/**
- * @brief Gets a certain value from the Port.
- * @param pid the port number "id".
- * @return None. 
- */
-uint8 GPIO_getPort(unsigned int pid);
+void setPinModeInput(t_SetPortCfg* cfg, uint8 bit);
 /**
  * @brief Gets a certain value from pin of certain port.
  * @param pid the port number "id".
  * @param pinNum pin number.
  * @return None. 
  */
-uint8 GPIO_getPin(unsigned int pid,uint8 pinNum);
+uint8 getPinValue(unsigned int pid,uint8 pinNum);
 /**
  * @brief Sets a certain value to a pin of certain port.
  * @param data data to be adjusted to6 the pin.
@@ -79,6 +66,6 @@ uint8 GPIO_getPin(unsigned int pid,uint8 pinNum);
  * @param pinNum pin number.
  * @return None. 
  */
-void GPIO_setPin(uint8 data,unsigned int pid,uint8 pinNum);
+void setPinValue(uint8 data,unsigned int pid,uint8 pinNum);
 
 #endif /* GPIO_H_ */
