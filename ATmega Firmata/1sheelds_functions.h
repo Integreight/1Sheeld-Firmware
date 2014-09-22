@@ -66,7 +66,7 @@ void   analogWrite(uint8, int);
  * @param pin number of the  pin "analog pin" selected 
  * @return pulse value with range from 0"Low"-->255"High" 
  */
-unsigned long readPWM (int);
+//unsigned long readPWM (int);
 /**
  * @brief Adjust a certain value to the whole port 
  * @param port port number to be adjusted 
