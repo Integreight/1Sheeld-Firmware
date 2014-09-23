@@ -789,7 +789,7 @@ RECURSIVE              = NO
 # Note that relative paths are relative to the directory from which doxygen is
 # run.
 
-EXCLUDE                = "./ATmega Firmata/sys.h" "./ATmega Firmata/CommonMacros.h" "./ATmega Firmata/mapping162.h"
+EXCLUDE                = "./ATmega Firmata/sys.h" "./ATmega Firmata/CommonMacros.h" "./ATmega Firmata/atmega162_mapping.h"
 						 
 
 
