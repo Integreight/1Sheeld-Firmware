@@ -13,43 +13,22 @@
 
 #include "gpio.h"
 
-void GPIO_Cfg(t_SetPortCfg* cfg)
+void setPinModeOutput(t_SetPortCfg* cfg, uint8 bit)
 {
-	t_stPort* stport;                          //pointer to port structure
-
-
-	stport              =(t_stPort *)cfg->pID; //make the pointer points to the Port Registers in memory		
+	SET_BIT(cfg->Portdir,bit);
+	t_stPort* stport=(t_stPort *)cfg->pID; //make the pointer points to the Port Registers in memory		
 	stport->portDirReg |= cfg->Portdir;
 }
 
-void GPIO_CfgIN(t_SetPortCfg* cfg)
+void setPinModeInput(t_SetPortCfg* cfg, uint8 bit)
 {
-    	t_stPort* stport;                          //pointer to port structure
-    	
-		
-		stport              =(t_stPort *)cfg->pID; //make the pointer points to the Port Registers in memory
-    	stport->portDirReg &= cfg->Portdir;
+	t_stPort* stport=(t_stPort *)cfg->pID;  //make the pointer points to the Port Registers in memory
+	cfg->Portdir=stport->portDirReg;
+    CLR_BIT(cfg->Portdir,bit);
+    stport->portDirReg &= cfg->Portdir;
 }
 
-void GPIO_setPort(uint8 data,unsigned int pid)
-{
-	t_stPort* stport;
-	
-	
-	stport=(t_stPort *)pid;
-	stport->portOutReg=data;
-}
-
-
-uint8 GPIO_getPort(unsigned int pid)
-{
-	t_stPort* stport;
-	
-	
-	stport=(t_stPort *)pid;
-	return (stport->portInReg);
-}
-uint8 GPIO_getPin(unsigned int pid,uint8 pinNum)
+uint8 getPinValue(unsigned int pid,uint8 pinNum)
 {
 	t_stPort* stport;
 	
@@ -58,7 +37,7 @@ uint8 GPIO_getPin(unsigned int pid,uint8 pinNum)
 	return ((stport->portInReg)&(1<<pinNum));
 }
 
-void GPIO_setPin(uint8 data,unsigned int pid,uint8 pinNum)
+void setPinValue(uint8 data,unsigned int pid,uint8 pinNum)
 {
 	t_stPort* stport;
 	

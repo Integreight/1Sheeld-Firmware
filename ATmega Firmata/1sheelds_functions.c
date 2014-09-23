@@ -29,19 +29,15 @@ void setPinMode(uint8 pin , uint8 pinMode)
 	
 	if(pinMode == INPUT)
 	{
-		t_stPort* stport=(t_stPort *)cfg.pID; //make the pointer points to the Port Registers in memory
-    	cfg.Portdir=stport->portDirReg;
-	    CLR_BIT(cfg.Portdir,bit);
-	    GPIO_CfgIN(&cfg);
+	    setPinModeInput(&cfg, bit);
 	}
 	else 
 	{		
-		SET_BIT(cfg.Portdir,bit);
-	    GPIO_Cfg(&cfg);
+	    setPinModeOutput(&cfg, bit);
 	}
 	
 }
-
+/*
 unsigned long pulseIn(uint8_t pin, uint8_t state)
 {
 
@@ -83,7 +79,7 @@ unsigned long readPWM (int pin)
 	fraction =duty / period ;
 	return ((floor)(fraction *255));
 
-}
+}*/
 void turnOffPWM(uint8 timer)
 {
 	
@@ -140,7 +136,7 @@ uint8  digitalRead(uint8 pin)
 	
 	cfg.pID = (unsigned int)portModeRegister(port);
 	
-	return GPIO_getPin(cfg.pID,bit);
+	return getPinValue(cfg.pID,bit);
 			
 }
 
@@ -161,14 +157,14 @@ void   digitalWrite(uint8 pin, uint8 value)
 
 	if (timer != NOT_ON_TIMER) turnOffPWM(timer);
 	
-	if(port == NOT_A_PIN)
+	if(port == NOT_A_PORT)
 	{
-		//return;
+		return;
 	}
 	
 	cfg.pID = (unsigned int)portModeRegister(port);
 	
-	GPIO_setPin(value,cfg.pID,bit);
+	setPinValue(value,cfg.pID,bit);
 }
 
 
