@@ -13,7 +13,7 @@
 
 /**
  * @file timers.h
- * @brief Timers driver for configuring timers on ATmega162  	
+ * @brief Timers driver for configuring and dealing with ATmega162 timers  	
  * @author Integreight
  * @version 1.1
  */

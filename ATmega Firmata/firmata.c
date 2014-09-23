@@ -189,11 +189,6 @@ void sendSysex(byte command, byte bytec, byte* bytev)
 	endSysex();
 }
 
-void sendString(byte command, const char* string)
-{
-	sendSysex(command, strlen(string), (byte *)string);
-}
-
 void requestBluetoothReset()
 {
 	write(START_SYSEX);
@@ -324,7 +319,6 @@ void setPinModeCallback(byte pin, int mode)
   default:
     break;
   }
-  // TODO: save status to EEPROM here, if changed
 }
 
 void analogWriteCallback(byte pin, int value)

@@ -131,7 +131,7 @@ void processUart0Input(void);
 */
 void sendDigitalPort(byte portNumber, int portData);
 /**
-* @brief Send Firmata's sysex message.
+* @brief Send an array of bytes using Firmata's sysex message format.
 * @param command Command byte.
 * @param bytec Length of data to be sent.
 * @param *bytev Array carrying the data.
@@ -139,82 +139,82 @@ void sendDigitalPort(byte portNumber, int portData);
 */
 void sendSysex(byte command, byte bytec, byte* bytev);
 /**
-* @brief Supports individual byte sending using Sysex message format .
-* @param command Command type.
+* @brief Send an individual byte using Firmata's sysex message format.
+* @param command Command byte.
 * @param value Data"byte" to be sent.
 * @return None. 
 */
 void sendSysexDataByte(byte command, int value);
 /**
-* @brief Set the port with certain read values.
-* @param portNumber port number to carry data.
-* @param portValue Value to be adjusted on port.
-* @param forceSend Variable to controll the variation of values on port.
+* @brief set the port before sending.
+* @param portNumber port number.
+* @param portValue data to be put on the port.
+* @param forceSend boolean to send the port even if it didn't change.
 * @return None. 
 */
 void outputPort(byte portNumber, byte portValue, byte forceSend);
 /**
-* @brief Checks the values on ports
+* @brief Checks the values on all the digital inputs of 1Sheeld board.
 * @param None.
 * @return None. 
 */
 void checkDigitalInputs(void);
 /**
-* @brief sets the pin mode to the correct state and sets the relevant bits in the two bit-arrays that track Digital I/O and PWM status
+* @brief sets the pin mode to the correct state and sets the relevant bits in the two bit-arrays that track Digital I/O and PWM status when a pin mode message is received.
 * @param pin number of pin to be set.
-* @param mode mode of the pin "Input/Output".
+* @param mode mode of the pin either INPUT, OUTPUT, ANALOG or PWM.
 * @return None. 
 */
 void setPinModeCallback(byte pin, int mode);
 /**
-* @brief sets analog values to analog pins.
+* @brief sets duty cycle to of an analog (PWM) pin when an analog message is received.
 * @param pin number of pin to be set.
-* @param value analog values to be set on the pin.
+* @param duty cycle to be set on the pin.
 * @return None. 
 */
 void analogWriteCallback(byte pin, int value);
 /**
-* @brief sets digital values to pins.
+* @brief sets digital values to pins when a digital message is received.
 * @param pin number of pin to be set.
 * @param value digital value to be set on the pin.
 * @return None. 
 */
 void digitalWriteCallback(byte port, int value);
 /**
-* @brief Report values on pins.
+* @brief enables/disables reporting of changes of a digital input port when a digital reporting message is received.
 * @param port number of port to be reported.
-* @param value digital value to be set on port.
+* @param value a value that determine the enabling or disabling.
 * @return None. 
 */
 void reportDigitalCallback(byte port, int value);
 /**
-* @brief processing the Sysec base messages.
-* @param command Command type.
+* @brief act upon the processed sysex messages.
+* @param command command byte.
 * @param argc length of the data.
-* @param *argv Array of Sysex data.
+* @param *argv Array of the enclosed sysex data.
 * @return None. 
 */
 void sysexCallback(byte command, byte argc, byte *argv);
 /**
-* @brief Reset only Sysex based message variables.
+* @brief resets 1Sheeld pins to their default values and reset firmata values.
 * @param None.
 * @return None. 
 */
 void systemResetCallback();
 /**
-* @brief Sends a request to the android to reset system.
+* @brief Sends a request to the app to reset the Bluetooth.
 * @param None.
 * @return None. 
 */
 void requestBluetoothReset();
 /**
-* @brief Flag for the bluetooth request reset.
+* @brief Flag ti know if the app responeded to the Bluetooth reset request.
 * @param None.
 * @return boolean. 
 */
 boolean getBtResponseFlag();
 /**
-* @brief Reset the flag for the bluetooth request reset.
+* @brief sets the flag for Bluetooth reset request.
 * @param state boolean.
 * @return None. 
 */
@@ -222,13 +222,13 @@ void setBtResponseFlag(boolean);
 
 /* private methods ------------------------------ */
 /**
-* @brief Process the Input Sysex messages.
+* @brief Process sysex messages.
 * @param None.
 * @return None. 
 */
 void processSysexMessage(void);
 /**
-* @brief Resets the whole sytem.
+* @brief Resets the whole firmata and init its variables.
 * @param None.
 * @return None. 
 */
@@ -240,25 +240,25 @@ void systemReset(void);
 */
 void sendValueAsTwo7bitBytes(int value);
 /**
-* @brief Encapsulate start sysex commands to farmes.
+* @brief sends start sysex byte.
 * @param None.
 * @return None. 
 */
 void startSysex(void);
 /**
-* @brief Encapsulate end sysex commands to farmes.
+* @brief sends end sysex byte.
 * @param None.
 * @return None. 
 */
 void endSysex(void);
 /**
-* @brief Enable watchdog timer to force a hard reset to system.
+* @brief forse the mc to reset itself using the watchdog timer.
 * @param None.
 * @return None. 
 */
 void forceHardReset();
 /**
-* @brief Send commands to android to print the version.
+* @brief send the firmware version to the app.
 * @param None.
 * @return None. 
 */

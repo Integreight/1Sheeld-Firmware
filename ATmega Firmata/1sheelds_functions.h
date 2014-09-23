@@ -13,7 +13,7 @@
 
 /**
  * @file 1sheelds_functions.h
- * @brief This Library illustrates 1Sheeld's Functions used by the whole libraries 	
+ * @brief This library contains an Arduino abstraction layer to mimic Arduino methods and a set of 1Sheeld related methods.
  * @author Integreight
  * @version 1.1
  */ 
@@ -29,67 +29,68 @@
 #define SHEELDS_FUNCTIONS_H_
 
 /**
- * @brief Function to read value from a certain digital pin
- * @param pin number of the  pin selected
+ * @brief Reads the value of a certain digital pin
+ * @param pinNumber pin number
  * @return current state of the pin 
  */
 uint8  digitalRead(uint8);
 /**
- * @brief Function to insert a value on the selected pin
- * @param pin number of the  pin selected
+ * @brief Output a value to a digital pin
+ * @param pinNumber pin number
+ * @param value HIGH or LOW
  * @return None 
  */
 void   digitalWrite(uint8, uint8);
 /**
- * @brief Function to set the pin whether it's Input or Output
- * @param pin number of the  pin selected
- * @param pinMode Mode "Direction" to be set (Input/Output)
+ * @brief Sets the pin whether it's Input, Output or PWM
+ * @param pinNumber pin number
+ * @param pinMode Mode (INPUT/OUTPUT/PWM)
  * @return None 
  */
 void   setPinMode(uint8 , uint8);
 /**
- * @brief Function to set the pin whether it's Input or Output
- * @param pin number of the  pin "analog pin" selected 
- * @param val give a certain analog signal value to the selected pin "analog pin"
+ * @brief Sets the duty cycle of a PWM pin.
+ * @param pinNumber pwm pin number
+ * @param val duty cycle 0 --> 255
  * @return None 
  */
 void   analogWrite(uint8, int);
 ///**
-// * @brief Reads a pulse "either High or Low" on a selected pin
-// * @param pin number of the  pin "analog pin" selected 
-// * @param state the type of pulse state to read "High or Low"
+// * @brief Reads the time of a pulse "either High or Low" on a certain pin
+// * @param pinNumber digital pin number 
+// * @param state the type of pulse to read "High or Low"
 // * @return the length of the pulse or 0 if no pulse started before the timeout 
 // */
 //unsigned long pulseIn(uint8_t , uint8_t);
-/**
- * @brief Reads a pulse "either High or Low" on a selected pin
- * @param pin number of the  pin "analog pin" selected 
- * @return pulse value with range from 0"Low"-->255"High" 
- */
+///**
+// * @brief Reads a pulse "either High or Low" on a certain pin and return the equivalent pwm value
+// * @param pinNumber digital pin number 
+// * @return pulse value with range from 0 -->255
+// */
 //unsigned long readPWM (int);
 /**
- * @brief Adjust a certain value to the whole port 
- * @param port port number to be adjusted 
- * @param value the value of the whole port 
- * @param bitmask masks the port to protect special pins and to retain their values 
+ * @brief output a value to the whole port 
+ * @param port port number 
+ * @param value the value of the whole port to be output
+ * @param bitmask masks the port to protect some pins and to retain their values 
  * @return None  
  */
 void   writePort(byte, byte, byte);
 /**
- * @brief read the whole port value 
+ * @brief reads the whole port value 
  * @param port port number to be red 
- * @param bitmask masks the port to protect special pins and to retain their values 
+ * @param bitmask masks the port to protect some pins and to retain their values 
  * @return None  
  */
 uint8  readPort(byte, byte);
 /**
- * @brief Get the number of bytes (characters) available for reading from the serial0 port
+ * @brief Get the number of bytes  available for reading from the serial0 port
  * @param None
  * @return the numbers of byte available to read  
  */
 int getAvailableDataCountOnSerial0();
 /**
- * @brief Get the number of bytes (characters) available for reading from the serial1 port
+ * @brief Get the number of bytes available for reading from the serial1 port
  * @param None
  * @return the numbers of byte available to read  
  */
@@ -107,7 +108,7 @@ void turnOffPWM(uint8);
  */
 void setUnusedPinsAsOutput();
 /**
- * @brief Reset the bluetooth using software  
+ * @brief Reset the Bluetooth using software  
  * @param None
  * @return  None  
  */

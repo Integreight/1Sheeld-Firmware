@@ -13,7 +13,7 @@
 
 /**
  * @file pwm.h
- * @brief This Library deals with the Timers to generate Pulses 	
+ * @brief This Library deals with the Timers to generate pulse width modulation signals 	
  * @author Integreight
  * @version 1.1
  */

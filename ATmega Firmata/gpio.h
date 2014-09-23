@@ -41,28 +41,28 @@ typedef struct
 }t_SetPortCfg;
 
 /**
- * @brief Sets the registers as an Output.
+ * @brief Sets the registers for a pin in a certain port to be an output.
  * @param *cfg pointer to the t_SetPortCfg structure .
  * @return None. 
  */
 void setPinModeOutput(t_SetPortCfg* cfg, uint8 bit);
 /**
- * @brief Reset the registers to Input.
+ * @brief Sets the registers for a pin in a certain port to be an input.
  * @param *cfg pointer to the t_SetPortCfg structure .
  * @return None. 
  */
 void setPinModeInput(t_SetPortCfg* cfg, uint8 bit);
 /**
  * @brief Gets a certain value from pin of certain port.
- * @param pid the port number "id".
+ * @param pid the port id.
  * @param pinNum pin number.
  * @return None. 
  */
 uint8 getPinValue(unsigned int pid,uint8 pinNum);
 /**
  * @brief Sets a certain value to a pin of certain port.
- * @param data data to be adjusted to6 the pin.
- * @param pid the port number "id".
+ * @param data data to be put on the pin.
+ * @param pid the port id.
  * @param pinNum pin number.
  * @return None. 
  */

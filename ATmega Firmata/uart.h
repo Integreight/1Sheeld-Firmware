@@ -13,7 +13,7 @@
 
 /**
  * @file Uart.h
- * @brief UART driver for handling the serial data on ATmega162  	
+ * @brief UART driver for handling the serial data on ATmega162 uart modules	
  * @author Integreight
  * @version 1.1
  */ 
