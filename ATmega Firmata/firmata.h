@@ -50,6 +50,9 @@
 #define IS_ALIVE                0x62
 #define RESET_BLUETOOTH         0x61          
 #define RESET_MICRO             0x60
+#define IS_PIN_REPORTING_ALIVE  0x5F
+#define PINS_VALUES_REPORT      0X5E
+
 // pin modes
 #define ANALOG                  0x02 // analog pin in analogInput mode
 #define PWM                     0x03 // digital pin in PWM output mode
@@ -67,6 +70,7 @@
 #define UART_BEGIN 0x01
 #define UART_END 0x00
 
+#define IS_PIN_REPORTING_ENABLED 1
 #define TOTAL_PORTS             5
 #define TOTAL_PINS              20
 
