@@ -50,8 +50,7 @@
 #define IS_ALIVE                0x62
 #define RESET_BLUETOOTH         0x61          
 #define RESET_MICRO             0x60
-#define IS_PIN_REPORTING_ALIVE  0x5F
-#define PINS_VALUES_REPORT      0X5E
+#define REPORT_INPUT_PINS       0X5F
 
 // pin modes
 #define ANALOG                  0x02 // analog pin in analogInput mode

@@ -449,13 +449,7 @@ void sysexCallback(byte command, byte argc, byte *argv)
 		
 		rbResetResponseFlag=true;
 	}break;
-	case IS_PIN_REPORTING_ALIVE:
-	{
-		write(START_SYSEX);
-		write(IS_PIN_REPORTING_ENABLED);
-		write(END_SYSEX);
-	}break;
-	case PINS_VALUES_REPORT:
+	case REPORT_INPUT_PINS:
 	{
 		outputPort(0, readPort(0, portConfigInputs[0]), true);
 	    outputPort(1, readPort(1, portConfigInputs[1]), true);
