@@ -275,8 +275,8 @@ void checkDigitalInputs(void)
   if (reportPINs[0]) outputPort(0, readPort(0, portConfigInputs[0]), false);
   if (reportPINs[1]) outputPort(1, readPort(1, portConfigInputs[1]), false);
   if (reportPINs[2]) outputPort(2, readPort(2, portConfigInputs[2]), false);
-  if (reportPINs[3]) outputPort(3, readPort(3, portConfigInputs[3]), false);
-  if (reportPINs[4]) outputPort(4, readPort(4, portConfigInputs[4]), false);
+  //if (reportPINs[3]) outputPort(3, readPort(3, portConfigInputs[3]), false);
+  //if (reportPINs[4]) outputPort(4, readPort(4, portConfigInputs[4]), false);
 }
 
 // -----------------------------------------------------------------------------
