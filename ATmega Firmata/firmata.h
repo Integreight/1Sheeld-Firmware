@@ -92,7 +92,7 @@ boolean parsingSysex;
 int sysexBytesRead;
 //for bluetooth reset
 boolean rbResetResponseFlag;
-	
+boolean isAliveResponseFlag;	
 /**
 * @brief Initialize Firmata protocal variables.
 * @param None.
@@ -263,4 +263,8 @@ void forceHardReset();
 * @return None. 
 */
 void printVersion();
+
+void sendIsAlive();
+void setIsAliveResponseFlag(boolean state);
+boolean getIsAliveResponseFlag();
 #endif /* FIRMATA_H_ */

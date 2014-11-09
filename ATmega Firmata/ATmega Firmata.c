@@ -18,7 +18,8 @@
 unsigned long currentMillis;
 unsigned long newMillis;
 unsigned long responseInterval =200UL ;
-
+unsigned long isAliveMillis;
+boolean notAliveFrameSent=false;
 void setupMillisTimers()
 {
 	TCCR0=(1<<CS00)|(1<<CS01);
@@ -41,7 +42,9 @@ int main(void)
 	setUnusedPinsAsOutput();
 	requestBluetoothReset();
 	currentMillis=millis();
+	isAliveMillis=millis();
 	setupUartLeds();
+	sendIsAlive();
 	while (1)
 	{		
 		processUart0Input();
@@ -55,6 +58,24 @@ int main(void)
 		{
 		   resetBluetooth();
            setBtResponseFlag(true);
+		}
+		
+		if((newMillis-isAliveMillis)>=500) 
+		{
+			isAliveMillis=millis();
+			if ((!getIsAliveResponseFlag()))
+			{
+				if (!notAliveFrameSent)
+				{
+					writeOnUart0('F');
+					notAliveFrameSent=true;
+				}
+			}
+			else
+			{
+				sendIsAlive();
+				setIsAliveResponseFlag(false);
+			}
 		}
 	}
 }

@@ -205,6 +205,21 @@ void setBtResponseFlag(boolean state)
 {
 	rbResetResponseFlag=state;
 }
+
+void sendIsAlive()
+{
+	writeOnUart1(START_SYSEX);
+	writeOnUart1(IS_ALIVE);
+	writeOnUart1(END_SYSEX);
+}
+void setIsAliveResponseFlag(boolean state)
+{
+	isAliveResponseFlag=state;
+}
+boolean getIsAliveResponseFlag()
+{
+	return isAliveResponseFlag;
+}
 //******************************************************************************
 //* Private Methods
 //******************************************************************************
@@ -225,6 +240,7 @@ void systemReset(void)
   parsingSysex = false;
   sysexBytesRead = 0;
   rbResetResponseFlag=false;
+  isAliveResponseFlag=false;
   systemResetCallback();
  
 }
@@ -419,9 +435,10 @@ void sysexCallback(byte command, byte argc, byte *argv)
 
 	case IS_ALIVE:
 	{
-		writeOnUart1(0xf0);
-		writeOnUart1(IS_ALIVE);
-		writeOnUart1(0xf7);
+		isAliveResponseFlag=true;
+		//writeOnUart1(0xf0);
+		//writeOnUart1(IS_ALIVE);
+		//writeOnUart1(0xf7);
 	}break;
 	
 	case RESET_MICRO:
