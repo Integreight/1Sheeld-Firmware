@@ -19,7 +19,6 @@ unsigned long currentMillis;
 unsigned long newMillis;
 unsigned long responseInterval =200UL ;
 unsigned long isAliveMillis;
-boolean notAliveFrameSent=false;
 void setupMillisTimers()
 {
 	TCCR0=(1<<CS00)|(1<<CS01);
@@ -34,6 +33,15 @@ void setupUartLeds()
 	SET_BIT(PORTA,7);
 	TCCR2|=(1<<CS20)|(1<<CS21); // clock prescalar =32
 }
+
+void sendFrameToArduino()
+{
+	byte dataArray[8]={0xff,0x00,0x00,0x01,0x00,0xff,0x00};
+	for (int i = 0; i < 8; i++)
+	{
+		writeOnUart0(dataArray[i]);
+	}
+}
 int main(void)
 { 
 	setupMillisTimers();
@@ -44,6 +52,7 @@ int main(void)
 	currentMillis=millis();
 	isAliveMillis=millis();
 	setupUartLeds();
+    initUart(0);
 	sendIsAlive();
 	while (1)
 	{		
@@ -60,21 +69,21 @@ int main(void)
            setBtResponseFlag(true);
 		}
 		
-		if((newMillis-isAliveMillis)>=500) 
+		if (!getIsAliveFrameNotSent())
 		{
-			isAliveMillis=millis();
-			if ((!getIsAliveResponseFlag()))
+			if((newMillis-isAliveMillis)>=500)
 			{
-				if (!notAliveFrameSent)
+				if ((!getIsAliveResponseFlag()))
 				{
-					writeOnUart0('F');
-					notAliveFrameSent=true;
+					sendFrameToArduino();
+					setIsAliveFrameNotSent(true);
 				}
-			}
-			else
-			{
-				sendIsAlive();
-				setIsAliveResponseFlag(false);
+				else
+				{
+					sendIsAlive();
+					isAliveMillis=millis();
+					setIsAliveResponseFlag(false);
+				}
 			}
 		}
 	}

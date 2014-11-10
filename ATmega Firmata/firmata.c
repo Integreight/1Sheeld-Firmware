@@ -220,6 +220,16 @@ boolean getIsAliveResponseFlag()
 {
 	return isAliveResponseFlag;
 }
+
+boolean getIsAliveFrameNotSent()
+{
+	return notAliveFrameSent;
+}
+
+void setIsAliveFrameNotSent(boolean state)
+{
+	notAliveFrameSent=state;
+}
 //******************************************************************************
 //* Private Methods
 //******************************************************************************
@@ -241,6 +251,7 @@ void systemReset(void)
   sysexBytesRead = 0;
   rbResetResponseFlag=false;
   isAliveResponseFlag=false;
+  notAliveFrameSent=false;
   systemResetCallback();
  
 }
@@ -436,6 +447,7 @@ void sysexCallback(byte command, byte argc, byte *argv)
 	case IS_ALIVE:
 	{
 		isAliveResponseFlag=true;
+		notAliveFrameSent=false;
 		//writeOnUart1(0xf0);
 		//writeOnUart1(IS_ALIVE);
 		//writeOnUart1(0xf7);
