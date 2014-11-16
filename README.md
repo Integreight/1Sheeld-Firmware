@@ -12,6 +12,12 @@ If you need more help, don't hesitate posting a question on our [website's forum
 
 If you want to contribute, please discuss your proposed feature on our forum first so that you can coordinate with the other developers working on the firmware.
 
+Required Fuse and Lock bits:
+- Low Value: 0xFD
+- High Value: 0xD8
+- Extended Value: 0xFB
+Click (here)[http://eleccelerator.com/fusecalc/fusecalc.php?chip=atmega162&LOW=FD&HIGH=D8&EXTENDED=FB&LOCKBIT=CC] for a description of the enabled fuse bits.
+
 Change Log:
 
 --------- Version 1.1 (Major:1, Minor: 1) -----------
