@@ -36,8 +36,8 @@ void setupUartLeds()
 
 void sendFrameToArduino()
 {
-	byte dataArray[8]={0xff,0x00,0x00,0x01,0x00,0xff,0x00};
-	for (int i = 0; i < 8; i++)
+	byte dataArray[7]={0xff,0x00,0x00,0x02,0x00,0xff,0x00};
+	for (int i = 0; i < 7; i++)
 	{
 		writeOnUart0(dataArray[i]);
 	}
