@@ -208,9 +208,9 @@ void setBtResponseFlag(boolean state)
 
 void sendIsAlive()
 {
-	writeOnUart1(START_SYSEX);
-	writeOnUart1(IS_ALIVE);
-	writeOnUart1(END_SYSEX);
+	write(START_SYSEX);
+	write(IS_ALIVE);
+	write(END_SYSEX);
 }
 void setIsAliveResponseFlag(boolean state)
 {
