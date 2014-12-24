@@ -16,7 +16,7 @@ Required Fuse and Lock bits:
 - Low Value: 0xFD
 - High Value: 0xD8
 - Extended Value: 0xFB
-Click (here)[http://eleccelerator.com/fusecalc/fusecalc.php?chip=atmega162&LOW=FD&HIGH=D8&EXTENDED=FB&LOCKBIT=CC] for a description of the enabled fuse bits.
+Click [here](http://eleccelerator.com/fusecalc/fusecalc.php?chip=atmega162&LOW=FD&HIGH=D8&EXTENDED=FB&LOCKBIT=CC) for a description of the enabled fuse bits.
 
 Change Log:
 
