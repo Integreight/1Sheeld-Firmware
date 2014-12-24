@@ -20,6 +20,11 @@ Click (here)[http://eleccelerator.com/fusecalc/fusecalc.php?chip=atmega162&LOW=F
 
 Change Log:
 
+--------- Version 1.2 (Major:1, Minor: 2) -----------
+
+- Send all pin status when queried.
+- Notify Arduino if BT disconnected.
+
 --------- Version 1.1 (Major:1, Minor: 1) -----------
 
 - Bluetooth reset enhancement on MC reset.
