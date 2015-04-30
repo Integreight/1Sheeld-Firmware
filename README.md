@@ -20,6 +20,10 @@ Click [here](http://eleccelerator.com/fusecalc/fusecalc.php?chip=atmega162&LOW=F
 
 Change Log:
 
+--------- Version 1.3 (Major:1, Minor: 3) -----------
+
+- Added error checking bytes to the incoming BT reset frame.
+
 --------- Version 1.2 (Major:1, Minor: 2) -----------
 
 - Send all pin status when queried.
