@@ -28,7 +28,7 @@
 #include "atmega162_mapping.h"
 #include "uart.h"
 
-#define ONESHEELD_MINOR_FIRMWARE_VERSION   2 
+#define ONESHEELD_MINOR_FIRMWARE_VERSION   3 
 #define ONESHEELD_MAJOR_FIRMWARE_VERSION   1 
 #define MAX_DATA_BYTES 32 // max number of data bytes in non-Sysex messages
 
