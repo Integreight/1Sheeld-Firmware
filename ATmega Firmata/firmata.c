@@ -471,7 +471,7 @@ void sysexCallback(byte command, byte argc, byte *argv)
 	}break; */
 	case RESET_BLUETOOTH:
 	{
-		if (argv[0])
+		if (argv[0]&&!(argv[1]&argv[2]))
 		{
 			resetBluetooth();
 		}
