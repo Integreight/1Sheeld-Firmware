@@ -65,7 +65,6 @@
 #define REGISTER_NOT_SPECIFIED -1
 #define STX 0x02
 #define ETX 0x03
-#define MAX_UART_STRING_SIZE 150
 #define UART_BEGIN 0x01
 #define UART_END 0x00
 
@@ -83,7 +82,6 @@ byte previousPINs[TOTAL_PORTS];     // previous 8 bits sent
 byte pinConfig[TOTAL_PINS];         // configuration of every pin
 byte portConfigInputs[TOTAL_PORTS]; // each bit: 1 = pin in INPUT, 0 = anything else
 int pinState[TOTAL_PINS];           // any value that has been written
-char incomingString[MAX_UART_STRING_SIZE];
 uint8 muteFlag;
 /* input message handling */
 byte waitForData; // this flag says the next serial input will be data
