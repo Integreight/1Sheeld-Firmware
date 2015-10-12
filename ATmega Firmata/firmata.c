@@ -101,7 +101,10 @@ void processInput(void)
 			parsingSysex = false;
 			//fire off handler function
 			processSysexMessage();
-			} else {
+			} else if(sysexBytesRead>=MAX_DATA_BYTES) {
+				parsingSysex = false;
+			}
+			else{
 			//normal data byte - add to buffer
 			storedInputData[sysexBytesRead] = inputData;
 			sysexBytesRead++;
