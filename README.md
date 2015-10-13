@@ -1,42 +1,59 @@
-This is the source code of the firmware that is shipped with your 1Sheeld. It is an implementation of a custom version of the Firmata protocal ported to ATmega162. It supports some of Firmata's messages like digital messages but lacks capability query, analog, I2C and servos messages.
+# 1Sheeld Firmware #
+
+## Overview ##
+
+This is the source code of the firmware shipped with your 1Sheeld board. It is an implementation of a custom version of the Firmata protocal ported to ATmega162. It supports some of Firmata's messages like digital messages but lacks capability query, analog, I2C and servos messages.
+
+## Buidling ##
 
 The repo is an Atmel Studio project, but we have plans to make it as a generic C project so you can build it easliy on platforms other than Microsoft Windows with a standard MakeFile.
 
-You can generate the documentation by installing and running doxygen on the repo's root directory.
+## Fuse Bits ##
 
-The ICSP pins are exposed with a 6-pin header on the bottom of your 1Sheeld, so you can easily connect any ATmega programmer and upload your own version of the firmware. We are adding some tutorials regarding that on our website soon.
-
-Note: 1Sheeld is equipped with a bootloader that enables us to push updates to the firmware from the app. If you attempt to upload this firmware and erased the chip, you will lose this functionality.
-
-If you need more help, don't hesitate posting a question on our [website's forum](http://www.1sheeld.com/forum).
-
-If you want to contribute, please discuss your proposed feature on our forum first so that you can coordinate with the other developers working on the firmware.
-
-Required Fuse and Lock bits:
 - Low Value: 0xFD
 - High Value: 0xD8
 - Extended Value: 0xFB
+
 Click [here](http://eleccelerator.com/fusecalc/fusecalc.php?chip=atmega162&LOW=FD&HIGH=D8&EXTENDED=FB&LOCKBIT=CC) for a description of the enabled fuse bits.
 
-Change Log:
+## Uploading ##
 
---------- Version 1.3 (Major:1, Minor: 3) -----------
+The ICSP pins are exposed with a 6-pin header on the bottom of your 1Sheeld board. You can easily connect any ATmega programmer and upload your own version of the firmware.
 
-- Added error checking bytes to the incoming BT reset frame.
+Note: 1Sheeld is equipped with a bootloader that enables us to push updates to the firmware from the app. If you attempt to upload this firmware and erased the chip, you will lose this functionality.
 
---------- Version 1.2 (Major:1, Minor: 2) -----------
+## Documentation ##
 
-- Send all pin status when queried.
-- Notify Arduino if BT disconnected.
+You can generate the documentation by installing and running ``` doxygen ``` on the repo's root directory.
 
---------- Version 1.1 (Major:1, Minor: 1) -----------
+## Contribution ##
 
-- Bluetooth reset enhancement on MC reset.
-- Adjusted prescaler of timers.
-- Enhanced stability.
+Contributions are welcomed, please follow this pattern:
+- Fork the repo.
+- Open an issue with your proposed feature or bug fix.
+- Commit and push code to your forked repo.
+- Submit a pull request to *development* branch.
 
---------- Version 1.0 (Major:1, Minor: 0) -----------
+Don't forget to drop us an email, post on our forum, or mention us on Twitter or Facebook about what you have built using 1Sheeld, we would love to hear about it.
 
-- Initial Release
+## Changelog ##
 
-1Sheeld Firmware by Integreight, Inc. is licensed under GNU General Public License v3.0 (GNU GPL v3.0).
+To see what has changed in recent versions of 1Sheeld Firmware, see the [Change Log](CHANGELOG.md).
+
+## License and Copyright ##
+
+```
+This code is free software; you can redistribute it and/or modify it
+under the terms of the GNU General Public License version 3 only, as
+published by the Free Software Foundation.
+
+This code is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+version 3 for more details (a copy is included in the LICENSE file that
+accompanied this code).
+
+Please contact Integreight, Inc. at info@integreight.com or post on our
+support forums www.1sheeld.com/forum if you need additional information
+or have any questions.
+```
