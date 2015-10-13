@@ -4,7 +4,7 @@
 
 This is the source code of the firmware shipped with your 1Sheeld board. It is an implementation of a custom version of the Firmata protocal ported to ATmega162. It supports some of Firmata's messages like digital messages but lacks capability query, analog, I2C and servos messages.
 
-## Buidling ##
+## Building ##
 
 The repo is an Atmel Studio project, but we have plans to make it as a generic C project so you can build it easliy on platforms other than Microsoft Windows with a standard MakeFile.
 
