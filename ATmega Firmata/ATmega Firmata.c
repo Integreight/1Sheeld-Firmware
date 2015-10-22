@@ -87,6 +87,25 @@ int main(void)
 				}
 			}
 		}
+		if ((millis()-sentFramesMillis)>15)
+		{
+			if (muteFlag==0)
+			{
+				for (int i=0; i<=txBufferIndex; i++)
+				{
+					writeOnUart1(UartTx1Buffer[i]);
+				}
+				sentFramesMillis=millis();
+			}
+		}
+		if (getAvailableDataCountOnSerial0()<192)
+		{
+			writeOnUart0('s');
+		}
+		else
+		{
+			writeOnUart0('t');
+		}
 	}
 }
 
