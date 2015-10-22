@@ -51,6 +51,7 @@ int main(void)
 	requestBluetoothReset();
 	currentMillis=millis();
 	isAliveMillis=millis();
+	sentFramesMillis=millis();
 	setupUartLeds();
     initUart(0);
 	sendIsAlive();

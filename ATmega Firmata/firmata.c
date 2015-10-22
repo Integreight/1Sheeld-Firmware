@@ -21,10 +21,12 @@
 
 void write(unsigned char data)
 {
-	if (muteFlag==0)
+	if (txBufferIndex>19)
 	{
-		writeOnUart1(data);
+		txBufferIndex=0;
 	}
+	UartTx1Buffer[txBufferIndex]=data;
+	txBufferIndex++;
 }
 void sendValueAsTwo7bitBytes(int value)
 {

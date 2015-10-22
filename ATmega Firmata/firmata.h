@@ -88,6 +88,10 @@ byte waitForData; // this flag says the next serial input will be data
 byte executeMultiByteCommand; // execute this after getting multi-byte data
 byte multiByteChannel; // channel data for multiByteCommands
 byte storedInputData[MAX_DATA_BYTES]; // multi-byte data
+//to send frames of 20bytes each 15ms
+byte UartTx1Buffer[20];
+unsigned long sentFramesMillis;
+uint8 txBufferIndex;
 /* sysex */
 boolean parsingSysex;
 int sysexBytesRead;
