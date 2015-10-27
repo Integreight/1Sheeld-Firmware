@@ -92,6 +92,7 @@ byte storedInputData[MAX_DATA_BYTES]; // multi-byte data
 byte UartTx1Buffer[20];
 unsigned long sentFramesMillis;
 uint8 txBufferIndex;
+boolean uart1WriteFlag;
 /* sysex */
 boolean parsingSysex;
 int sysexBytesRead;

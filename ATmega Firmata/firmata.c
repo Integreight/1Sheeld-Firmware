@@ -21,6 +21,7 @@
 
 void write(unsigned char data)
 {
+	uart1WriteFlag=true;
 	if (txBufferIndex>19)
 	{
 		txBufferIndex=0;
@@ -247,11 +248,11 @@ void systemReset(void)
   executeMultiByteCommand = 0; // execute this after getting multi-byte data
   multiByteChannel = 0; // channel data for multiByteCommands
   muteFlag=0;
-
+  uart1WriteFlag=false;
   for(i=0; i<MAX_DATA_BYTES; i++) {
     storedInputData[i] = 0;
   }
-
+  
   parsingSysex = false;
   sysexBytesRead = 0;
   rbResetResponseFlag=false;

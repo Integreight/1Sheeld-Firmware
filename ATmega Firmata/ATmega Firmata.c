@@ -89,12 +89,14 @@ int main(void)
 		}
 		if ((millis()-sentFramesMillis)>15)
 		{
-			if (muteFlag==0)
+			if ((muteFlag==0)&&uart1WriteFlag)
 			{
 				for (int i=0; i<=txBufferIndex; i++)
 				{
 					writeOnUart1(UartTx1Buffer[i]);
-				}
+				} 
+				writeOnUart1('e');
+				uart1WriteFlag=false;
 				sentFramesMillis=millis();
 			}
 		}
