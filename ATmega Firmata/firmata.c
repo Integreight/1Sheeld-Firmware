@@ -265,17 +265,6 @@ void printVersion()
 	write(ONESHEELD_MINOR_FIRMWARE_VERSION);
 	write(ONESHEELD_MAJOR_FIRMWARE_VERSION);
 }
-// =============================================================================
-void sendSysexDataByte(byte command, int value){
-
-	startSysex();
-	write(command);
-	sendValueAsTwo7bitBytes(value);
-	endSysex();
-
-}
-
-
 
 /*==============================================================================
  * FUNCTIONS

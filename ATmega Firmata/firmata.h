@@ -141,13 +141,6 @@ void sendDigitalPort(byte portNumber, int portData);
 */
 void sendSysex(byte command, byte bytec, byte* bytev);
 /**
-* @brief Send an individual byte using Firmata's sysex message format.
-* @param command Command byte.
-* @param value Data"byte" to be sent.
-* @return None. 
-*/
-void sendSysexDataByte(byte command, int value);
-/**
 * @brief set the port before sending.
 * @param portNumber port number.
 * @param portValue data to be put on the port.
