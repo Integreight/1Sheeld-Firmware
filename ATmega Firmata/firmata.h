@@ -99,7 +99,12 @@ int sysexBytesRead;
 //for bluetooth reset
 boolean rbResetResponseFlag;
 boolean isAliveResponseFlag;
-boolean notAliveFrameSent;	
+boolean notAliveFrameSent;
+boolean firstFrameToSend;
+boolean	resendDigitalPort;
+boolean resendIsAlive;
+boolean resendPrintVersion;
+	
 /**
 * @brief Initialize Firmata protocal variables.
 * @param None.
@@ -270,10 +275,12 @@ void forceHardReset();
 * @return None. 
 */
 void printVersion();
-
+void reportDigialPorts();
 void sendIsAlive();
 void setIsAliveResponseFlag(boolean state);
 boolean getIsAliveResponseFlag();
 boolean getIsAliveFrameNotSent();
+int getUartTx1BufferCounter();
+void setUartTx1BufferCounter(int);
 void setIsAliveFrameNotSent(boolean state);
 #endif /* FIRMATA_H_ */

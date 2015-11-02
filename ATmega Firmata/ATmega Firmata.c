@@ -87,26 +87,27 @@ int main(void)
 				}
 			}
 		}
-		if ((millis()-sentFramesMillis)>15)
+		if ((newMillis-sentFramesMillis)>15)
 		{
 			if ((muteFlag==0)&&uart1WriteFlag)
 			{
-				for (int i=0; i<=txBufferIndex; i++)
+				writeOnUart0(getUartTx1BufferCounter());
+				for (int i=0; i<getUartTx1BufferCounter(); i++)
 				{
 					writeOnUart1(UartTx1Buffer[i]);
-				} 
-				writeOnUart1('e');
+					writeOnUart0(UartTx1Buffer[i]);
+				}
+				
+				for (int i=0; i<20; i++)
+				{
+					UartTx1Buffer[i]=0x00;
+				}
+				 
+				if(firstFrameToSend) firstFrameToSend = false;
+				setUartTx1BufferCounter(0);
 				uart1WriteFlag=false;
 				sentFramesMillis=millis();
 			}
-		}
-		if (getAvailableDataCountOnSerial0()<192)
-		{
-			writeOnUart0('s');
-		}
-		else
-		{
-			writeOnUart0('t');
 		}
 	}
 }
