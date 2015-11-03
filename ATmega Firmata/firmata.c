@@ -30,6 +30,7 @@ void reportDigitalPorts()
 		outputPort(0, readPort(0, portConfigInputs[0]), true);
 		outputPort(1, readPort(1, portConfigInputs[1]), true);
 		outputPort(2, readPort(2, portConfigInputs[2]), true);
+		resendDigitalPort =false;
 	}
 
 }
@@ -109,22 +110,19 @@ void processUart0Input(){
 	if (resendIsAlive)
 	{
 		sendIsAlive();
-		resendIsAlive = false;
 	}
 	
 	if(resendDigitalPort)
 	{
 		reportDigitalPorts();
-		resendDigitalPort =false;
 	}
 	
 	if (resendPrintVersion)
 	{
 		printVersion();
-		resendPrintVersion = false;
 	}
 	
-	if(getAvailableDataCountOnUart0()>0 && isArduinoDataSent)
+	if(getAvailableDataCountOnUart0()>0 && lastFrameSent)
 	{
 		int availableBytesInTxBuffer;
 		
@@ -146,7 +144,7 @@ void processUart0Input(){
 				arr[i]=readFromUart0();
 			}
 			sendSysex(UART_DATA,availableBytesInTxBuffer,arr);
-			isArduinoDataSent = false;
+			lastFrameSent = false;
 		}	
 	}
 	
@@ -285,6 +283,7 @@ void sendIsAlive()
 		write(START_SYSEX);
 		write(IS_ALIVE);
 		write(END_SYSEX);
+		resendIsAlive = false;
 	}
 
 }
@@ -329,7 +328,7 @@ void systemReset(void)
   rbResetResponseFlag=false;
   isAliveResponseFlag=false;
   notAliveFrameSent=false;
-  isArduinoDataSent = false;
+  lastFrameSent = false;
   firstFrameToSend = false;
   resendDigitalPort = false;
   resendIsAlive = false ;
@@ -348,7 +347,8 @@ void printVersion()
 	{
 		write(REPORT_VERSION);
 		write(ONESHEELD_MINOR_FIRMWARE_VERSION);
-		write(ONESHEELD_MAJOR_FIRMWARE_VERSION);	
+		write(ONESHEELD_MAJOR_FIRMWARE_VERSION);
+		resendPrintVersion = false;	
 	}
 	
 }

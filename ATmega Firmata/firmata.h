@@ -101,7 +101,7 @@ boolean rbResetResponseFlag;
 boolean isAliveResponseFlag;
 boolean notAliveFrameSent;
 boolean firstFrameToSend;
-boolean	isArduinoDataSent;
+boolean	lastFrameSent;
 boolean	resendDigitalPort;
 boolean resendIsAlive;
 boolean resendPrintVersion;

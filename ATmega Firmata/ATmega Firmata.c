@@ -105,7 +105,7 @@ int main(void)
 				setUartTx1BufferCounter(0);
 				uart1WriteFlag=false;
 				sentFramesMillis=millis();
-				isArduinoDataSent = true;
+				lastFrameSent = true;
 			}
 		}
 	}
