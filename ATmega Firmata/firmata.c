@@ -124,7 +124,7 @@ void processUart0Input(){
 		resendPrintVersion = false;
 	}
 	
-	if(getAvailableDataCountOnUart0()>0)
+	if(getAvailableDataCountOnUart0()>0 && isArduinoDataSent)
 	{
 		int availableBytesInTxBuffer;
 		
@@ -136,14 +136,17 @@ void processUart0Input(){
 			availableBytesInTxBuffer = ((20-txBufferIndex)-3)/2;
 		}
 		
-		if(getAvailableDataCountOnUart0()<availableBytesInTxBuffer)
-		availableBytesInTxBuffer=getAvailableDataCountOnUart0();
+		if(getAvailableDataCountOnUart0()<availableBytesInTxBuffer){
+			availableBytesInTxBuffer=getAvailableDataCountOnUart0();	
+		}
+		
 		if(!firstFrameToSend){
 			byte arr[availableBytesInTxBuffer];
-			for(uint16_t i=0;i<availableBytesInTxBuffer;i++){
+			for(int i=0;i<availableBytesInTxBuffer;i++){
 				arr[i]=readFromUart0();
 			}
 			sendSysex(UART_DATA,availableBytesInTxBuffer,arr);
+			isArduinoDataSent = false;
 		}	
 	}
 	
@@ -255,7 +258,6 @@ void sendSysex(byte command, byte bytec, byte* bytev)
 
 void requestBluetoothReset()
 {
-	writeOnUart0('R');
 	firstFrameToSend = true;
 	write(START_SYSEX);
 	write(RESET_BLUETOOTH);
@@ -316,6 +318,7 @@ void systemReset(void)
   executeMultiByteCommand = 0; // execute this after getting multi-byte data
   multiByteChannel = 0; // channel data for multiByteCommands
   muteFlag=0;
+  txBufferIndex = 0;
   uart1WriteFlag=false;
   for(i=0; i<MAX_DATA_BYTES; i++) {
     storedInputData[i] = 0;
@@ -326,6 +329,11 @@ void systemReset(void)
   rbResetResponseFlag=false;
   isAliveResponseFlag=false;
   notAliveFrameSent=false;
+  isArduinoDataSent = false;
+  firstFrameToSend = false;
+  resendDigitalPort = false;
+  resendIsAlive = false ;
+  resendPrintVersion = false;
   systemResetCallback();
  
 }

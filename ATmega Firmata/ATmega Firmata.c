@@ -91,11 +91,9 @@ int main(void)
 		{
 			if ((muteFlag==0)&&uart1WriteFlag)
 			{
-				writeOnUart0(getUartTx1BufferCounter());
 				for (int i=0; i<getUartTx1BufferCounter(); i++)
 				{
 					writeOnUart1(UartTx1Buffer[i]);
-					writeOnUart0(UartTx1Buffer[i]);
 				}
 				
 				for (int i=0; i<20; i++)
@@ -107,6 +105,7 @@ int main(void)
 				setUartTx1BufferCounter(0);
 				uart1WriteFlag=false;
 				sentFramesMillis=millis();
+				isArduinoDataSent = true;
 			}
 		}
 	}
