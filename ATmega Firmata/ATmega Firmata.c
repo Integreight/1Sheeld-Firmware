@@ -36,12 +36,31 @@ void setupUartLeds()
 
 void sendFrameToArduino()
 {
-	byte dataArray[7]={0xff,0x00,0x00,0x02,0x00,0xff,0x00};
+	byte dataArray[7]={0xff,0x00,0xF0,0x02,0x00,0xff,0x00};
 	for (int i = 0; i < 7; i++)
 	{
 		writeOnUart0(dataArray[i]);
 	}
 }
+
+void sendArduinoToStopData()
+{
+	byte dataArray[3]={0xf0,0x70,0xf7};
+	for (int i = 0; i < 3; i++)
+	{
+		writeOnUart0(dataArray[i]);
+	}
+}
+
+void sendArduinoToSendData()
+{
+	byte dataArray[3]={0xf0,0x71,0xf7};
+	for (int i = 0; i < 3; i++)
+	{
+		writeOnUart0(dataArray[i]);
+	}
+}
+
 int main(void)
 { 
 	setupMillisTimers();
@@ -68,6 +87,19 @@ int main(void)
 		{
 		   resetBluetooth();
            setBtResponseFlag(true);
+		}
+		
+		if (sendArduinoToStopFlag)
+		{
+			sendArduinoToStopData();
+			sendArduinoToStopFlag = false;
+			arduinoStopped = true;
+		}
+		
+		if(sendArduinoToSendFlag){
+			sendArduinoToSendData();
+			sendArduinoToSendFlag = false;
+			arduinoStopped = false;
 		}
 		
 		if (!getIsAliveFrameNotSent())

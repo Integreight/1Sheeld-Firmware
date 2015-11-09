@@ -284,4 +284,6 @@ boolean getIsAliveFrameNotSent();
 int getUartTx1BufferCounter();
 void setUartTx1BufferCounter(int);
 void setIsAliveFrameNotSent(boolean state);
+void sendArduinoToSendData();
+void sendArduinoToStop();
 #endif /* FIRMATA_H_ */

@@ -333,6 +333,9 @@ void systemReset(void)
   resendDigitalPort = false;
   resendIsAlive = false ;
   resendPrintVersion = false;
+  sendArduinoToStopFlag= false ;
+  sendArduinoToSendFlag =false ;
+  arduinoStopped =false;
   systemResetCallback();
  
 }

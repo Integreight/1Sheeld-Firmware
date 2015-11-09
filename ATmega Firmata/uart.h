@@ -38,6 +38,9 @@
 #define UART_NO_DATA          -1              /**< no receive data available   */
 #define UART_BUFFER_OVERFLOW  -2              /**< receive ringbuffer overflow */
 
+boolean	sendArduinoToStopFlag ;
+boolean	sendArduinoToSendFlag ;
+boolean	arduinoStopped;
 
 /**
  * @brief Initialize the serial port, it's status registers and buffers.

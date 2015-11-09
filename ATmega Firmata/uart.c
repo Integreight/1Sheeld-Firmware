@@ -122,7 +122,11 @@ int readFromUart0(){
 	/* calculate /store buffer index */
 	tmptail = (UART0_RxTail + 1) & UART0_RX0_BUFFER_MASK;
 	UART0_RxTail = tmptail;
-
+	
+	if (((tmptail + 64) & UART0_RX0_BUFFER_MASK)== UART0_RxHead && arduinoStopped)
+	{
+		sendArduinoToSendFlag = true;
+	}
 	/* get data from receive buffer */
 	data = UART0_RxBuf[tmptail];
 
@@ -151,9 +155,13 @@ ISR (USART0_RXC_vect){
    /* calculate buffer index */
    tmphead = ( UART0_RxHead + 1) & UART0_RX0_BUFFER_MASK;
    
+   if (((tmphead + 128) & UART0_RX0_BUFFER_MASK)== UART0_RxTail && !arduinoStopped){
+	   sendArduinoToStopFlag = true;
+   }
+   
    if ( tmphead == UART0_RxTail ) {
 	   /* error: receive buffer overflow */
-	   lastRxError = UART_BUFFER_OVERFLOW >> 8;
+	   lastRxError = UART_BUFFER_OVERFLOW >> 8; 
 	   } else {
 	   /* store new index */
 	   UART0_RxHead = tmphead;
