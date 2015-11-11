@@ -22,7 +22,7 @@
 
 void reportDigitalPorts()
 {
-	if((!firstFrameToSend) && txBufferIndex +3 >20)
+	if((!firstFrameToSend) && txBufferIndex +10 >20)
 	{
 		resendDigitalPort = true;
 	}else
