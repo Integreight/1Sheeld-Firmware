@@ -76,8 +76,8 @@ int main(void)
 	sendIsAlive();
 	while (1)
 	{		
-		processUart0Input();
 		checkDigitalInputs();
+		processUart0Input();
 		while(available()>0)
         {
            processInput();
@@ -123,6 +123,36 @@ int main(void)
 		{
 			if ((muteFlag==0)&&uart1WriteFlag)
 			{
+				if (port0ChangedFlag)
+				{
+					int j = 0;
+					for (int i = port0Index; i<port0Index+3;i++)
+					{
+						UartTx1Buffer[i]=digitalPort0array[j];
+						j++;
+					}
+				}
+				
+				if (port1ChangedFlag)
+				{
+					int j = 0;
+					for (int i = port1Index ; i<port1Index+3;i++)
+					{
+						UartTx1Buffer[i]=digitalPort1array[j];
+						j++;
+					}
+				}
+				
+				if (port2ChangedFlag)
+				{
+					int j = 0;
+					for (int i = port2Index ; i<port2Index+3;i++)
+					{
+						UartTx1Buffer[i]=digitalPort2array[j];
+						j++;
+					}
+				}
+				
 				for (int i=0; i<getUartTx1BufferCounter(); i++)
 				{
 					writeOnUart1(UartTx1Buffer[i]);
@@ -137,6 +167,12 @@ int main(void)
 				setUartTx1BufferCounter(0);
 				uart1WriteFlag=false;
 				sentFramesMillis=millis();
+				port0ChangedFlag = false;
+				port1ChangedFlag = false;
+				port2ChangedFlag = false;
+				port0Index = 0;
+				port1Index = 0;
+				port2Index = 0;
 				lastFrameSent = true;
 			}
 		}

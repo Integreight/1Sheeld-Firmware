@@ -107,21 +107,6 @@ void processSysexMessage(void)
 
 void processUart0Input(){
 	
-	if (resendIsAlive)
-	{
-		sendIsAlive();
-	}
-	
-	if(resendDigitalPort)
-	{
-		reportDigitalPorts();
-	}
-	
-	if (resendPrintVersion)
-	{
-		printVersion();
-	}
-	
 	if(getAvailableDataCountOnUart0()>0 && lastFrameSent)
 	{
 		int availableBytesInTxBuffer;
@@ -237,10 +222,61 @@ void processInput(void)
 }
 
 void sendDigitalPort(byte portNumber, int portData)
-{
-	write(DIGITAL_MESSAGE | (portNumber & 0xF));
+{	
+	uart1WriteFlag = true;
+	if (resendIsAlive)
+	{
+		sendIsAlive();
+	}
+	
+	if(resendDigitalPort)
+	{
+		reportDigitalPorts();
+	}
+	
+	if (resendPrintVersion)
+	{
+		printVersion();
+	}
+	
+	if(portNumber == 0){
+			
+			digitalPort0array[0]= DIGITAL_MESSAGE | (portNumber & 0xF);
+			digitalPort0array[1]= (byte)portData % 128;
+			digitalPort0array[2]= portData >> 7;
+			if (!port0ChangedFlag && txBufferIndex + 3 < 20)
+			{
+				port0Index = txBufferIndex;
+				txBufferIndex+=3;
+				port0ChangedFlag = true;
+			}
+		}else if(portNumber == 1){
+			
+			digitalPort1array[0]= DIGITAL_MESSAGE | (portNumber & 0xF);
+			digitalPort1array[1]= (byte)portData % 128;
+			digitalPort1array[2]= portData >> 7;
+			if (!port1ChangedFlag && txBufferIndex + 3 < 20)
+			{
+				port1Index = txBufferIndex;
+				txBufferIndex+=3;
+				port1ChangedFlag = true;
+			}
+		}else if(portNumber == 2){
+			
+			digitalPort2array[0]= DIGITAL_MESSAGE | (portNumber & 0xF);
+			digitalPort2array[1]= (byte)portData % 128;
+			digitalPort2array[2]= portData >> 7;
+			if (!port2ChangedFlag && txBufferIndex + 3 < 20)
+			{
+				port2Index = txBufferIndex;
+				txBufferIndex+=3;
+				port2ChangedFlag = true;
+			}
+			
+	}	
+	/*write(DIGITAL_MESSAGE | (portNumber & 0xF));
 	write((byte)portData % 128); // Tx bits 0-6
-	write(portData >> 7);  // Tx bits 7-13
+	write(portData >> 7);  // Tx bits 7-13*/
 }
 
 void sendSysex(byte command, byte bytec, byte* bytev)
@@ -336,6 +372,12 @@ void systemReset(void)
   sendArduinoToStopFlag= false ;
   sendArduinoToSendFlag =false ;
   arduinoStopped =false;
+  port0ChangedFlag = false;
+  port1ChangedFlag = false;
+  port2ChangedFlag = false;
+  port0Index = 0;
+  port1Index = 0;
+  port2Index = 0;
   systemResetCallback();
  
 }

@@ -90,8 +90,15 @@ byte multiByteChannel; // channel data for multiByteCommands
 byte storedInputData[MAX_DATA_BYTES]; // multi-byte data
 //to send frames of 20bytes each 15ms
 uint8_t UartTx1Buffer[20];
+byte digitalPort0array[3];
+byte digitalPort1array[3];
+byte digitalPort2array[3];
+
 unsigned long sentFramesMillis;
 uint8 txBufferIndex;
+uint8 port0Index;
+uint8 port1Index;
+uint8 port2Index;
 boolean uart1WriteFlag;
 /* sysex */
 boolean parsingSysex;
@@ -105,6 +112,10 @@ boolean	lastFrameSent;
 boolean	resendDigitalPort;
 boolean resendIsAlive;
 boolean resendPrintVersion;
+boolean	port0ChangedFlag;
+boolean port1ChangedFlag;
+boolean port2ChangedFlag;
+
 	
 /**
 * @brief Initialize Firmata protocal variables.
