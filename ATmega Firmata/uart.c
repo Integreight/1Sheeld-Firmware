@@ -123,7 +123,7 @@ int readFromUart0(){
 	tmptail = (UART0_RxTail + 1) & UART0_RX0_BUFFER_MASK;
 	UART0_RxTail = tmptail;
 	
-	if (((tmptail + 64) & UART0_RX0_BUFFER_MASK)== UART0_RxHead && arduinoStopped)
+	if (((tmptail + 1) & UART0_RX0_BUFFER_MASK)== UART0_RxHead && arduinoStopped)
 	{
 		sendArduinoToSendFlag = true;
 	}
