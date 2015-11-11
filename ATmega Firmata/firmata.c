@@ -27,10 +27,10 @@ void reportDigitalPorts()
 		resendDigitalPort = true;
 	}else
 	{
+		resendDigitalPort =false;
 		outputPort(0, readPort(0, portConfigInputs[0]), true);
 		outputPort(1, readPort(1, portConfigInputs[1]), true);
 		outputPort(2, readPort(2, portConfigInputs[2]), true);
-		resendDigitalPort =false;
 	}
 
 }
@@ -107,17 +107,32 @@ void processSysexMessage(void)
 
 void processUart0Input(){
 	
+	if (resendIsAlive)
+	{
+		sendIsAlive();
+	}
+				
+	if(resendDigitalPort)
+	{
+		reportDigitalPorts();
+	}
+				
+	if (resendPrintVersion)
+	{
+		printVersion();
+	}
+		
 	if(getAvailableDataCountOnUart0()>0 && lastFrameSent)
 	{
 		int availableBytesInTxBuffer;
 		
-		if(((20-txBufferIndex)-3)%2) 
-		{
-			availableBytesInTxBuffer = (((20-txBufferIndex)-3)/2)-1;
-		}else
-		{
+		//if(((20-txBufferIndex)-3)%2) 
+		//{
+			//availableBytesInTxBuffer = (((20-txBufferIndex)-3)/2)-1;
+		//}else
+		//{
 			availableBytesInTxBuffer = ((20-txBufferIndex)-3)/2;
-		}
+		//}
 		
 		if(getAvailableDataCountOnUart0()<availableBytesInTxBuffer){
 			availableBytesInTxBuffer=getAvailableDataCountOnUart0();	
@@ -224,21 +239,6 @@ void processInput(void)
 void sendDigitalPort(byte portNumber, int portData)
 {	
 	uart1WriteFlag = true;
-	if (resendIsAlive)
-	{
-		sendIsAlive();
-	}
-	
-	if(resendDigitalPort)
-	{
-		reportDigitalPorts();
-	}
-	
-	if (resendPrintVersion)
-	{
-		printVersion();
-	}
-	
 	if(portNumber == 0){
 			
 			digitalPort0array[0]= DIGITAL_MESSAGE | (portNumber & 0xF);

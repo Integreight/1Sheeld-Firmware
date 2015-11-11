@@ -61,6 +61,40 @@ void sendArduinoToSendData()
 	}
 }
 
+void fillBufferWithPinStates(){
+	
+	if (port0ChangedFlag)
+	{
+		int j = 0;
+		for (int i = port0Index; i<port0Index+3;i++)
+		{
+			UartTx1Buffer[i]=digitalPort0array[j];
+			j++;
+		}
+	}
+	
+	if (port1ChangedFlag)
+	{
+		int j = 0;
+		for (int i = port1Index ; i<port1Index+3;i++)
+		{
+			UartTx1Buffer[i]=digitalPort1array[j];
+			j++;
+		}
+	}
+	
+	if (port2ChangedFlag)
+	{
+		int j = 0;
+		for (int i = port2Index ; i<port2Index+3;i++)
+		{
+			UartTx1Buffer[i]=digitalPort2array[j];
+			j++;
+		}
+	}
+	
+}
+
 int main(void)
 { 
 	setupMillisTimers();
@@ -123,36 +157,8 @@ int main(void)
 		{
 			if ((muteFlag==0)&&uart1WriteFlag)
 			{
-				if (port0ChangedFlag)
-				{
-					int j = 0;
-					for (int i = port0Index; i<port0Index+3;i++)
-					{
-						UartTx1Buffer[i]=digitalPort0array[j];
-						j++;
-					}
-				}
-				
-				if (port1ChangedFlag)
-				{
-					int j = 0;
-					for (int i = port1Index ; i<port1Index+3;i++)
-					{
-						UartTx1Buffer[i]=digitalPort1array[j];
-						j++;
-					}
-				}
-				
-				if (port2ChangedFlag)
-				{
-					int j = 0;
-					for (int i = port2Index ; i<port2Index+3;i++)
-					{
-						UartTx1Buffer[i]=digitalPort2array[j];
-						j++;
-					}
-				}
-				
+				fillBufferWithPinStates();
+				writeOnUart1(0xFF);
 				for (int i=0; i<getUartTx1BufferCounter(); i++)
 				{
 					writeOnUart1(UartTx1Buffer[i]);
