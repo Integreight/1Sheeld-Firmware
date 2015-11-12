@@ -99,6 +99,7 @@ uint8 txBufferIndex;
 uint8 port0Index;
 uint8 port1Index;
 uint8 port2Index;
+uint8 toggelingIndicatorCounter;
 boolean uart1WriteFlag;
 /* sysex */
 boolean parsingSysex;
@@ -115,6 +116,9 @@ boolean resendPrintVersion;
 boolean	port0ChangedFlag;
 boolean port1ChangedFlag;
 boolean port2ChangedFlag;
+boolean sentPort0LastTime;
+boolean sentPort1LastTime;
+boolean sentPort2LastTime;
 
 	
 /**

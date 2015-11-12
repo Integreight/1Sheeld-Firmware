@@ -157,6 +157,21 @@ int main(void)
 		{
 			if ((muteFlag==0)&&uart1WriteFlag)
 			{
+				if (toggelingIndicatorCounter == 0)
+				{
+					sentPort0LastTime = true;
+					sentPort1LastTime = true;
+					sentPort2LastTime = true;
+					toggelingIndicatorCounter++;
+				}
+				else 
+				{
+					sentPort0LastTime = false;
+					sentPort1LastTime = false;
+					sentPort2LastTime = false;
+					toggelingIndicatorCounter = 0;
+				}
+				
 				fillBufferWithPinStates();
 				writeOnUart1(0xFF);
 				for (int i=0; i<getUartTx1BufferCounter(); i++)
