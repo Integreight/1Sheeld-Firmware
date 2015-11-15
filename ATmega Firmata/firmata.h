@@ -119,6 +119,7 @@ boolean port2ChangedFlag;
 boolean sentPort0LastTime;
 boolean sentPort1LastTime;
 boolean sentPort2LastTime;
+boolean	dataInArduinoBuffer;
 
 	
 /**

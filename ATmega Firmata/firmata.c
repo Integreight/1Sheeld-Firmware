@@ -239,57 +239,65 @@ void processInput(void)
 void sendDigitalPort(byte portNumber, int portData)
 {	
 	uart1WriteFlag = true;
+	
+	if (getAvailableDataCountOnUart0()>0){
+		dataInArduinoBuffer = true;
+	}
+	else{
+		dataInArduinoBuffer = false;
+	}
+	
 	if(portNumber == 0){
 			
 			digitalPort0array[0]= DIGITAL_MESSAGE | (portNumber & 0xF);
 			digitalPort0array[1]= (byte)portData % 128;
 			digitalPort0array[2]= portData >> 7;
-			if (!(getAvailableDataCountOnUart0()>0) && !port0ChangedFlag && txBufferIndex + 3 < 20)
-			{
-				port0Index = txBufferIndex;
-				txBufferIndex+=3;
-				port0ChangedFlag = true;
-			}else if (!sentPort0LastTime && !port0ChangedFlag && txBufferIndex + 3 < 20)
-			{
-				port0Index = txBufferIndex;
-				txBufferIndex+=3;
-				port0ChangedFlag = true;
-				sentPort0LastTime = true;
-			}
+			//if (!(getAvailableDataCountOnUart0()>0) && !port0ChangedFlag && txBufferIndex + 3 < 20)
+			//{
+				//port0Index = txBufferIndex;
+				//txBufferIndex+=3;
+				//port0ChangedFlag = true;
+			//}else if (!sentPort0LastTime && !port0ChangedFlag && txBufferIndex + 3 < 20)
+			//{
+				//port0Index = txBufferIndex;
+				//txBufferIndex+=3;
+				//port0ChangedFlag = true;
+				//sentPort0LastTime = true;
+			//}
 		}else if(portNumber == 1){
 			
 			digitalPort1array[0]= DIGITAL_MESSAGE | (portNumber & 0xF);
 			digitalPort1array[1]= (byte)portData % 128;
 			digitalPort1array[2]= portData >> 7;
-			if (!(getAvailableDataCountOnUart0()>0) && !port1ChangedFlag && txBufferIndex + 3 < 20)
-			{
-				port1Index = txBufferIndex;
-				txBufferIndex+=3;
-				port1ChangedFlag = true;
-			}else if (!sentPort1LastTime && !port1ChangedFlag && txBufferIndex + 3 < 20)
-			{
-				port1Index = txBufferIndex;
-				txBufferIndex+=3;
-				port1ChangedFlag = true;
-				sentPort1LastTime = true;
-			}
+			//if (!(getAvailableDataCountOnUart0()>0) && !port1ChangedFlag && txBufferIndex + 3 < 20)
+			//{
+				//port1Index = txBufferIndex;
+				//txBufferIndex+=3;
+				//port1ChangedFlag = true;
+			//}else if (!sentPort1LastTime && !port1ChangedFlag && txBufferIndex + 3 < 20)
+			//{
+				//port1Index = txBufferIndex;
+				//txBufferIndex+=3;
+				//port1ChangedFlag = true;
+				//sentPort1LastTime = true;
+			//}
 		}else if(portNumber == 2){
 			
 			digitalPort2array[0]= DIGITAL_MESSAGE | (portNumber & 0xF);
 			digitalPort2array[1]= (byte)portData % 128;
 			digitalPort2array[2]= portData >> 7;
-			if (!(getAvailableDataCountOnUart0()>0) && !port2ChangedFlag && txBufferIndex + 3 < 20)
-			{
-				port2Index = txBufferIndex;
-				txBufferIndex+=3;
-				port2ChangedFlag = true;
-			}else if (!sentPort2LastTime && !port2ChangedFlag && txBufferIndex + 3 < 20)
-			{
-				port2Index = txBufferIndex;
-				txBufferIndex+=3;
-				port2ChangedFlag = true;
-				sentPort2LastTime = true;		
-			}	
+			//if (!(getAvailableDataCountOnUart0()>0) && !port2ChangedFlag && txBufferIndex + 3 < 20)
+			//{
+				//port2Index = txBufferIndex;
+				//txBufferIndex+=3;
+				//port2ChangedFlag = true;
+			//}else if (!sentPort2LastTime && !port2ChangedFlag && txBufferIndex + 3 < 20)
+			//{
+				//port2Index = txBufferIndex;
+				//txBufferIndex+=3;
+				//port2ChangedFlag = true;
+				//sentPort2LastTime = true;		
+			//}	
 	/*write(DIGITAL_MESSAGE | (portNumber & 0xF));
 	write((byte)portData % 128); // Tx bits 0-6
 	write(portData >> 7);  // Tx bits 7-13*/
@@ -395,6 +403,7 @@ void systemReset(void)
   sentPort0LastTime = false;
   sentPort1LastTime = false;
   sentPort2LastTime = false;
+  dataInArduinoBuffer = false;
   port0Index = 0;
   port1Index = 0;
   port2Index = 0;

@@ -18,6 +18,7 @@
 unsigned long currentMillis;
 unsigned long newMillis;
 unsigned long responseInterval =200UL ;
+unsigned long frameGap = 15UL ;
 unsigned long isAliveMillis;
 void setupMillisTimers()
 {
@@ -61,38 +62,13 @@ void sendArduinoToSendData()
 	}
 }
 
-void fillBufferWithPinStates(){
-	
-	if (port0ChangedFlag)
+void fillBufferWithPinStates(byte * portArray,byte portIndex){
+	int j = 0;
+	for (int i = portIndex; i<portIndex+3;i++)
 	{
-		int j = 0;
-		for (int i = port0Index; i<port0Index+3;i++)
-		{
-			UartTx1Buffer[i]=digitalPort0array[j];
-			j++;
-		}
-	}
-	
-	if (port1ChangedFlag)
-	{
-		int j = 0;
-		for (int i = port1Index ; i<port1Index+3;i++)
-		{
-			UartTx1Buffer[i]=digitalPort1array[j];
-			j++;
-		}
-	}
-	
-	if (port2ChangedFlag)
-	{
-		int j = 0;
-		for (int i = port2Index ; i<port2Index+3;i++)
-		{
-			UartTx1Buffer[i]=digitalPort2array[j];
-			j++;
-		}
-	}
-	
+		UartTx1Buffer[i]=portArray[j];
+		j++;
+	}	
 }
 
 int main(void)
@@ -153,26 +129,39 @@ int main(void)
 				}
 			}
 		}
-		if ((newMillis-sentFramesMillis)>15)
+		if ((newMillis-sentFramesMillis)> frameGap)
 		{
 			if ((muteFlag==0)&&uart1WriteFlag)
 			{
-				if (toggelingIndicatorCounter == 0)
+				if (dataInArduinoBuffer)
 				{
-					sentPort0LastTime = true;
-					sentPort1LastTime = true;
-					sentPort2LastTime = true;
-					toggelingIndicatorCounter++;
+					if (toggelingIndicatorCounter == 0)
+					{
+						//sentPort0LastTime = true;
+						//sentPort1LastTime = true;
+						//sentPort2LastTime = true;
+						toggelingIndicatorCounter++;
+					}
+					else
+					{
+						//sentPort0LastTime = false;
+						//sentPort1LastTime = false;
+						//sentPort2LastTime = false;
+						fillBufferWithPinStates(digitalPort0array,0);
+						fillBufferWithPinStates(digitalPort1array,3);
+						fillBufferWithPinStates(digitalPort2array,6);
+						toggelingIndicatorCounter = 0;
+					}	
+				}else{
+					if(txBufferIndex+10 < 20){
+						fillBufferWithPinStates(digitalPort0array,txBufferIndex);
+						txBufferIndex+=3;
+						fillBufferWithPinStates(digitalPort1array,txBufferIndex);
+						txBufferIndex+=3;
+						fillBufferWithPinStates(digitalPort2array,txBufferIndex);
+						txBufferIndex+=3;	
+					}
 				}
-				else 
-				{
-					sentPort0LastTime = false;
-					sentPort1LastTime = false;
-					sentPort2LastTime = false;
-					toggelingIndicatorCounter = 0;
-				}
-				
-				fillBufferWithPinStates();
 				writeOnUart1(0xFF);
 				for (int i=0; i<getUartTx1BufferCounter(); i++)
 				{
@@ -185,9 +174,12 @@ int main(void)
 				}
 				 
 				if(firstFrameToSend) firstFrameToSend = false;
-				setUartTx1BufferCounter(0);
+				if (toggelingIndicatorCounter == 0){
+					setUartTx1BufferCounter(0);	
+				}else{
+					setUartTx1BufferCounter(9);
+				}
 				uart1WriteFlag=false;
-				sentFramesMillis=millis();
 				port0ChangedFlag = false;
 				port1ChangedFlag = false;
 				port2ChangedFlag = false;
@@ -195,6 +187,7 @@ int main(void)
 				port1Index = 0;
 				port2Index = 0;
 				lastFrameSent = true;
+				sentFramesMillis=millis();
 			}
 		}
 	}
