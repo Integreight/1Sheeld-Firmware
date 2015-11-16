@@ -93,6 +93,9 @@ uint8_t UartTx1Buffer[20];
 byte digitalPort0array[3];
 byte digitalPort1array[3];
 byte digitalPort2array[3];
+byte oldDigitalPort0array[3];
+byte oldDigitalPort1array[3];
+byte oldDigitalPort2array[3];
 
 unsigned long sentFramesMillis;
 uint8 txBufferIndex;
@@ -106,16 +109,15 @@ boolean rbResetResponseFlag;
 boolean isAliveResponseFlag;
 boolean notAliveFrameSent;
 boolean firstFrameToSend;
-boolean	lastFrameSent;
 boolean	resendDigitalPort;
 boolean resendIsAlive;
 boolean resendPrintVersion;
 boolean	port0ChangedFlag;
 boolean port1ChangedFlag;
 boolean port2ChangedFlag;
-boolean sentPort0LastTime;
-boolean sentPort1LastTime;
-boolean sentPort2LastTime;
+boolean port0StateEqual;
+boolean port1StateEqual;
+boolean port2StateEqual;
 boolean	dataInArduinoBuffer;
 
 	

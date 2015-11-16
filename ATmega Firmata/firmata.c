@@ -333,7 +333,6 @@ void systemReset(void)
   rbResetResponseFlag=false;
   isAliveResponseFlag=false;
   notAliveFrameSent=false;
-  lastFrameSent = false;
   firstFrameToSend = false;
   resendDigitalPort = false;
   resendIsAlive = false ;
@@ -344,9 +343,9 @@ void systemReset(void)
   port0ChangedFlag = false;
   port1ChangedFlag = false;
   port2ChangedFlag = false;
-  sentPort0LastTime = false;
-  sentPort1LastTime = false;
-  sentPort2LastTime = false;
+  port0StateEqual = true;
+  port1StateEqual = true;
+  port2StateEqual = true;
   dataInArduinoBuffer = false;
   toggelingIndicator=false;
   systemResetCallback();

@@ -62,15 +62,46 @@ void sendArduinoToSendData()
 	}
 }
 
-void fillBufferWithPinStates(byte * portArray){
-	if (txBufferIndex+3<20){
+int checkPortStateEquality(byte * oldPort ,byte * newPort,byte numberOfPins)
+{
+	while(--numberOfPins>0 && oldPort[numberOfPins]==newPort[numberOfPins]);
+	return numberOfPins!=0;
+}
+
+void fillBufferWithPinStates(byte * portArray,byte portNumber){
+	if(portNumber == 0){
+		if(checkPortStateEquality(oldDigitalPort0array,portArray,3)){
+			 port0StateEqual = false;
+			 for(int i = 0 ;i <3 ; i++) oldDigitalPort0array[i]=portArray[i];
+		}else{
+			port0StateEqual = true;
+		}
+	}else if(portNumber == 1){
+		if(checkPortStateEquality(oldDigitalPort1array,portArray,3)){
+			port1StateEqual = false;
+			for(int i = 0 ;i <3 ; i++) oldDigitalPort1array[i]=portArray[i];
+			}else{
+			port1StateEqual = true;
+		}
+	}else if(portNumber == 2){
+		if(checkPortStateEquality(oldDigitalPort2array,portArray,3)){
+			port2StateEqual = false;
+			for(int i = 0 ;i <3 ; i++) oldDigitalPort2array[i]=portArray[i];
+			}else{
+			port2StateEqual = true;
+		}
+	}
+	if (txBufferIndex+3<20 && ((!port0StateEqual)||(!port1StateEqual)||(!port2StateEqual))){
 		int j = 0;
 		for (int i = txBufferIndex; i<txBufferIndex+3 ;i++)
 		{
 			UartTx1Buffer[i]=portArray[j];
 			j++;
 		}
-		txBufferIndex+=3;	
+		txBufferIndex+=3;
+		port0StateEqual = true;
+		port1StateEqual = true;
+		port2StateEqual = true;
 	}	
 }
 
@@ -151,15 +182,15 @@ int main(void)
 					}
 					else
 					{
-						if(port0ChangedFlag)fillBufferWithPinStates(digitalPort0array);
-						if(port1ChangedFlag)fillBufferWithPinStates(digitalPort1array);
-						if(port2ChangedFlag)fillBufferWithPinStates(digitalPort2array);
+						if(port0ChangedFlag)fillBufferWithPinStates(digitalPort0array,0);
+						if(port1ChangedFlag)fillBufferWithPinStates(digitalPort1array,1);
+						if(port2ChangedFlag)fillBufferWithPinStates(digitalPort2array,2);
 						toggelingIndicator= false;
 					}	
 				}else{
-						if(port0ChangedFlag)fillBufferWithPinStates(digitalPort0array);
-						if(port1ChangedFlag)fillBufferWithPinStates(digitalPort1array);
-						if(port2ChangedFlag)fillBufferWithPinStates(digitalPort2array);	
+						if(port0ChangedFlag)fillBufferWithPinStates(digitalPort0array,0);
+						if(port1ChangedFlag)fillBufferWithPinStates(digitalPort1array,1);
+						if(port2ChangedFlag)fillBufferWithPinStates(digitalPort2array,2);	
 				}
 				processUart0Input();
 				writeOnUart1(0xFF);
@@ -167,12 +198,6 @@ int main(void)
 				{
 					writeOnUart1(UartTx1Buffer[i]);
 				}
-				
-				for (int i=0; i<20; i++)
-				{
-					UartTx1Buffer[i]=0x00;
-				}
-				 
 				if(firstFrameToSend) firstFrameToSend = false;
 				setUartTx1BufferCounter(0);	
 				uart1WriteFlag=false;
