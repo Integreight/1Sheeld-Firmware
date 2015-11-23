@@ -251,3 +251,89 @@ int getAvailableDataCountOnSerial1()
 {
 	return getAvailableDataCountOnUart1();	
 }
+
+void setupMillisTimers()
+{
+	TCCR0=(1<<CS00)|(1<<CS01);
+	SET_BIT(TIMSK,TOIE0);
+}
+
+void setupUartLeds()
+{
+	SET_BIT(DDRA,6);
+	SET_BIT(DDRA,7);
+	SET_BIT(PORTA,6);
+	SET_BIT(PORTA,7);
+	TCCR2|=(1<<CS20)|(1<<CS21); // clock prescalar =32
+}
+
+void sendFrameToArduino()
+{
+	byte dataArray[7]={0xff,0x00,0xF0,0x02,0x00,0xff,0x00};
+	for (int i = 0; i < 7; i++)
+	{
+		writeOnUart0(dataArray[i]);
+	}
+}
+
+void sendArduinoToStopData()
+{
+	byte dataArray[3]={0xf0,0x70,0xf7};
+	for (int i = 0; i < 3; i++)
+	{
+		writeOnUart0(dataArray[i]);
+	}
+}
+
+void sendArduinoToSendData()
+{
+	byte dataArray[3]={0xf0,0x71,0xf7};
+	for (int i = 0; i < 3; i++)
+	{
+		writeOnUart0(dataArray[i]);
+	}
+}
+
+int checkPortStateEquality(byte * oldPort ,byte * newPort,byte numberOfPins)
+{
+	while(--numberOfPins>0 && oldPort[numberOfPins]==newPort[numberOfPins]);
+	return numberOfPins!=0;
+}
+
+void fillBufferWithPinStates(byte * portArray,byte portNumber)
+{
+	if(portNumber == 0){
+		if(checkPortStateEquality(oldDigitalPort0array,portArray,3)){
+			port0StateEqual = false;
+			for(int i = 0 ;i <3 ; i++) oldDigitalPort0array[i]=portArray[i];
+			}else{
+			port0StateEqual = true;
+		}
+		}else if(portNumber == 1){
+		if(checkPortStateEquality(oldDigitalPort1array,portArray,3)){
+			port1StateEqual = false;
+			for(int i = 0 ;i <3 ; i++) oldDigitalPort1array[i]=portArray[i];
+			}else{
+			port1StateEqual = true;
+		}
+		}else if(portNumber == 2){
+		if(checkPortStateEquality(oldDigitalPort2array,portArray,3)){
+			port2StateEqual = false;
+			for(int i = 0 ;i <3 ; i++) oldDigitalPort2array[i]=portArray[i];
+			}else{
+			port2StateEqual = true;
+		}
+	}
+	if (txBufferIndex+3<20 && ((!port0StateEqual)||(!port1StateEqual)||(!port2StateEqual))){
+		int j = 0;
+		for (int i = txBufferIndex; i<txBufferIndex+3 ;i++)
+		{
+			UartTx1Buffer[i]=portArray[j];
+			j++;
+		}
+		txBufferIndex+=3;
+		port0StateEqual = true;
+		port1StateEqual = true;
+		port2StateEqual = true;
+	}
+}

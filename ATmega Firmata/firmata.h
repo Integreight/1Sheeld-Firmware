@@ -23,9 +23,9 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include "atmega162_mapping.h"
 #include "sys.h"
 #include "1sheelds_functions.h"
-#include "atmega162_mapping.h"
 #include "uart.h"
 
 #define ONESHEELD_MINOR_FIRMWARE_VERSION   4 
