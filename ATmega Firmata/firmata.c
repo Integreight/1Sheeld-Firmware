@@ -630,12 +630,12 @@ void sendDataToApp()
 			}
 			processUart0Input();
 			writeOnUart1(0xFF);
-			for (int i=0; i<getUartTx1BufferCounter(); i++)
+			for (int i=0; i<txBufferIndex; i++)
 			{
 				writeOnUart1(UartTx1Buffer[i]);
 			}
 			if(firstFrameToSend) firstFrameToSend = false;
-			setUartTx1BufferCounter(0);
+			txBufferIndex = 0;
 			storeDataInSmallBuffer=false;
 			port0StatusChanged = false;
 			port1StatusChanged = false;

@@ -287,8 +287,6 @@ void forceHardReset();
 void printVersion();
 void reportDigialPorts();
 void sendIsAlive();
-int getUartTx1BufferCounter();
-void setUartTx1BufferCounter(int);
 void processDataFromApp();
 void checkBluetoothResetResponse();
 void checkAppConnection();
