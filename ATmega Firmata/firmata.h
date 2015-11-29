@@ -86,7 +86,7 @@ byte previousPINs[TOTAL_PORTS];     // previous 8 bits sent
 byte pinConfig[TOTAL_PINS];         // configuration of every pin
 byte portConfigInputs[TOTAL_PORTS]; // each bit: 1 = pin in INPUT, 0 = anything else
 int pinState[TOTAL_PINS];           // any value that has been written
-uint8 muteFlag;
+uint8 muteFirmata;
 /* input message handling */
 byte waitForData; // this flag says the next serial input will be data
 byte executeMultiByteCommand; // execute this after getting multi-byte data

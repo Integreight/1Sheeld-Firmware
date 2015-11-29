@@ -307,17 +307,37 @@ void checkDataAvailabilityInRx0Buffer()
 
 void checkArduinoRx0BufferSpace()
 {
-	if (arduinoRx0BufferFull && !arduinoStopped)
+	if (getIsArduinoRx0BufferFullFlag() && !arduinoStopped)
 	{
 		sendArduinoToStopData();
-		arduinoRx0BufferFull = false;
+		setIsArduinoRx0BufferFullFlag(false);
 		arduinoStopped = true;
 	}
 	
-	if(arduinoRx0BufferEmpty && arduinoStopped){
+	if(getIsArduinoRx0BufferEmptyFlag() && arduinoStopped){
 		sendArduinoToSendData();
-		arduinoRx0BufferEmpty = false;
+		setIsArduinoRx0BufferEmptyFlag(false);
 		arduinoStopped = false;
 	}
 }
 
+void initialization()
+{
+	sei();
+	setupMillisTimers();
+	initFirmata();
+	systemReset();
+	initUart(1);
+	initUart(0);
+	setUnusedPinsAsOutput();
+	setupUartLeds();
+	requestBluetoothReset();
+	sendIsAlive();
+}
+
+void catchTimeForSomeVariables()
+{
+	bluetoothResponseMillis=millis();
+	isAliveMillis=millis();
+	sentFramesMillis=millis();
+}

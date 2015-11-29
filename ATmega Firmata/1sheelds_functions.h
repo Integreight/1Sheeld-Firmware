@@ -122,3 +122,5 @@ void sendArduinoToStopData();
 void sendArduinoToSendData();
 void checkDataAvailabilityInRx0Buffer();
 void checkArduinoRx0BufferSpace();
+void initialization();
+void catchTimeForSomeVariables();

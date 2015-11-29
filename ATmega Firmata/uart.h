@@ -38,8 +38,8 @@
 #define UART_NO_DATA          -1              /**< no receive data available   */
 #define UART_BUFFER_OVERFLOW  -2              /**< receive ringbuffer overflow */
 
-boolean	arduinoRx0BufferFull ;
-boolean	arduinoRx0BufferEmpty;
+boolean	isArduinoRx0BufferFull ;
+boolean	isArduinoRx0BufferEmpty;
 boolean	arduinoStopped;
 
 /**
@@ -78,6 +78,15 @@ int  readFromUart0();
  * @return the received byte.  
  */
 int  readFromUart1();
+
+boolean getIsArduinoRx0BufferEmptyFlag();
+
+boolean getIsArduinoRx0BufferFullFlag();
+
+void setIsArduinoRx0BufferEmptyFlag(boolean);
+
+void setIsArduinoRx0BufferFullFlag(boolean);
+
 #if UART_RX0_INTERRUPT == ENABLED
 	/**
 	  * @brief Gets the count of the available data in the buffer of serial 1.

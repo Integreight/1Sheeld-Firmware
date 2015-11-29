@@ -45,15 +45,6 @@ void write(unsigned char data)
 	}
 }
 
-int getUartTx1BufferCounter()
-{
-	return txBufferIndex;
-}
-
-void setUartTx1BufferCounter(int value)
-{
-	txBufferIndex = value;
-}
 void sendValueAsTwo7bitBytes(int value)
 {
   write(value & 0b01111111); // LSB
@@ -89,9 +80,7 @@ void forceHardReset()
 void initFirmata()
 {
 	//isPulseInEnabled =0;
-	muteFlag=0;
-	systemReset();
-	initUart(1);// 1 for rx1,tx1 with
+	muteFirmata=0;// 1 for rx1,tx1 with
 }
 
 int available(void)
@@ -294,7 +283,7 @@ void systemReset(void)
   waitForData = 0; // this flag says the next serial input will be data
   executeMultiByteCommand = 0; // execute this after getting multi-byte data
   multiByteChannel = 0; // channel data for multiByteCommands
-  muteFlag=0;
+  muteFirmata=0;
   txBufferIndex = 0;
   storeDataInSmallBuffer=false;
   for(i=0; i<MAX_DATA_BYTES; i++) {
@@ -310,8 +299,8 @@ void systemReset(void)
   resendDigitalPort = false;
   resendIsAlive = false ;
   resendPrintVersion = false;
-  arduinoRx0BufferFull = false ;
-  arduinoRx0BufferEmpty =false ;
+  setIsArduinoRx0BufferFullFlag(false);
+  setIsArduinoRx0BufferEmptyFlag(false) ;
   arduinoStopped =false;
   port0StatusChanged = false;
   port1StatusChanged = false;
@@ -513,11 +502,11 @@ void sysexCallback(byte command, byte argc, byte *argv)
 	{
 		if (argv[0]==0)
 		{
-			muteFlag=0;
+			muteFirmata=0;
 		}
 		else if (argv[0]==1)
 		{
-			muteFlag=1;
+			muteFirmata=1;
 		}
 	}break;
 
@@ -619,7 +608,7 @@ void sendDataToApp()
 {
 	if ((newMillis-sentFramesMillis)> FRAME_GAP)
 	{
-		if ((muteFlag==0)&&storeDataInSmallBuffer)
+		if ((muteFirmata==0)&&storeDataInSmallBuffer)
 		{
 			if (dataInArduinoBuffer)
 			{

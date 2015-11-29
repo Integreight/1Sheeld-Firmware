@@ -16,23 +16,14 @@
 
 int main(void)
 { 
-	setupMillisTimers();
-	sei();
-	initFirmata();
-	setUnusedPinsAsOutput();
-	requestBluetoothReset();
-	bluetoothResponseMillis=millis();
-	isAliveMillis=millis();
-	sentFramesMillis=millis();
-	setupUartLeds();
-    initUart(0);
-	sendIsAlive();
+	initialization();
+	catchTimeForSomeVariables();
 	while (1)
 	{		
+		newMillis = millis();
 		checkDigitalInputs();
 		checkDataAvailabilityInRx0Buffer();		
 		processDataFromApp();
-		newMillis = millis();
 		checkBluetoothResetResponse();
 		checkArduinoRx0BufferSpace();
 		checkAppConnection();

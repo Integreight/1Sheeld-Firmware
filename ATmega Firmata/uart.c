@@ -125,7 +125,7 @@ int readFromUart0(){
 	
 	if (((tmptail + 1) & UART0_RX0_BUFFER_MASK)== UART0_RxHead)
 	{
-		arduinoRx0BufferEmpty = true;
+		isArduinoRx0BufferEmpty = true;
 	}
 	/* get data from receive buffer */
 	data = UART0_RxBuf[tmptail];
@@ -156,7 +156,7 @@ ISR (USART0_RXC_vect){
    tmphead = ( UART0_RxHead + 1) & UART0_RX0_BUFFER_MASK;
    
    if (((tmphead + 128) & UART0_RX0_BUFFER_MASK)== UART0_RxTail){
-	   arduinoRx0BufferFull = true;
+	   isArduinoRx0BufferFull = true;
    }
    
    if ( tmphead == UART0_RxTail ) {
@@ -245,3 +245,25 @@ int readFromUart1(){
 }
 
 #endif
+
+
+
+boolean getIsArduinoRx0BufferEmptyFlag()
+{
+	return isArduinoRx0BufferEmpty;
+}
+
+boolean getIsArduinoRx0BufferFullFlag()
+{
+	return isArduinoRx0BufferFull;
+}
+
+void setIsArduinoRx0BufferEmptyFlag(boolean state)
+{
+	isArduinoRx0BufferEmpty = state;
+}
+
+void setIsArduinoRx0BufferFullFlag(boolean state)
+{
+	isArduinoRx0BufferFull = state;
+}
