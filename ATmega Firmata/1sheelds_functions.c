@@ -294,46 +294,30 @@ void sendArduinoToSendData()
 	}
 }
 
-int checkPortStateEquality(byte * oldPort ,byte * newPort,byte numberOfPins)
+void checkDataAvailabilityInRx0Buffer()
 {
-	while(--numberOfPins>0 && oldPort[numberOfPins]==newPort[numberOfPins]);
-	return numberOfPins!=0;
+	if (getAvailableDataCountOnUart0()>0){
+		dataInArduinoBuffer = true;
+		storeDataInSmallBuffer = true;
+	}
+	else{
+		dataInArduinoBuffer = false;
+	}
 }
 
-void fillBufferWithPinStates(byte * portArray,byte portNumber)
+void checkArduinoRx0BufferSpace()
 {
-	if(portNumber == 0){
-		if(checkPortStateEquality(oldDigitalPort0array,portArray,3)){
-			port0StateEqual = false;
-			for(int i = 0 ;i <3 ; i++) oldDigitalPort0array[i]=portArray[i];
-			}else{
-			port0StateEqual = true;
-		}
-		}else if(portNumber == 1){
-		if(checkPortStateEquality(oldDigitalPort1array,portArray,3)){
-			port1StateEqual = false;
-			for(int i = 0 ;i <3 ; i++) oldDigitalPort1array[i]=portArray[i];
-			}else{
-			port1StateEqual = true;
-		}
-		}else if(portNumber == 2){
-		if(checkPortStateEquality(oldDigitalPort2array,portArray,3)){
-			port2StateEqual = false;
-			for(int i = 0 ;i <3 ; i++) oldDigitalPort2array[i]=portArray[i];
-			}else{
-			port2StateEqual = true;
-		}
+	if (arduinoRx0BufferFull && !arduinoStopped)
+	{
+		sendArduinoToStopData();
+		arduinoRx0BufferFull = false;
+		arduinoStopped = true;
 	}
-	if (txBufferIndex+3<20 && ((!port0StateEqual)||(!port1StateEqual)||(!port2StateEqual))){
-		int j = 0;
-		for (int i = txBufferIndex; i<txBufferIndex+3 ;i++)
-		{
-			UartTx1Buffer[i]=portArray[j];
-			j++;
-		}
-		txBufferIndex+=3;
-		port0StateEqual = true;
-		port1StateEqual = true;
-		port2StateEqual = true;
+	
+	if(arduinoRx0BufferEmpty && arduinoStopped){
+		sendArduinoToSendData();
+		arduinoRx0BufferEmpty = false;
+		arduinoStopped = false;
 	}
 }
+

@@ -37,7 +37,7 @@ void reportDigitalPorts()
 
 void write(unsigned char data)
 {
-	uart1WriteFlag=true;
+	storeDataInSmallBuffer=true;
 	if (txBufferIndex<20)
 	{
 		UartTx1Buffer[txBufferIndex]=data;
@@ -229,22 +229,22 @@ void processInput(void)
 
 void sendDigitalPort(byte portNumber, int portData)
 {	
-	uart1WriteFlag = true;
+	storeDataInSmallBuffer = true;
 	if(portNumber == 0){
 			digitalPort0array[0]= DIGITAL_MESSAGE | (portNumber & 0xF);
 			digitalPort0array[1]= (byte)portData % 128;
 			digitalPort0array[2]= portData >> 7;
-			port0ChangedFlag =true;
+			port0StatusChanged =true;
 		}else if(portNumber == 1){
 			digitalPort1array[0]= DIGITAL_MESSAGE | (portNumber & 0xF);
 			digitalPort1array[1]= (byte)portData % 128;
 			digitalPort1array[2]= portData >> 7;
-			port1ChangedFlag =true;
+			port1StatusChanged =true;
 		}else if(portNumber == 2){
 			digitalPort2array[0]= DIGITAL_MESSAGE | (portNumber & 0xF);
 			digitalPort2array[1]= (byte)portData % 128;
 			digitalPort2array[2]= portData >> 7;
-			port2ChangedFlag=true;
+			port2StatusChanged=true;
 		}
 }
 			
@@ -267,16 +267,6 @@ void requestBluetoothReset()
 	write(END_SYSEX);
 }
 
-boolean getBtResponseFlag()
-{
-	return rbResetResponseFlag;
-}
-
-void setBtResponseFlag(boolean state)
-{
-	rbResetResponseFlag=state;
-}
-
 void sendIsAlive()
 {
 	if((!firstFrameToSend) && (txBufferIndex +3 >20))
@@ -292,24 +282,7 @@ void sendIsAlive()
 	}
 
 }
-void setIsAliveResponseFlag(boolean state)
-{
-	isAliveResponseFlag=state;
-}
-boolean getIsAliveResponseFlag()
-{
-	return isAliveResponseFlag;
-}
 
-boolean getIsAliveFrameNotSent()
-{
-	return notAliveFrameSent;
-}
-
-void setIsAliveFrameNotSent(boolean state)
-{
-	notAliveFrameSent=state;
-}
 //******************************************************************************
 //* Private Methods
 //******************************************************************************
@@ -323,29 +296,29 @@ void systemReset(void)
   multiByteChannel = 0; // channel data for multiByteCommands
   muteFlag=0;
   txBufferIndex = 0;
-  uart1WriteFlag=false;
+  storeDataInSmallBuffer=false;
   for(i=0; i<MAX_DATA_BYTES; i++) {
     storedInputData[i] = 0;
   }
   
   parsingSysex = false;
   sysexBytesRead = 0;
-  rbResetResponseFlag=false;
-  isAliveResponseFlag=false;
-  notAliveFrameSent=false;
+  bluetoothResetResponded=false;
+  isAppResponded=false;
+  isAliveFrameSent=false;
   firstFrameToSend = false;
   resendDigitalPort = false;
   resendIsAlive = false ;
   resendPrintVersion = false;
-  sendArduinoToStopFlag= false ;
-  sendArduinoToSendFlag =false ;
+  arduinoRx0BufferFull = false ;
+  arduinoRx0BufferEmpty =false ;
   arduinoStopped =false;
-  port0ChangedFlag = false;
-  port1ChangedFlag = false;
-  port2ChangedFlag = false;
-  port0StateEqual = true;
-  port1StateEqual = true;
-  port2StateEqual = true;
+  port0StatusChanged = false;
+  port1StatusChanged = false;
+  port2StatusChanged = false;
+  isPort0StatusEqual = true;
+  isPort1StatusEqual = true;
+  isPort2StatusEqual = true;
   dataInArduinoBuffer = false;
   toggelingIndicator=false;
   systemResetCallback();
@@ -550,8 +523,8 @@ void sysexCallback(byte command, byte argc, byte *argv)
 
 	case IS_ALIVE:
 	{
-		isAliveResponseFlag=true;
-		notAliveFrameSent=false;
+		isAppResponded=true;
+		isAliveFrameSent=false;
 		//writeOnUart1(0xf0);
 		//writeOnUart1(IS_ALIVE);
 		//writeOnUart1(0xf7);
@@ -580,7 +553,7 @@ void sysexCallback(byte command, byte argc, byte *argv)
 			resetBluetooth();
 		}
 		
-		rbResetResponseFlag=true;
+		bluetoothResetResponded=true;
 	}break;
 	case REPORT_INPUT_PINS:
 	{
@@ -601,5 +574,128 @@ void systemResetCallback()
 	for (byte i=0; i < TOTAL_PINS; i++)
     {
 		setPinModeCallback(i, INPUT);
+	}
+}
+
+void processDataFromApp()
+{
+	while(available()>0)
+	{
+		processInput();
+	}
+}
+
+void checkBluetoothResetResponse()
+{
+	if (((newMillis-bluetoothResponseMillis)>=RESPONSE_INTERVAL) && (!bluetoothResetResponded) )
+	{
+		resetBluetooth();
+		bluetoothResetResponded = true;
+	}
+}
+
+void checkAppConnection()
+{
+	if (!isAliveFrameSent)
+	{
+		if((newMillis-isAliveMillis)>=APP_RESPONSE_INTERVAL)
+		{
+			if (!isAppResponded)
+			{
+				sendFrameToArduino();
+				isAliveFrameSent = true;
+			}
+			else
+			{
+				sendIsAlive();
+				isAliveMillis=millis();
+				isAppResponded = false;
+			}
+		}
+	}
+}
+
+void sendDataToApp()
+{
+	if ((newMillis-sentFramesMillis)> FRAME_GAP)
+	{
+		if ((muteFlag==0)&&storeDataInSmallBuffer)
+		{
+			if (dataInArduinoBuffer)
+			{
+				if (!toggelingIndicator)
+				{
+					toggelingIndicator=true;
+				}
+				else
+				{
+					if(port0StatusChanged)fillBufferWithPinStates(digitalPort0array,0);
+					if(port1StatusChanged)fillBufferWithPinStates(digitalPort1array,1);
+					if(port2StatusChanged)fillBufferWithPinStates(digitalPort2array,2);
+					toggelingIndicator= false;
+				}
+				}else{
+				if(port0StatusChanged)fillBufferWithPinStates(digitalPort0array,0);
+				if(port1StatusChanged)fillBufferWithPinStates(digitalPort1array,1);
+				if(port2StatusChanged)fillBufferWithPinStates(digitalPort2array,2);
+			}
+			processUart0Input();
+			writeOnUart1(0xFF);
+			for (int i=0; i<getUartTx1BufferCounter(); i++)
+			{
+				writeOnUart1(UartTx1Buffer[i]);
+			}
+			if(firstFrameToSend) firstFrameToSend = false;
+			setUartTx1BufferCounter(0);
+			storeDataInSmallBuffer=false;
+			port0StatusChanged = false;
+			port1StatusChanged = false;
+			port2StatusChanged = false;
+			sentFramesMillis=millis();
+		}
+	}
+}
+
+int checkPortStateEquality(byte * oldPort ,byte * newPort,byte numberOfPins)
+{
+	while(--numberOfPins>0 && oldPort[numberOfPins]==newPort[numberOfPins]);
+	return numberOfPins!=0;
+}
+
+void fillBufferWithPinStates(byte * portArray,byte portNumber)
+{
+	if(portNumber == 0){
+		if(checkPortStateEquality(oldDigitalPort0array,portArray,3)){
+			isPort0StatusEqual = false;
+			for(int i = 0 ;i <3 ; i++) oldDigitalPort0array[i]=portArray[i];
+			}else{
+			isPort0StatusEqual = true;
+		}
+		}else if(portNumber == 1){
+		if(checkPortStateEquality(oldDigitalPort1array,portArray,3)){
+			isPort1StatusEqual = false;
+			for(int i = 0 ;i <3 ; i++) oldDigitalPort1array[i]=portArray[i];
+			}else{
+			isPort1StatusEqual = true;
+		}
+		}else if(portNumber == 2){
+		if(checkPortStateEquality(oldDigitalPort2array,portArray,3)){
+			isPort2StatusEqual = false;
+			for(int i = 0 ;i <3 ; i++) oldDigitalPort2array[i]=portArray[i];
+			}else{
+			isPort2StatusEqual = true;
+		}
+	}
+	if (txBufferIndex+3<20 && ((!isPort0StatusEqual)||(!isPort1StatusEqual)||(!isPort2StatusEqual))){
+		int j = 0;
+		for (int i = txBufferIndex; i<txBufferIndex+3 ;i++)
+		{
+			UartTx1Buffer[i]=portArray[j];
+			j++;
+		}
+		txBufferIndex+=3;
+		isPort0StatusEqual = true;
+		isPort1StatusEqual = true;
+		isPort2StatusEqual = true;
 	}
 }

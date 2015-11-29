@@ -72,6 +72,10 @@
 #define TOTAL_PORTS             5
 #define TOTAL_PINS              20
 
+#define RESPONSE_INTERVAL 200UL
+#define FRAME_GAP	15UL
+#define APP_RESPONSE_INTERVAL	500UL
+
 //variables declarations//
 //byte isPulseInEnabled;
 //byte pinPWM;
@@ -98,26 +102,30 @@ byte oldDigitalPort1array[3];
 byte oldDigitalPort2array[3];
 
 unsigned long sentFramesMillis;
+unsigned long bluetoothResponseMillis;
+unsigned long newMillis;
+unsigned long isAliveMillis;
+
 uint8 txBufferIndex;
 boolean toggelingIndicator;
-boolean uart1WriteFlag;
+boolean storeDataInSmallBuffer;
 /* sysex */
 boolean parsingSysex;
 int sysexBytesRead;
 //for bluetooth reset
-boolean rbResetResponseFlag;
-boolean isAliveResponseFlag;
-boolean notAliveFrameSent;
+boolean bluetoothResetResponded;
+boolean isAppResponded;
+boolean isAliveFrameSent;
 boolean firstFrameToSend;
 boolean	resendDigitalPort;
 boolean resendIsAlive;
 boolean resendPrintVersion;
-boolean	port0ChangedFlag;
-boolean port1ChangedFlag;
-boolean port2ChangedFlag;
-boolean port0StateEqual;
-boolean port1StateEqual;
-boolean port2StateEqual;
+boolean	port0StatusChanged;
+boolean port1StatusChanged;
+boolean port2StatusChanged;
+boolean isPort0StatusEqual;
+boolean isPort1StatusEqual;
+boolean isPort2StatusEqual;
 boolean	dataInArduinoBuffer;
 
 	
@@ -240,20 +248,6 @@ void requestBluetoothReset();
 * @param None.
 * @return boolean. 
 */
-boolean getBtResponseFlag();
-/**
-* @brief sets the flag for Bluetooth reset request.
-* @param state boolean.
-* @return None. 
-*/
-void setBtResponseFlag(boolean);
-
-/* private methods ------------------------------ */
-/**
-* @brief Process sysex messages.
-* @param None.
-* @return None. 
-*/
 void processSysexMessage(void);
 /**
 * @brief Resets the whole firmata and init its variables.
@@ -293,12 +287,12 @@ void forceHardReset();
 void printVersion();
 void reportDigialPorts();
 void sendIsAlive();
-void setIsAliveResponseFlag(boolean state);
-boolean getIsAliveResponseFlag();
-boolean getIsAliveFrameNotSent();
 int getUartTx1BufferCounter();
 void setUartTx1BufferCounter(int);
-void setIsAliveFrameNotSent(boolean state);
-void sendArduinoToSendData();
-void sendArduinoToStop();
+void processDataFromApp();
+void checkBluetoothResetResponse();
+void checkAppConnection();
+void sendDataToApp();
+int checkPortStateEquality(byte * oldPort ,byte * newPort,byte numberOfPins);
+void fillBufferWithPinStates(byte * portArray,byte portNumber);
 #endif /* FIRMATA_H_ */

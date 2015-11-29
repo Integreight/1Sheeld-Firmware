@@ -123,9 +123,9 @@ int readFromUart0(){
 	tmptail = (UART0_RxTail + 1) & UART0_RX0_BUFFER_MASK;
 	UART0_RxTail = tmptail;
 	
-	if (((tmptail + 1) & UART0_RX0_BUFFER_MASK)== UART0_RxHead && arduinoStopped)
+	if (((tmptail + 1) & UART0_RX0_BUFFER_MASK)== UART0_RxHead)
 	{
-		sendArduinoToSendFlag = true;
+		arduinoRx0BufferEmpty = true;
 	}
 	/* get data from receive buffer */
 	data = UART0_RxBuf[tmptail];
@@ -155,8 +155,8 @@ ISR (USART0_RXC_vect){
    /* calculate buffer index */
    tmphead = ( UART0_RxHead + 1) & UART0_RX0_BUFFER_MASK;
    
-   if (((tmphead + 128) & UART0_RX0_BUFFER_MASK)== UART0_RxTail && !arduinoStopped){
-	   sendArduinoToStopFlag = true;
+   if (((tmphead + 128) & UART0_RX0_BUFFER_MASK)== UART0_RxTail){
+	   arduinoRx0BufferFull = true;
    }
    
    if ( tmphead == UART0_RxTail ) {

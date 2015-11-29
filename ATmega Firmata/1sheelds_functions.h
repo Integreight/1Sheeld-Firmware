@@ -21,6 +21,7 @@
 #include "firmata.h"
 #include "gpio.h"
 #include "pwm.h"
+#include "timers.h"
 #include <util/delay.h>
 
 #ifndef SHEELDS_FUNCTIONS_H_
@@ -119,5 +120,5 @@ void setupUartLeds();
 void sendFrameToArduino();
 void sendArduinoToStopData();
 void sendArduinoToSendData();
-int checkPortStateEquality(byte * oldPort ,byte * newPort,byte numberOfPins);
-void fillBufferWithPinStates(byte * portArray,byte portNumber);
+void checkDataAvailabilityInRx0Buffer();
+void checkArduinoRx0BufferSpace();
