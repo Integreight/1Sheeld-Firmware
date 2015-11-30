@@ -112,15 +112,59 @@ void setUnusedPinsAsOutput();
  * @return  None  
  */
 void resetBluetooth();
-
+/**
+ * @brief Setup the millis timers  
+ * @param None
+ * @return  None  
+ */
+void setupMillisTimers();
+/**
+ * @brief Setup the LEDs as UART communication indicator  
+ * @param None
+ * @return  None  
+ */
+void setupUartLeds();
+/**
+ * @brief Send a frame to Arduino that the app is disconected  
+ * @param None
+ * @return  None  
+ */
+void sendFrameToArduino();
+/**
+ * @brief Send a frame to Arduino to stop sending Data  
+ * @param None
+ * @return  None  
+ */
+void sendArduinoToStopData();
+/**
+ * @brief Send a frame to Arduino to start sending Data  
+ * @param None
+ * @return  None  
+ */
+void sendArduinoToSendData();
+/**
+ * @brief Check if there's data in Arduino Buffer  
+ * @param None
+ * @return  None  
+ */
+void checkDataAvailabilityInRx0Buffer();
+/**
+ * @brief Check if the Arduino Buffer is Empty  
+ * @param None
+ * @return  None  
+ */
+void checkArduinoRx0BufferSpace();
+/**
+ * @brief Initializes the Hardware peripherals and setup for communications  
+ * @param None
+ * @return  None  
+ */
+void initialization();
+/**
+ * @brief Grab Time using Millis timer function 
+ * @param None
+ * @return  None  
+ */
+void catchTimeForSomeVariables();
 #endif /* 1SHEELDS_FUNCTIONS_H_ */
 
-void setupMillisTimers();
-void setupUartLeds();
-void sendFrameToArduino();
-void sendArduinoToStopData();
-void sendArduinoToSendData();
-void checkDataAvailabilityInRx0Buffer();
-void checkArduinoRx0BufferSpace();
-void initialization();
-void catchTimeForSomeVariables();

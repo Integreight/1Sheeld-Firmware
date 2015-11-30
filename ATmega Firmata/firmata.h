@@ -274,7 +274,7 @@ void startSysex(void);
 */
 void endSysex(void);
 /**
-* @brief forse the mc to reset itself using the watchdog timer.
+* @brief force the Micro-controller to reset itself using the watchdog timer.
 * @param None.
 * @return None. 
 */
@@ -285,12 +285,52 @@ void forceHardReset();
 * @return None. 
 */
 void printVersion();
+/**
+* @brief Report digital ports status to app.
+* @param None.
+* @return None.
+*/
 void reportDigialPorts();
+/**
+* @brief Sends Frame each 500ms to check if app is connected.
+* @param None.
+* @return None.
+*/
 void sendIsAlive();
+/**
+* @brief Process data coming from application.
+* @param None.
+* @return None.
+*/
 void processDataFromApp();
+/**
+* @brief Check if application responded to the Bluetooth reset request.
+* @param None.
+* @return None.
+*/
 void checkBluetoothResetResponse();
+/**
+* @brief Check if app responded as alive and is still connected.
+* @param None.
+* @return None.
+*/
 void checkAppConnection();
+/**
+* @brief Send Data to the application in 20bytes frame each 15ms.
+* @param None.
+* @return None.
+*/
 void sendDataToApp();
+/**
+* @brief Check digital ports pin state equality.
+* @param oldPort state,newPort state,number of pins.
+* @return None.
+*/
 int checkPortStateEquality(byte * oldPort ,byte * newPort,byte numberOfPins);
+/**
+* @brief Put digital ports values in the 20byte buffer to be sent.
+* @param None.
+* @return None.
+*/
 void fillBufferWithPinStates(byte * portArray,byte portNumber);
 #endif /* FIRMATA_H_ */

@@ -78,13 +78,29 @@ int  readFromUart0();
  * @return the received byte.  
  */
 int  readFromUart1();
-
+/**
+ * @brief Returns true if Arduino buffer is Empty.
+ * @param None.  
+ * @return True or False.  
+ */
 boolean getIsArduinoRx0BufferEmptyFlag();
-
+/**
+ * @brief Returns true if Arduino buffer is Full.
+ * @param None.  
+ * @return True or False.  
+ */
 boolean getIsArduinoRx0BufferFullFlag();
-
+/**
+ * @brief Sets the boolean.
+ * @param True or False.  
+ * @return None.  
+ */
 void setIsArduinoRx0BufferEmptyFlag(boolean);
-
+/**
+* @brief Sets the boolean.
+* @param True or False.
+* @return None.
+*/
 void setIsArduinoRx0BufferFullFlag(boolean);
 
 #if UART_RX0_INTERRUPT == ENABLED
