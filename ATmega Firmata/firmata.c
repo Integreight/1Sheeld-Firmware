@@ -278,20 +278,14 @@ void sendIsAlive()
 // resets the system state upon a SYSTEM_RESET message from the host software
 void systemReset(void)
 {
-  byte i;
-
   waitForData = 0; // this flag says the next serial input will be data
   executeMultiByteCommand = 0; // execute this after getting multi-byte data
   multiByteChannel = 0; // channel data for multiByteCommands
   muteFirmata=0;
   txBufferIndex = 0;
-  storeDataInSmallBuffer=false;
-  for(i=0; i<MAX_DATA_BYTES; i++) {
-    storedInputData[i] = 0;
-  }
-  
-  parsingSysex = false;
   sysexBytesRead = 0;
+  parsingSysex = false;
+  storeDataInSmallBuffer=false;
   bluetoothResetResponded=false;
   isAppResponded=false;
   isAliveFrameSent=false;
@@ -311,7 +305,6 @@ void systemReset(void)
   dataInArduinoBuffer = false;
   toggelingIndicator=false;
   systemResetCallback();
- 
 }
 
 void printVersion()

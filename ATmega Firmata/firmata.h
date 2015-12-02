@@ -92,8 +92,8 @@ byte waitForData; // this flag says the next serial input will be data
 byte executeMultiByteCommand; // execute this after getting multi-byte data
 byte multiByteChannel; // channel data for multiByteCommands
 byte storedInputData[MAX_DATA_BYTES]; // multi-byte data
-//to send frames of 20bytes each 15ms
-uint8_t UartTx1Buffer[20];
+/* Buffering data for IOS version */
+uint8_t UartTx1Buffer[20];	//to send frames of 20bytes each 15ms
 byte digitalPort0array[3];
 byte digitalPort1array[3];
 byte digitalPort2array[3];
