@@ -94,7 +94,8 @@ void processSysexMessage(void)
 		sysexCallback(storedInputData[0], sysexBytesRead - 1, storedInputData + 1);
 }
 
-void processUart0Input(){
+void processUart0Input()
+{
 	
 	if (resendIsAlive)
 	{
@@ -288,14 +289,13 @@ void systemReset(void)
   storeDataInSmallBuffer=false;
   bluetoothResetResponded=false;
   isAppResponded=false;
-  isAliveFrameSent=false;
+  notAliveSentToArduino=false;
   firstFrameToSend = false;
   resendDigitalPort = false;
   resendIsAlive = false ;
   resendPrintVersion = false;
-  setIsArduinoRx0BufferFullFlag(false);
-  setIsArduinoRx0BufferEmptyFlag(false) ;
-  arduinoStopped =false;
+  setIsArduinoRx0BufferEmptyFlag(true) ;
+  arduinoStopped =true;
   port0StatusChanged = false;
   port1StatusChanged = false;
   port2StatusChanged = false;
@@ -506,7 +506,7 @@ void sysexCallback(byte command, byte argc, byte *argv)
 	case IS_ALIVE:
 	{
 		isAppResponded=true;
-		isAliveFrameSent=false;
+		notAliveSentToArduino=false;
 		//writeOnUart1(0xf0);
 		//writeOnUart1(IS_ALIVE);
 		//writeOnUart1(0xf7);
@@ -578,14 +578,14 @@ void checkBluetoothResetResponse()
 
 void checkAppConnection()
 {
-	if (!isAliveFrameSent)
+	if (!notAliveSentToArduino)
 	{
 		if((newMillis-isAliveMillis)>=APP_RESPONSE_INTERVAL)
 		{
 			if (!isAppResponded)
 			{
 				sendFrameToArduino();
-				isAliveFrameSent = true;
+				notAliveSentToArduino = true;
 			}
 			else
 			{
@@ -599,10 +599,8 @@ void checkAppConnection()
 
 void sendDataToApp()
 {
-	if ((newMillis-sentFramesMillis)> FRAME_GAP)
+	if ((newMillis-sentFramesMillis)> FRAME_GAP && (muteFirmata==0) && storeDataInSmallBuffer)
 	{
-		if ((muteFirmata==0)&&storeDataInSmallBuffer)
-		{
 			if (dataInArduinoBuffer)
 			{
 				if (!toggelingIndicator)
@@ -616,7 +614,8 @@ void sendDataToApp()
 					if(port2StatusChanged)fillBufferWithPinStates(digitalPort2array,2);
 					toggelingIndicator= false;
 				}
-				}else{
+				
+			}else{
 				if(port0StatusChanged)fillBufferWithPinStates(digitalPort0array,0);
 				if(port1StatusChanged)fillBufferWithPinStates(digitalPort1array,1);
 				if(port2StatusChanged)fillBufferWithPinStates(digitalPort2array,2);
@@ -633,7 +632,6 @@ void sendDataToApp()
 			port1StatusChanged = false;
 			port2StatusChanged = false;
 			sentFramesMillis=millis();
-		}
 	}
 }
 
@@ -645,7 +643,8 @@ int checkPortStateEquality(byte * oldPort ,byte * newPort,byte numberOfPins)
 
 void fillBufferWithPinStates(byte * portArray,byte portNumber)
 {
-	if(portNumber == 0){
+	if(portNumber == 0)
+	{
 		if(checkPortStateEquality(oldDigitalPort0array,portArray,3)){
 			isPort0StatusEqual = false;
 			for(int i = 0 ;i <3 ; i++) oldDigitalPort0array[i]=portArray[i];

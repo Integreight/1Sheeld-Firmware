@@ -115,7 +115,7 @@ int sysexBytesRead;
 //for bluetooth reset
 boolean bluetoothResetResponded;
 boolean isAppResponded;
-boolean isAliveFrameSent;
+boolean notAliveSentToArduino;
 boolean firstFrameToSend;
 boolean	resendDigitalPort;
 boolean resendIsAlive;

@@ -38,7 +38,6 @@
 #define UART_NO_DATA          -1              /**< no receive data available   */
 #define UART_BUFFER_OVERFLOW  -2              /**< receive ringbuffer overflow */
 
-boolean	isArduinoRx0BufferFull ;
 boolean	isArduinoRx0BufferEmpty;
 boolean	arduinoStopped;
 
@@ -85,23 +84,11 @@ int  readFromUart1();
  */
 boolean getIsArduinoRx0BufferEmptyFlag();
 /**
- * @brief Returns true if Arduino buffer is Full.
- * @param None.  
- * @return True or False.  
- */
-boolean getIsArduinoRx0BufferFullFlag();
-/**
  * @brief Sets the boolean.
  * @param True or False.  
  * @return None.  
  */
 void setIsArduinoRx0BufferEmptyFlag(boolean);
-/**
-* @brief Sets the boolean.
-* @param True or False.
-* @return None.
-*/
-void setIsArduinoRx0BufferFullFlag(boolean);
 
 #if UART_RX0_INTERRUPT == ENABLED
 	/**

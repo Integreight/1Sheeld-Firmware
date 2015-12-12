@@ -307,16 +307,14 @@ void checkDataAvailabilityInRx0Buffer()
 
 void checkArduinoRx0BufferSpace()
 {
-	if (getIsArduinoRx0BufferFullFlag() && !arduinoStopped)
+	if (!getIsArduinoRx0BufferEmptyFlag() && !arduinoStopped)
 	{
 		sendArduinoToStopData();
-		setIsArduinoRx0BufferFullFlag(false);
 		arduinoStopped = true;
 	}
 	
 	if(getIsArduinoRx0BufferEmptyFlag() && arduinoStopped){
 		sendArduinoToSendData();
-		setIsArduinoRx0BufferEmptyFlag(false);
 		arduinoStopped = false;
 	}
 }
