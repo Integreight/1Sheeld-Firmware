@@ -670,14 +670,14 @@ void fillBufferWithPinStates(byte * portArray,byte portNumber)
 			isPort2StatusEqual = true;
 		}
 	}
-	if (txBufferIndex+3<20 && ((!isPort0StatusEqual)||(!isPort1StatusEqual)||(!isPort2StatusEqual))){
+	uint8 bufferIndex = txBufferIndex;
+	if (bufferIndex+3<20 && ((!isPort0StatusEqual)||(!isPort1StatusEqual)||(!isPort2StatusEqual))){
 		int j = 0;
-		for (int i = txBufferIndex; i<txBufferIndex+3 ;i++)
+		for (int i = bufferIndex; i<bufferIndex+3 ;i++)
 		{
-			UartTx1Buffer[i]=portArray[j];
+			write(portArray[j]);
 			j++;
 		}
-		txBufferIndex+=3;
 		isPort0StatusEqual = true;
 		isPort1StatusEqual = true;
 		isPort2StatusEqual = true;
