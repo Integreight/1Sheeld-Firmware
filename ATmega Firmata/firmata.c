@@ -114,21 +114,25 @@ void processUart0Input()
 		
 	if(getAvailableDataCountOnUart0()>0)
 	{
-		int availableBytesInTxBuffer;
-		availableBytesInTxBuffer = ((20-txBufferIndex)-3)/2;
-		if(getAvailableDataCountOnUart0()<availableBytesInTxBuffer){
-			availableBytesInTxBuffer=getAvailableDataCountOnUart0();	
-		}
-		
-		if(!firstFrameToSend){
-			byte arr[availableBytesInTxBuffer];
-			for(int i=0;i<availableBytesInTxBuffer;i++){
-				arr[i]=readFromUart0();
+		if (txBufferIndex <=15)
+		{
+			int availableBytesInTxBuffer;
+			availableBytesInTxBuffer = ((20-txBufferIndex)-3)/2;
+			if(getAvailableDataCountOnUart0()<availableBytesInTxBuffer)
+			{
+				availableBytesInTxBuffer=getAvailableDataCountOnUart0();
 			}
-			sendSysex(UART_DATA,availableBytesInTxBuffer,arr);
-		}	
+			
+			if(!firstFrameToSend)
+			{
+				byte arr[availableBytesInTxBuffer];
+				for(int i=0;i<availableBytesInTxBuffer;i++){
+					arr[i]=readFromUart0();
+				}
+				sendSysex(UART_DATA,availableBytesInTxBuffer,arr);
+			}
+		}
 	}
-	
 }
 
 void processInput(void)
