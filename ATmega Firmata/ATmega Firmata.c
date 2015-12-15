@@ -12,7 +12,6 @@
 */
 
 #include "1sheelds_functions.h"
-#include "firmata.h"
 
 int main(void)
 { 
