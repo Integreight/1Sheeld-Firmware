@@ -155,7 +155,7 @@ ISR (USART0_RXC_vect){
    /* calculate buffer index */
    tmphead = ( UART0_RxHead + 1) & UART0_RX0_BUFFER_MASK;
    
-   if ((((tmphead + 128) & UART0_RX0_BUFFER_MASK)== UART0_RxTail) || (((tmphead + 255) & UART0_RX0_BUFFER_MASK)== UART0_RxTail)){
+   if ((((tmphead + 128) & UART0_RX0_BUFFER_MASK)== UART0_RxTail) /*|| (((tmphead + 255) & UART0_RX0_BUFFER_MASK)== UART0_RxTail)*/){
 	   isArduinoRx0BufferEmpty = false;
    }
    
