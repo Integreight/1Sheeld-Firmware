@@ -260,6 +260,8 @@ void checkDataAvailabilityInRx0Buffer()
 	}
 	else{
 		dataInArduinoBuffer = false;
+		arduinoStopped = true;
+		setIsArduinoRx0BufferEmptyFlag(true);
 	}
 }
 
@@ -272,8 +274,12 @@ void checkArduinoRx0BufferSpace()
 	}
 	
 	if(getIsArduinoRx0BufferEmptyFlag() && arduinoStopped){
-		sendArduinoToSendData();
-		arduinoStopped = false;
+		if(newMillis - latencyToSendFrameForArduino < 1000)
+		{
+			sendArduinoToSendData();
+			arduinoStopped = false;
+			latencyToSendFrameForArduino = millis();	
+		}
 	}
 }
 

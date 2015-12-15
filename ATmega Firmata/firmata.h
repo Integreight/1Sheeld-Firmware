@@ -104,6 +104,7 @@ unsigned long sentFramesMillis;
 unsigned long bluetoothResponseMillis;
 unsigned long newMillis;
 unsigned long isAliveMillis;
+unsigned long latencyToSendFrameForArduino;
 
 uint8 txBufferIndex;
 boolean toggelingIndicator;
