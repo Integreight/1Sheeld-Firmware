@@ -20,7 +20,7 @@ int main(void)
 	while (1)
 	{		
 		newMillis = millis();
-		checkDigitalInputs();
+		checkDigitalPinStatus();
 		checkDataAvailabilityInRx0Buffer();		
 		processDataFromApp();
 		checkBluetoothResetResponse();
