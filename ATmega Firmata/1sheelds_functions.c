@@ -365,7 +365,6 @@ void sendDataToApp()
 				if(port2StatusChanged)fillBufferWithPinStates(digitalPort2array,2);
 		}
 		processUart0Input();
-		writeOnUart1(0xFF);
 		for (int i=0; i<txBufferIndex; i++)
 		{
 			writeOnUart1(UartTx1Buffer[i]);
