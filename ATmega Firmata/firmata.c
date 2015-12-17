@@ -299,6 +299,7 @@ void systemReset(void)
   resendIsAlive = false ;
   resendPrintVersion = false;
   setIsArduinoRx0BufferEmptyFlag(true) ;
+  setIsArduinoRx0BufferOverFlowedFlag(false);
   arduinoStopped =true;
   port0StatusChanged = false;
   port1StatusChanged = false;

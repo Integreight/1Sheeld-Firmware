@@ -27,6 +27,7 @@
 #ifndef SHEELDS_FUNCTIONS_H_
 #define SHEELDS_FUNCTIONS_H_
 
+boolean	arduinoStopped;
 /**
  * @brief Reads the value of a certain digital pin
  * @param pinNumber pin number

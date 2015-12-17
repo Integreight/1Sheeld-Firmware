@@ -38,8 +38,8 @@
 #define UART_NO_DATA          -1              /**< no receive data available   */
 #define UART_BUFFER_OVERFLOW  -2              /**< receive ringbuffer overflow */
 
-boolean	isArduinoRx0BufferEmpty;
-boolean	arduinoStopped;
+volatile boolean	isArduinoRx0BufferEmpty;
+volatile boolean	isArduinoRx0BufferOverFlowed;
 
 /**
  * @brief Initialize the serial port, it's status registers and buffers.
@@ -89,6 +89,18 @@ boolean getIsArduinoRx0BufferEmptyFlag();
  * @return None.  
  */
 void setIsArduinoRx0BufferEmptyFlag(boolean);
+/**
+ * @brief Returns true if Arduino buffer is Empty.
+ * @param None.  
+ * @return True or False.  
+ */
+boolean getIsArduinoRx0BufferOverFlowedFlag();
+/**
+ * @brief Sets the boolean.
+ * @param True or False.  
+ * @return None.  
+ */
+void setIsArduinoRx0BufferOverFlowedFlag(boolean);
 
 #if UART_RX0_INTERRUPT == ENABLED
 	/**

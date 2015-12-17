@@ -267,19 +267,20 @@ void checkDataAvailabilityInRx0Buffer()
 
 void checkArduinoRx0BufferSpace()
 {
-	if (!getIsArduinoRx0BufferEmptyFlag() && !arduinoStopped)
+	if(getIsArduinoRx0BufferOverFlowedFlag())
+	{
+		sendArduinoToStopData();
+		setIsArduinoRx0BufferOverFlowedFlag(false);
+		arduinoStopped=true;
+	}
+	else if (!getIsArduinoRx0BufferEmptyFlag() && !arduinoStopped)
 	{
 		sendArduinoToStopData();
 		arduinoStopped = true;
 	}
-	
-	if(getIsArduinoRx0BufferEmptyFlag() && arduinoStopped){
-		if(newMillis - latencyToSendFrameForArduino < 1000)
-		{
-			sendArduinoToSendData();
-			arduinoStopped = false;
-			latencyToSendFrameForArduino = millis();	
-		}
+	else if(getIsArduinoRx0BufferEmptyFlag() && arduinoStopped){
+		sendArduinoToSendData();
+		arduinoStopped = false;
 	}
 }
 
