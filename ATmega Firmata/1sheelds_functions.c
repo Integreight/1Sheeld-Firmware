@@ -260,8 +260,6 @@ void checkDataAvailabilityInRx0Buffer()
 	}
 	else{
 		dataInArduinoBuffer = false;
-		arduinoStopped = true;
-		setIsArduinoRx0BufferEmptyFlag(true);
 	}
 }
 
