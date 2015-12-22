@@ -11,11 +11,7 @@
 
 */
 
-#include <avr/io.h>
-#include <avr/interrupt.h>
 #include "uart.h"
-#include "timers.h"
-
 
 
 #if UART_RX0_INTERRUPT == ENABLED

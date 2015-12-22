@@ -20,8 +20,12 @@
 
 #ifndef UART_H_
 #define UART_H_
+#include <avr/io.h>
+#include <avr/interrupt.h>
 #include "CommonMacros.h"
 #include "sys.h"
+#include "timers.h"
+
 
 #define UART_RX0_INTERRUPT ENABLED
 #define UART_RX1_INTERRUPT ENABLED 
