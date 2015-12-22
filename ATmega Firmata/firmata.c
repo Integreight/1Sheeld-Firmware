@@ -11,7 +11,7 @@
 
 */
 
-#include "1sheelds_functions.h"
+#include "firmata.h"
 #include <avr/wdt.h>
 #include <util/delay.h>
 
@@ -85,7 +85,7 @@ void initFirmata()
 
 int available(void)
 {
-	return getAvailableDataCountOnSerial1();
+	return getAvailableDataCountOnUart1();
 }
 
 void processSysexMessage(void)
@@ -549,6 +549,14 @@ void sysexCallback(byte command, byte argc, byte *argv)
 	}
 }
 
+void resetBluetooth()
+{
+	//bt reset
+	SET_BIT(DDRE,0);
+	SET_BIT(PORTE,0);
+	_delay_ms(5);
+	CLR_BIT(PORTE,0);
+}
 
 void systemResetCallback()
 {	

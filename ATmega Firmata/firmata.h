@@ -20,12 +20,9 @@
 
 #ifndef FIRMATA_H_
 #define FIRMATA_H_
-
-#include <string.h>
-#include <stdlib.h>
-#include "atmega162_mapping.h"
 #include "sys.h"
 #include "uart.h"
+#include "gpio.h"
 
 #define ONESHEELD_MINOR_FIRMWARE_VERSION   4 
 #define ONESHEELD_MAJOR_FIRMWARE_VERSION   1 
@@ -126,6 +123,7 @@ boolean isPort0StatusEqual;
 boolean isPort1StatusEqual;
 boolean isPort2StatusEqual;
 boolean	dataInArduinoBuffer;
+boolean	arduinoStopped;
 
 	
 /**
@@ -296,4 +294,10 @@ void reportDigialPorts();
 * @return None.
 */
 void sendIsAlive();
+/**
+ * @brief Reset the Bluetooth using software  
+ * @param None
+ * @return  None  
+ */
+void resetBluetooth();
 #endif /* FIRMATA_H_ */
