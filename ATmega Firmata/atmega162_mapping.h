@@ -19,7 +19,6 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "CommonMacros.h"
-#include "gpio.h"
 
 #define digitalPinHasPWM(p)         ( ((p) == 3) || ((p) == 5) || ((p) == 6) ||  (p) == 9||  (p) == 10||  (p) == 11)
 #define IS_PIN_DIGITAL(p)       ((p) >= 2 && (p) <= 19)
@@ -27,13 +26,6 @@
 #define IS_PIN_SPI(p)           ((p) == SS || (p) == MOSI || (p) == MISO || (p) == SCK)
 #define NUM_ANALOG_INPUTS           0
 #define analogInputToDigitalPin(p)  (-1)
-
-
-
-
-#define true 0x1
-#define false 0x0
-
 
 #define NOT_A_PIN 255
 #define NOT_A_PORT 255
