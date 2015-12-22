@@ -22,7 +22,6 @@
 #define UART_H_
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include "CommonMacros.h"
 #include "sys.h"
 #include "timers.h"
 
@@ -81,6 +80,12 @@ int  readFromUart0();
  * @return the received byte.  
  */
 int  readFromUart1();
+/**
+ * @brief Setup the LEDs as UART communication indicator  
+ * @param None
+ * @return  None  
+ */
+void setupUartLeds();
 /**
  * @brief Returns true if Arduino buffer is Empty.
  * @param None.  

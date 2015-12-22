@@ -28,6 +28,14 @@ static volatile uint16_t UART1_RxHead;
 static volatile uint16_t UART1_RxTail;
 #endif 
 
+void setupUartLeds()
+{
+	SET_BIT(DDRA,6);
+	SET_BIT(DDRA,7);
+	SET_BIT(PORTA,6);
+	SET_BIT(PORTA,7);
+	TCCR2|=(1<<CS20)|(1<<CS21); // clock prescalar =32
+}
 
 void initUart(uint8 serialPort){
 	
