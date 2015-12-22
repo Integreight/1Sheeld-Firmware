@@ -17,12 +17,9 @@
  * @author Integreight
  * @version 1.1
  */
-
-#include "CommonMacros.h"
-
-
 #ifndef GPIO_H_
 #define GPIO_H_
+#include "pwm.h"
 #include"sys.h"
 
 
