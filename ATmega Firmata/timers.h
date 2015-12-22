@@ -66,4 +66,10 @@ void enableTxLedBlinking();
  * @return Number of milliseconds since the program started (unsigned long). 
  */
 unsigned long millis();
+/**
+ * @brief Setup the millis timers  
+ * @param None
+ * @return  None  
+ */
+void setupMillisTimers();
 #endif /* TIMERS_H_ */

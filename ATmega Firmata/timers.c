@@ -94,3 +94,9 @@ ISR(TIMER2_OVF_vect)
 
 	count++;
 }
+
+void setupMillisTimers()
+{
+	TCCR0=(1<<CS00)|(1<<CS01);
+	SET_BIT(TIMSK,TOIE0);
+}
