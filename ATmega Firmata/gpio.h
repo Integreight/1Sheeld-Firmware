@@ -19,8 +19,8 @@
  */
 #ifndef GPIO_H_
 #define GPIO_H_
+#include "sys.h"
 #include "pwm.h"
-#include"sys.h"
 
 
 typedef struct

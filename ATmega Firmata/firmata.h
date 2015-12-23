@@ -20,7 +20,6 @@
 
 #ifndef FIRMATA_H_
 #define FIRMATA_H_
-#include "sys.h"
 #include "uart.h"
 #include "gpio.h"
 
