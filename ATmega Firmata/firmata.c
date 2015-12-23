@@ -366,8 +366,6 @@ void checkDigitalInputs(void)
   if (reportPINs[0]) outputPort(0, readPort(0, portConfigInputs[0]), false);
   if (reportPINs[1]) outputPort(1, readPort(1, portConfigInputs[1]), false);
   if (reportPINs[2]) outputPort(2, readPort(2, portConfigInputs[2]), false);
-  //if (reportPINs[3]) outputPort(3, readPort(3, portConfigInputs[3]), false);
-  //if (reportPINs[4]) outputPort(4, readPort(4, portConfigInputs[4]), false);
 }
 
 // -----------------------------------------------------------------------------
@@ -512,27 +510,13 @@ void sysexCallback(byte command, byte argc, byte *argv)
 	{
 		isAppResponded=true;
 		notAliveSentToArduino=false;
-		//writeOnUart1(0xf0);
-		//writeOnUart1(IS_ALIVE);
-		//writeOnUart1(0xf7);
 	}break;
 	
 	case RESET_MICRO:
 	{
 		forceHardReset();
 	}break;
-	
-	/*case PULSE_IN_INIT: 
-	{
-		
-        pinPWM = argv[0];
-		
-		if(argv[1]==0x00)
-		isPulseInEnabled =1;
-		else  if(argv[1]==0x04)
-		isPulseInEnabled =0;
-		
-	}break; */
+
 	case RESET_BLUETOOTH:
 	{
 		if (argv[0]&&!(argv[1]&argv[2]))
@@ -542,6 +526,7 @@ void sysexCallback(byte command, byte argc, byte *argv)
 		
 		bluetoothResetResponded=true;
 	}break;
+	
 	case REPORT_INPUT_PINS:
 	{
 		reportDigitalPorts();

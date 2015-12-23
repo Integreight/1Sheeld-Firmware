@@ -55,8 +55,6 @@
 //uart 
 #define UART_COMMAND 0x65
 #define UART_DATA 0x66
-//#define PULSE_IN_INIT  0x67
-//#define PULSE_IN_DATA 0x68
 #define REGISTER_NOT_SPECIFIED -1
 #define STX 0x02
 #define ETX 0x03
@@ -71,9 +69,7 @@
 #define FRAME_GAP	15UL
 #define APP_RESPONSE_INTERVAL	500UL
 
-//variables declarations//
-//byte isPulseInEnabled;
-//byte pinPWM;
+
 /* digital input ports */
 byte reportPINs[TOTAL_PORTS];       // 1 = report this port, 0 = silence
 byte previousPINs[TOTAL_PORTS];     // previous 8 bits sent
