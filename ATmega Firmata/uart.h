@@ -20,7 +20,7 @@
 
 #ifndef UART_H_
 #define UART_H_
-#include "CommonMacros.h"
+#include "macros.h"
 #include "sys.h"
 
 #define UART_RX0_INTERRUPT ENABLED

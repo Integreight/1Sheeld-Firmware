@@ -1,7 +1,7 @@
 ﻿/*
 
   Project:       1Sheeld Firmware 
-  File:          atmega162_mapping.h
+  File:          mapping.h
 
   Compiler:      avr-gcc 3.4.2
 
@@ -11,13 +11,13 @@
 
 */
 
-#ifndef ATMEGA162_MAPPING_H_
-#define ATMEGA162_MAPPING_H_
+#ifndef MAPPING_H_
+#define MAPPING_H_
 
 #include <avr/pgmspace.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include "CommonMacros.h"
+#include "macros.h"
 #include "gpio.h"
 
 #define F_CPU 7372800UL

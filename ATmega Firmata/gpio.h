@@ -18,7 +18,7 @@
  * @version 1.1
  */
 
-#include "CommonMacros.h"
+#include "macros.h"
 
 
 #ifndef GPIO_H_

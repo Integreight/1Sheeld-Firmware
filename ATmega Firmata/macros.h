@@ -1,7 +1,7 @@
 ﻿/*
 
   Project:       1Sheeld Firmware 
-  File:          CommonMacros.h
+  File:          macros.h
   
   Compiler:      avr-gcc 3.4.2
 
@@ -11,8 +11,8 @@
 
 */
 
-#ifndef COMMON_MACROS_H_
-#define COMMON_MACROS_H_
+#ifndef MACROS_H_
+#define MACROS_H_
 
 #define CLR_BIT(var, bit) var &= (~(1<<bit))
 #define SET_BIT(var, bit) var |= (1<<bit)
