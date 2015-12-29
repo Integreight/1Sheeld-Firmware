@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Atmel Studio Solution File, Format Version 11.00
-Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "ATmega Firmata", "ATmega Firmata\ATmega Firmata.cproj", "{E62DAEFA-537F-447C-8CB2-F01E824DECDE}"
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "firmware", "1Sheeld-Firmware\firmware.cproj", "{E62DAEFA-537F-447C-8CB2-F01E824DECDE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
