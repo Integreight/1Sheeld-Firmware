@@ -110,6 +110,15 @@ lss_release: $(OBJECTDIRRELEASE)/$(TARGET).lss
 sym_release: $(OBJECTDIRRELEASE)/$(TARGET).sym
 bin_release: $(OBJECTDIRRELEASE)/$(TARGET).bin
 
+begin:
+	@echo
+	@echo $(MSG_BEGIN)
+
+end:
+	@echo $(MSG_END)
+	@echo
+
+
 # Display size of file.
 ELFSIZE_DEBUG = $(SIZE) --mcu=$(MCU) --format=avr $(OBJECTDIRDEBUG)/$(TARGET).elf
 ELFSIZE_RELEASE = $(SIZE) --mcu=$(MCU) --format=avr $(OBJECTDIRRELEASE)/$(TARGET).elf
@@ -133,6 +142,15 @@ sizeafter_release:
 # Display compiler version information.
 gccversion : 
 	@$(CC) --version
+
+flashdebug:
+	avrdude -c usbasp -p m162 -P usb -v -u -D -U efuse:w:0xfb:m -U hfuse:w:0xd8:m -U lfuse:w:0xfd:m -u -U flash:w:$(OBJECTDIRDEBUG)/$(TARGET).hex
+	
+flashrelease:
+	avrdude -c usbasp -p m162 -P usb -v -u -D -U efuse:w:0xfb:m -U hfuse:w:0xd8:m -U lfuse:w:0xfd:m -u -U flash:w:$(OBJECTDIRRELEASE)/$(TARGET).hex
+
+erase: 
+	avrdude -c usbasp -p m162 -P usb -v -u -e
 
 # Create final output files (.hex, .eep) from ELF output file.
 $(OBJECTDIRDEBUG)/%.hex: $(OBJECTDIRDEBUG)/%.elf
@@ -241,6 +259,6 @@ clean_list :
 
 # Listing of phony targets.
 .PHONY : all begin finish end sizebefore sizeafter gccversion debug release\
-build elf hex bin eep lss clean clean_list
+build elf hex bin eep lss clean clean_list flashdebug flashrelease erase
 
 
