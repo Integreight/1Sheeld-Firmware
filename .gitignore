@@ -1,5 +1,7 @@
 # Generated Files
-Build/
+build/
+Debug/
+Release/
 
 # Doxygen
 docs/
