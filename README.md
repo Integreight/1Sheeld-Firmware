@@ -1,4 +1,4 @@
-# 1Sheeld Firmware #
+# 1Sheeld Firmware [![Build Status](https://travis-ci.org/Integreight/1Sheeld-Firmware.svg?branch=master)](https://travis-ci.org/Integreight/1Sheeld-Firmware)#
 
 ## Overview ##
 
