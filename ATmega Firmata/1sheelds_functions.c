@@ -22,6 +22,115 @@ void sendFrameToArduino()
 	}
 }
 
+void initialization()
+{
+	sei();
+	setupMillisTimers();
+	initFirmata();
+	systemReset();
+	initUart(1);
+	initUart(0);
+	setUnusedPinsAsOutput();
+	setupUartLeds();
+	requestBluetoothReset();
+	sendIsAlive();
+}
+
+void catchTimeForSomeVariables()
+{
+	bluetoothResponseMillis=millis();
+	isAliveMillis=millis();
+	#ifdef IOS_VERSION
+	sentFramesMillis=millis();
+	#endif // IOS_VERSION
+}
+
+void checkDigitalPinStatus()
+{
+	checkDigitalInputs();
+}
+
+void processDataFromApp()
+{
+	while(available()>0)
+	{
+		processInput();
+	}
+}
+
+void checkBluetoothResetResponse()
+{
+	if (((newMillis-bluetoothResponseMillis)>=RESPONSE_INTERVAL) && (!bluetoothResetResponded) )
+	{
+		resetBluetooth();
+		bluetoothResetResponded = true;
+	}
+}
+
+void checkAppConnection()
+{
+	if (!notAliveSentToArduino)
+	{
+		if((newMillis-isAliveMillis)>=APP_RESPONSE_INTERVAL)
+		{
+			if (!isAppResponded)
+			{
+				sendFrameToArduino();
+				notAliveSentToArduino = true;
+			}
+			else
+			{
+				sendIsAlive();
+				isAliveMillis=millis();
+				isAppResponded = false;
+			}
+		}
+	}
+}
+
+void sendDataToApp()
+{
+	#ifdef IOS_VERSION
+	if ((newMillis-sentFramesMillis)> FRAME_GAP && (muteFirmata==0) && storeDataInSmallBuffer)
+	{
+		if (dataInArduinoBuffer)
+		{
+			if (!toggelingIndicator)
+			{
+				toggelingIndicator=true;
+			}
+			else
+			{
+				if(port0StatusChanged)fillBufferWithPinStates(digitalPort0array,0);
+				if(port1StatusChanged)fillBufferWithPinStates(digitalPort1array,1);
+				if(port2StatusChanged)fillBufferWithPinStates(digitalPort2array,2);
+				toggelingIndicator= false;
+			}	
+		}else{
+		if(port0StatusChanged)fillBufferWithPinStates(digitalPort0array,0);
+		if(port1StatusChanged)fillBufferWithPinStates(digitalPort1array,1);
+		if(port2StatusChanged)fillBufferWithPinStates(digitalPort2array,2);
+		}
+		processUart0Input();
+		for (int i=0; i<txBufferIndex; i++)
+		{
+			writeOnUart1(UartTx1Buffer[i]);
+		}
+		if(firstFrameToSend) firstFrameToSend = false;
+		txBufferIndex = 0;
+		storeDataInSmallBuffer=false;
+		port0StatusChanged = false;
+		port1StatusChanged = false;
+		port2StatusChanged = false;
+		sentFramesMillis=millis();
+	}
+	#else
+	processUart0Input();
+	#endif // IOS_VERSION
+	
+}
+
+#ifdef IOS_VERSION
 void sendArduinoToStopData()
 {
 	byte dataArray[10]={0xFF,0x00,0xF0,0x04,0x01,0xFE,0x01,0xFE,0x01,0x00};
@@ -70,108 +179,6 @@ void checkArduinoRx0BufferSpace()
 	}
 }
 
-void initialization()
-{
-	sei();
-	setupMillisTimers();
-	initFirmata();
-	systemReset();
-	initUart(1);
-	initUart(0);
-	setUnusedPinsAsOutput();
-	setupUartLeds();
-	requestBluetoothReset();
-	sendIsAlive();
-}
-
-void catchTimeForSomeVariables()
-{
-	bluetoothResponseMillis=millis();
-	isAliveMillis=millis();
-	sentFramesMillis=millis();
-}
-
-void checkDigitalPinStatus()
-{
-	checkDigitalInputs();
-}
-
-void processDataFromApp()
-{
-	while(available()>0)
-	{
-		processInput();
-	}
-}
-
-void checkBluetoothResetResponse()
-{
-	if (((newMillis-bluetoothResponseMillis)>=RESPONSE_INTERVAL) && (!bluetoothResetResponded) )
-	{
-		resetBluetooth();
-		bluetoothResetResponded = true;
-	}
-}
-
-void checkAppConnection()
-{
-	if (!notAliveSentToArduino)
-	{
-		if((newMillis-isAliveMillis)>=APP_RESPONSE_INTERVAL)
-		{
-			if (!isAppResponded)
-			{
-				sendFrameToArduino();
-				notAliveSentToArduino = true;
-			}
-			else
-			{
-				sendIsAlive();
-				isAliveMillis=millis();
-				isAppResponded = false;
-			}
-		}
-	}
-}
-
-void sendDataToApp()
-{
-	if ((newMillis-sentFramesMillis)> FRAME_GAP && (muteFirmata==0) && storeDataInSmallBuffer)
-	{
-		if (dataInArduinoBuffer)
-		{
-			if (!toggelingIndicator)
-			{
-				toggelingIndicator=true;
-			}
-			else
-			{
-				if(port0StatusChanged)fillBufferWithPinStates(digitalPort0array,0);
-				if(port1StatusChanged)fillBufferWithPinStates(digitalPort1array,1);
-				if(port2StatusChanged)fillBufferWithPinStates(digitalPort2array,2);
-				toggelingIndicator= false;
-			}
-			
-		}else{
-				if(port0StatusChanged)fillBufferWithPinStates(digitalPort0array,0);
-				if(port1StatusChanged)fillBufferWithPinStates(digitalPort1array,1);
-				if(port2StatusChanged)fillBufferWithPinStates(digitalPort2array,2);
-		}
-		processUart0Input();
-		for (int i=0; i<txBufferIndex; i++)
-		{
-			writeOnUart1(UartTx1Buffer[i]);
-		}
-		if(firstFrameToSend) firstFrameToSend = false;
-		txBufferIndex = 0;
-		storeDataInSmallBuffer=false;
-		port0StatusChanged = false;
-		port1StatusChanged = false;
-		port2StatusChanged = false;
-		sentFramesMillis=millis();
-	}
-}
-
 int checkPortStateEquality(byte * oldPort ,byte * newPort,byte numberOfPins)
 {
 	while(--numberOfPins>0 && oldPort[numberOfPins]==newPort[numberOfPins]);
@@ -216,3 +223,4 @@ void fillBufferWithPinStates(byte * portArray,byte portNumber)
 		isPort2StatusEqual = true;
 	}
 }
+#endif // IOS_VERSION

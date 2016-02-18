@@ -29,30 +29,6 @@
  */
 void sendFrameToArduino();
 /**
- * @brief Send a frame to Arduino to stop sending Data  
- * @param None
- * @return  None  
- */
-void sendArduinoToStopData();
-/**
- * @brief Send a frame to Arduino to start sending Data  
- * @param None
- * @return  None  
- */
-void sendArduinoToSendData();
-/**
- * @brief Check if there's data in Arduino Buffer  
- * @param None
- * @return  None  
- */
-void checkDataAvailabilityInRx0Buffer();
-/**
- * @brief Check if the Arduino Buffer is Empty  
- * @param None
- * @return  None  
- */
-void checkArduinoRx0BufferSpace();
-/**
  * @brief Initializes the Hardware peripherals and setup for communications  
  * @param None
  * @return  None  
@@ -94,6 +70,31 @@ void checkAppConnection();
 * @return None.
 */
 void sendDataToApp();
+#ifdef IOS_VERSION
+/**
+ * @brief Send a frame to Arduino to stop sending Data  
+ * @param None
+ * @return  None  
+ */
+void sendArduinoToStopData();
+/**
+ * @brief Send a frame to Arduino to start sending Data  
+ * @param None
+ * @return  None  
+ */
+void sendArduinoToSendData();
+/**
+ * @brief Check if there's data in Arduino Buffer  
+ * @param None
+ * @return  None  
+ */
+void checkDataAvailabilityInRx0Buffer();
+/**
+ * @brief Check if the Arduino Buffer is Empty  
+ * @param None
+ * @return  None  
+ */
+void checkArduinoRx0BufferSpace();
 /**
 * @brief Check digital ports pin state equality.
 * @param oldPort state,newPort state,number of pins.
@@ -106,5 +107,6 @@ int checkPortStateEquality(byte * oldPort ,byte * newPort,byte numberOfPins);
 * @return None.
 */
 void fillBufferWithPinStates(byte * portArray,byte portNumber);
+#endif // IOS_VERSION
 #endif /* 1SHEELDS_FUNCTIONS_H_ */
 
