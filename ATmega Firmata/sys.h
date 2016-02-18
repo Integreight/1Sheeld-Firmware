@@ -14,6 +14,9 @@
 #ifndef SYS_H_
 #define SYS_H_
 
+
+#define IOS_VERSION
+
 #include <stdint.h>
 typedef uint8_t uint8;
 typedef unsigned short uint16;
