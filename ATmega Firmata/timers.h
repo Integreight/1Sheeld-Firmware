@@ -22,8 +22,6 @@
 #define TIMERSa_H_
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include "sys.h"
-#include "CommonMacros.h"
 #include "atmega162_mapping.h"
 
 
