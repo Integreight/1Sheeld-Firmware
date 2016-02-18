@@ -83,7 +83,14 @@ byte waitForData; // this flag says the next serial input will be data
 byte executeMultiByteCommand; // execute this after getting multi-byte data
 byte multiByteChannel; // channel data for multiByteCommands
 byte storedInputData[MAX_DATA_BYTES]; // multi-byte data
+unsigned long bluetoothResponseMillis;
+unsigned long newMillis;
+unsigned long isAliveMillis;
+
+#ifdef IOS_VERSION
 /* Buffering data for IOS version */
+unsigned long sentFramesMillis;
+uint8_t txBufferIndex;
 uint8_t UartTx1Buffer[20];	//to send frames of 20bytes each 15ms
 byte digitalPort0array[3];
 byte digitalPort1array[3];
@@ -91,22 +98,8 @@ byte digitalPort2array[3];
 byte oldDigitalPort0array[3];
 byte oldDigitalPort1array[3];
 byte oldDigitalPort2array[3];
-
-unsigned long sentFramesMillis;
-unsigned long bluetoothResponseMillis;
-unsigned long newMillis;
-unsigned long isAliveMillis;
-
-uint8 txBufferIndex;
 boolean toggelingIndicator;
 boolean storeDataInSmallBuffer;
-/* sysex */
-boolean parsingSysex;
-int sysexBytesRead;
-//for bluetooth reset
-boolean bluetoothResetResponded;
-boolean isAppResponded;
-boolean notAliveSentToArduino;
 boolean firstFrameToSend;
 boolean	resendDigitalPort;
 boolean resendIsAlive;
@@ -119,7 +112,15 @@ boolean isPort1StatusEqual;
 boolean isPort2StatusEqual;
 boolean	dataInArduinoBuffer;
 boolean	arduinoStopped;
+#endif // IOS_VERSION
 
+/* sysex */
+boolean parsingSysex;
+int sysexBytesRead;
+//for bluetooth reset
+boolean bluetoothResetResponded;
+boolean isAppResponded;
+boolean notAliveSentToArduino;
 	
 /**
 * @brief Initialize Firmata protocal variables.

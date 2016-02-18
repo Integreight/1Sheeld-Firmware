@@ -22,6 +22,7 @@
 
 void reportDigitalPorts()
 {
+	#ifdef IOS_VERSION
 	if((!firstFrameToSend) && txBufferIndex +10 >20)
 	{
 		resendDigitalPort = true;
@@ -32,17 +33,28 @@ void reportDigitalPorts()
 		outputPort(1, readPort(1, portConfigInputs[1]), true);
 		outputPort(2, readPort(2, portConfigInputs[2]), true);
 	}
-
+	#else
+	outputPort(0, readPort(0, portConfigInputs[0]), true);
+	outputPort(1, readPort(1, portConfigInputs[1]), true);
+	outputPort(2, readPort(2, portConfigInputs[2]), true);
+	#endif // IOS_VERSION
 }
 
 void write(unsigned char data)
 {
+	#ifdef IOS_VERSION
 	storeDataInSmallBuffer=true;
 	if (txBufferIndex<20)
 	{
 		UartTx1Buffer[txBufferIndex]=data;
 		txBufferIndex++;
 	}
+	#else
+	if (muteFirmata == 0)
+	{
+		writeOnUart1(data);
+	}
+	#endif // IOS_VERSION
 }
 
 void sendValueAsTwo7bitBytes(int value)
@@ -96,27 +108,27 @@ void processSysexMessage(void)
 
 void processUart0Input()
 {
-	
+	#ifdef IOS_VERSION
 	if (resendIsAlive)
 	{
 		sendIsAlive();
 	}
-				
+	
 	if(resendDigitalPort)
 	{
 		reportDigitalPorts();
 	}
-				
+	
 	if (resendPrintVersion)
 	{
 		printVersion();
 	}
-		
+	
 	if(getAvailableDataCountOnUart0()>0)
 	{
 		if (txBufferIndex <=15)
 		{
-			int availableBytesInTxBuffer;
+			unsigned int availableBytesInTxBuffer;
 			availableBytesInTxBuffer = ((20-txBufferIndex)-3)/2;
 			if(getAvailableDataCountOnUart0()<availableBytesInTxBuffer)
 			{
@@ -126,13 +138,23 @@ void processUart0Input()
 			if(!firstFrameToSend)
 			{
 				byte arr[availableBytesInTxBuffer];
-				for(int i=0;i<availableBytesInTxBuffer;i++){
+				for(unsigned int i=0;i<availableBytesInTxBuffer;i++){
 					arr[i]=readFromUart0();
 				}
 				sendSysex(UART_DATA,availableBytesInTxBuffer,arr);
 			}
 		}
 	}
+	#else
+		unsigned int availableData=getAvailableDataCountOnUart0();
+		if(availableData>0){
+			byte arr[availableData];
+			for(unsigned int i=0;i<availableData;i++){
+				arr[i]=readFromUart0();
+			}
+			sendSysex(UART_DATA,availableData,arr);
+		}
+	#endif // IOS_VERISON	
 }
 
 void processInput(void)
@@ -222,24 +244,31 @@ void processInput(void)
 }
 
 void sendDigitalPort(byte portNumber, int portData)
-{	
+{
+	#ifdef IOS_VERSION
 	storeDataInSmallBuffer = true;
 	if(portNumber == 0){
-			digitalPort0array[0]= DIGITAL_MESSAGE | (portNumber & 0xF);
-			digitalPort0array[1]= (byte)portData % 128;
-			digitalPort0array[2]= portData >> 7;
-			port0StatusChanged =true;
+		digitalPort0array[0]= DIGITAL_MESSAGE | (portNumber & 0xF);
+		digitalPort0array[1]= (byte)portData % 128;
+		digitalPort0array[2]= portData >> 7;
+		port0StatusChanged =true;
 		}else if(portNumber == 1){
-			digitalPort1array[0]= DIGITAL_MESSAGE | (portNumber & 0xF);
-			digitalPort1array[1]= (byte)portData % 128;
-			digitalPort1array[2]= portData >> 7;
-			port1StatusChanged =true;
+		digitalPort1array[0]= DIGITAL_MESSAGE | (portNumber & 0xF);
+		digitalPort1array[1]= (byte)portData % 128;
+		digitalPort1array[2]= portData >> 7;
+		port1StatusChanged =true;
 		}else if(portNumber == 2){
-			digitalPort2array[0]= DIGITAL_MESSAGE | (portNumber & 0xF);
-			digitalPort2array[1]= (byte)portData % 128;
-			digitalPort2array[2]= portData >> 7;
-			port2StatusChanged=true;
-		}
+		digitalPort2array[0]= DIGITAL_MESSAGE | (portNumber & 0xF);
+		digitalPort2array[1]= (byte)portData % 128;
+		digitalPort2array[2]= portData >> 7;
+		port2StatusChanged=true;
+	}
+	#else
+	write(DIGITAL_MESSAGE | (portNumber & 0xF));
+	write((byte)portData % 128); // Tx bits 0-6
+	write(portData >> 7);  // Tx bits 7-13
+	#endif // IOS_VERSION
+	
 }
 			
 void sendSysex(byte command, byte bytec, byte* bytev)
@@ -255,7 +284,9 @@ void sendSysex(byte command, byte bytec, byte* bytev)
 
 void requestBluetoothReset()
 {
+	#ifdef IOS_VERSION
 	firstFrameToSend = true;
+	#endif // IOS_VERSION
 	write(START_SYSEX);
 	write(RESET_BLUETOOTH);
 	write(END_SYSEX);
@@ -263,6 +294,7 @@ void requestBluetoothReset()
 
 void sendIsAlive()
 {
+	#ifdef IOS_VERSION
 	if((!firstFrameToSend) && (txBufferIndex +3 >20))
 	{
 		resendIsAlive = true;
@@ -274,7 +306,12 @@ void sendIsAlive()
 		write(END_SYSEX);
 		resendIsAlive = false;
 	}
-
+	#else
+	write(START_SYSEX);
+	write(IS_ALIVE);
+	write(END_SYSEX);
+	#endif // IOS_VERSION
+	
 }
 
 //******************************************************************************
@@ -287,13 +324,15 @@ void systemReset(void)
   executeMultiByteCommand = 0; // execute this after getting multi-byte data
   multiByteChannel = 0; // channel data for multiByteCommands
   muteFirmata=0;
-  txBufferIndex = 0;
-  sysexBytesRead = 0;
   parsingSysex = false;
-  storeDataInSmallBuffer=false;
+  sysexBytesRead = 0;
   bluetoothResetResponded=false;
   isAppResponded=false;
   notAliveSentToArduino=false;
+  systemResetCallback();
+  #ifdef IOS_VERSION
+  storeDataInSmallBuffer=false;
+  txBufferIndex = 0;
   firstFrameToSend = false;
   resendDigitalPort = false;
   resendIsAlive = false ;
@@ -309,11 +348,12 @@ void systemReset(void)
   isPort2StatusEqual = true;
   dataInArduinoBuffer = false;
   toggelingIndicator=false;
-  systemResetCallback();
+  #endif
 }
 
 void printVersion()
 {
+	#ifdef IOS_VERSION
 	if ((!firstFrameToSend) && (txBufferIndex + 3 >20))
 	{
 		resendPrintVersion = true;
@@ -323,9 +363,13 @@ void printVersion()
 		write(REPORT_VERSION);
 		write(ONESHEELD_MINOR_FIRMWARE_VERSION);
 		write(ONESHEELD_MAJOR_FIRMWARE_VERSION);
-		resendPrintVersion = false;	
+		resendPrintVersion = false;
 	}
-	
+	#else
+	write(REPORT_VERSION);
+	write(ONESHEELD_MINOR_FIRMWARE_VERSION);
+	write(ONESHEELD_MAJOR_FIRMWARE_VERSION);
+	#endif // IOS_VERSION	
 }
 /*==============================================================================
  * FUNCTIONS
