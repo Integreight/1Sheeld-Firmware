@@ -88,3 +88,44 @@ void setPwmDutyCycle(uint8 dutyCycle, uint8 timerNo )
 }
 
 
+void turnOffPWM(uint8 timer)
+{
+	
+	
+	switch(timer)
+	{
+		case TIMER_00 :
+		TCCR0&=3;//for millis
+		break;
+		
+		case TIMER_1A:
+		CLR_BIT(TCCR1A ,COM1A1);
+		TCCR1B|=(1<<WGM12)|(1<<CS10);
+		break;
+		
+		case TIMER_1B:
+		CLR_BIT(TCCR1A ,COM1B1);
+		TCCR1B|=(1<<WGM12)|(1<<CS10);
+		break;
+		
+		case TIMER_02:
+		TCCR2 &= 0x03;
+		break;
+		
+		case TIMER_3A:
+		CLR_BIT(TCCR3A ,COM3A1);
+		TCCR3B|=(1<<WGM32)|(1<<CS30);
+		break;
+		
+		case TIMER_3B:
+		CLR_BIT(TCCR3A ,COM3B1);
+		TCCR3B|=(1<<WGM32)|(1<<CS30);
+		break;
+		
+		default:
+		break;
+		
+	}
+}
+
+

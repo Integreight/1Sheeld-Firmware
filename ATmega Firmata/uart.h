@@ -20,8 +20,10 @@
 
 #ifndef UART_H_
 #define UART_H_
-#include "CommonMacros.h"
-#include "sys.h"
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#include "timers.h"
+
 
 #define UART_RX0_INTERRUPT ENABLED
 #define UART_RX1_INTERRUPT ENABLED 
@@ -37,6 +39,11 @@
 //Error codes
 #define UART_NO_DATA          -1              /**< no receive data available   */
 #define UART_BUFFER_OVERFLOW  -2              /**< receive ringbuffer overflow */
+
+#ifdef IOS_VERSION
+volatile boolean	isArduinoRx0BufferEmpty;
+volatile boolean	isArduinoRx0BufferOverFlowed;
+#endif // IOSVERSION
 
 
 /**
@@ -75,6 +82,40 @@ int  readFromUart0();
  * @return the received byte.  
  */
 int  readFromUart1();
+/**
+ * @brief Setup the LEDs as UART communication indicator  
+ * @param None
+ * @return  None  
+ */
+void setupUartLeds();
+#ifdef IOS_VERSION
+/**
+ * @brief Returns true if Arduino buffer is Empty.
+ * @param None.  
+ * @return True or False.  
+ */
+boolean getIsArduinoRx0BufferEmptyFlag();
+/**
+ * @brief Sets the boolean.
+ * @param True or False.  
+ * @return None.  
+ */
+void setIsArduinoRx0BufferEmptyFlag(boolean);
+/**
+ * @brief Returns true if Arduino buffer is Empty.
+ * @param None.  
+ * @return True or False.  
+ */
+boolean getIsArduinoRx0BufferOverFlowedFlag();
+/**
+ * @brief Sets the boolean.
+ * @param True or False.  
+ * @return None.  
+ */
+void setIsArduinoRx0BufferOverFlowedFlag(boolean);
+
+#endif // IOS_VERSION
+
 #if UART_RX0_INTERRUPT == ENABLED
 	/**
 	  * @brief Gets the count of the available data in the buffer of serial 1.

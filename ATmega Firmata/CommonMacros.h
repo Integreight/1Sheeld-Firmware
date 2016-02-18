@@ -39,12 +39,13 @@
 #define TIMER3B 5
 
 // values
-#define HIGH 0x1
-#define LOW  0x0
+#define HIGH 0x01
+#define LOW  0x00
 
-#define OUTPUT 0x1
-#define INPUT  0x0
+#define OUTPUT 0x01
+#define INPUT  0x00
 
-
+#define true 0x01
+#define false 0x00
 
 #endif /* INCFILE1_H_ */
