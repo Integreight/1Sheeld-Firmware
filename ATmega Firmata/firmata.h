@@ -20,13 +20,8 @@
 
 #ifndef FIRMATA_H_
 #define FIRMATA_H_
-
-#include <string.h>
-#include <stdlib.h>
-#include "sys.h"
-#include "1sheelds_functions.h"
-#include "atmega162_mapping.h"
 #include "uart.h"
+#include "gpio.h"
 
 #define ONESHEELD_MINOR_FIRMWARE_VERSION   5 
 #define ONESHEELD_MAJOR_FIRMWARE_VERSION   1 
@@ -60,8 +55,6 @@
 //uart 
 #define UART_COMMAND 0x65
 #define UART_DATA 0x66
-//#define PULSE_IN_INIT  0x67
-//#define PULSE_IN_DATA 0x68
 #define REGISTER_NOT_SPECIFIED -1
 #define STX 0x02
 #define ETX 0x03
@@ -72,9 +65,11 @@
 #define TOTAL_PORTS             5
 #define TOTAL_PINS              20
 
-//variables declarations//
-//byte isPulseInEnabled;
-//byte pinPWM;
+#define RESPONSE_INTERVAL 200UL
+#define FRAME_GAP	15UL
+#define APP_RESPONSE_INTERVAL	500UL
+
+
 /* digital input ports */
 byte reportPINs[TOTAL_PORTS];       // 1 = report this port, 0 = silence
 byte previousPINs[TOTAL_PORTS];     // previous 8 bits sent
@@ -82,19 +77,50 @@ byte previousPINs[TOTAL_PORTS];     // previous 8 bits sent
 byte pinConfig[TOTAL_PINS];         // configuration of every pin
 byte portConfigInputs[TOTAL_PORTS]; // each bit: 1 = pin in INPUT, 0 = anything else
 int pinState[TOTAL_PINS];           // any value that has been written
-uint8 muteFlag;
+uint8 muteFirmata;
 /* input message handling */
 byte waitForData; // this flag says the next serial input will be data
 byte executeMultiByteCommand; // execute this after getting multi-byte data
 byte multiByteChannel; // channel data for multiByteCommands
 byte storedInputData[MAX_DATA_BYTES]; // multi-byte data
+/* Buffering data for IOS version */
+uint8_t UartTx1Buffer[20];	//to send frames of 20bytes each 15ms
+byte digitalPort0array[3];
+byte digitalPort1array[3];
+byte digitalPort2array[3];
+byte oldDigitalPort0array[3];
+byte oldDigitalPort1array[3];
+byte oldDigitalPort2array[3];
+
+unsigned long sentFramesMillis;
+unsigned long bluetoothResponseMillis;
+unsigned long newMillis;
+unsigned long isAliveMillis;
+
+uint8 txBufferIndex;
+boolean toggelingIndicator;
+boolean storeDataInSmallBuffer;
 /* sysex */
 boolean parsingSysex;
 int sysexBytesRead;
 //for bluetooth reset
-boolean rbResetResponseFlag;
-boolean isAliveResponseFlag;
-boolean notAliveFrameSent;	
+boolean bluetoothResetResponded;
+boolean isAppResponded;
+boolean notAliveSentToArduino;
+boolean firstFrameToSend;
+boolean	resendDigitalPort;
+boolean resendIsAlive;
+boolean resendPrintVersion;
+boolean	port0StatusChanged;
+boolean port1StatusChanged;
+boolean port2StatusChanged;
+boolean isPort0StatusEqual;
+boolean isPort1StatusEqual;
+boolean isPort2StatusEqual;
+boolean	dataInArduinoBuffer;
+boolean	arduinoStopped;
+
+	
 /**
 * @brief Initialize Firmata protocal variables.
 * @param None.
@@ -207,20 +233,6 @@ void requestBluetoothReset();
 * @param None.
 * @return boolean. 
 */
-boolean getBtResponseFlag();
-/**
-* @brief sets the flag for Bluetooth reset request.
-* @param state boolean.
-* @return None. 
-*/
-void setBtResponseFlag(boolean);
-
-/* private methods ------------------------------ */
-/**
-* @brief Process sysex messages.
-* @param None.
-* @return None. 
-*/
 void processSysexMessage(void);
 /**
 * @brief Resets the whole firmata and init its variables.
@@ -247,7 +259,7 @@ void startSysex(void);
 */
 void endSysex(void);
 /**
-* @brief forse the mc to reset itself using the watchdog timer.
+* @brief force the Micro-controller to reset itself using the watchdog timer.
 * @param None.
 * @return None. 
 */
@@ -258,10 +270,22 @@ void forceHardReset();
 * @return None. 
 */
 void printVersion();
-
+/**
+* @brief Report digital ports status to app.
+* @param None.
+* @return None.
+*/
+void reportDigialPorts();
+/**
+* @brief Sends Frame each 500ms to check if app is connected.
+* @param None.
+* @return None.
+*/
 void sendIsAlive();
-void setIsAliveResponseFlag(boolean state);
-boolean getIsAliveResponseFlag();
-boolean getIsAliveFrameNotSent();
-void setIsAliveFrameNotSent(boolean state);
+/**
+ * @brief Reset the Bluetooth using software  
+ * @param None
+ * @return  None  
+ */
+void resetBluetooth();
 #endif /* FIRMATA_H_ */

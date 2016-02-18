@@ -19,13 +19,32 @@
 //* Support Functions
 //******************************************************************************
 
+
+void reportDigitalPorts()
+{
+	if((!firstFrameToSend) && txBufferIndex +10 >20)
+	{
+		resendDigitalPort = true;
+	}else
+	{
+		resendDigitalPort =false;
+		outputPort(0, readPort(0, portConfigInputs[0]), true);
+		outputPort(1, readPort(1, portConfigInputs[1]), true);
+		outputPort(2, readPort(2, portConfigInputs[2]), true);
+	}
+
+}
+
 void write(unsigned char data)
 {
-	if (muteFlag==0)
+	storeDataInSmallBuffer=true;
+	if (txBufferIndex<20)
 	{
-		writeOnUart1(data);
+		UartTx1Buffer[txBufferIndex]=data;
+		txBufferIndex++;
 	}
 }
+
 void sendValueAsTwo7bitBytes(int value)
 {
   write(value & 0b01111111); // LSB
@@ -61,14 +80,12 @@ void forceHardReset()
 void initFirmata()
 {
 	//isPulseInEnabled =0;
-	muteFlag=0;
-	systemReset();
-	initUart(1);// 1 for rx1,tx1 with
+	muteFirmata=0;// 1 for rx1,tx1 with
 }
 
 int available(void)
 {
-	return getAvailableDataCountOnSerial1();
+	return getAvailableDataCountOnUart1();
 }
 
 void processSysexMessage(void)
@@ -77,14 +94,44 @@ void processSysexMessage(void)
 		sysexCallback(storedInputData[0], sysexBytesRead - 1, storedInputData + 1);
 }
 
-void processUart0Input(){
-	uint16_t availableData=getAvailableDataCountOnSerial0();
-	if(availableData>0){
-		byte arr[availableData];
-		for(uint16_t i=0;i<availableData;i++){
-			arr[i]=readFromUart0();
+void processUart0Input()
+{
+	
+	if (resendIsAlive)
+	{
+		sendIsAlive();
+	}
+				
+	if(resendDigitalPort)
+	{
+		reportDigitalPorts();
+	}
+				
+	if (resendPrintVersion)
+	{
+		printVersion();
+	}
+		
+	if(getAvailableDataCountOnUart0()>0)
+	{
+		if (txBufferIndex <=15)
+		{
+			int availableBytesInTxBuffer;
+			availableBytesInTxBuffer = ((20-txBufferIndex)-3)/2;
+			if(getAvailableDataCountOnUart0()<availableBytesInTxBuffer)
+			{
+				availableBytesInTxBuffer=getAvailableDataCountOnUart0();
+			}
+			
+			if(!firstFrameToSend)
+			{
+				byte arr[availableBytesInTxBuffer];
+				for(int i=0;i<availableBytesInTxBuffer;i++){
+					arr[i]=readFromUart0();
+				}
+				sendSysex(UART_DATA,availableBytesInTxBuffer,arr);
+			}
 		}
-		sendSysex(UART_DATA,availableData,arr);
 	}
 }
 
@@ -175,12 +222,26 @@ void processInput(void)
 }
 
 void sendDigitalPort(byte portNumber, int portData)
-{
-	write(DIGITAL_MESSAGE | (portNumber & 0xF));
-	write((byte)portData % 128); // Tx bits 0-6
-	write(portData >> 7);  // Tx bits 7-13
+{	
+	storeDataInSmallBuffer = true;
+	if(portNumber == 0){
+			digitalPort0array[0]= DIGITAL_MESSAGE | (portNumber & 0xF);
+			digitalPort0array[1]= (byte)portData % 128;
+			digitalPort0array[2]= portData >> 7;
+			port0StatusChanged =true;
+		}else if(portNumber == 1){
+			digitalPort1array[0]= DIGITAL_MESSAGE | (portNumber & 0xF);
+			digitalPort1array[1]= (byte)portData % 128;
+			digitalPort1array[2]= portData >> 7;
+			port1StatusChanged =true;
+		}else if(portNumber == 2){
+			digitalPort2array[0]= DIGITAL_MESSAGE | (portNumber & 0xF);
+			digitalPort2array[1]= (byte)portData % 128;
+			digitalPort2array[2]= portData >> 7;
+			port2StatusChanged=true;
+		}
 }
-
+			
 void sendSysex(byte command, byte bytec, byte* bytev)
 {
 	byte i;
@@ -194,76 +255,77 @@ void sendSysex(byte command, byte bytec, byte* bytev)
 
 void requestBluetoothReset()
 {
+	firstFrameToSend = true;
 	write(START_SYSEX);
 	write(RESET_BLUETOOTH);
 	write(END_SYSEX);
 }
 
-boolean getBtResponseFlag()
-{
-	return rbResetResponseFlag;
-}
-
-void setBtResponseFlag(boolean state)
-{
-	rbResetResponseFlag=state;
-}
-
 void sendIsAlive()
 {
-	write(START_SYSEX);
-	write(IS_ALIVE);
-	write(END_SYSEX);
-}
-void setIsAliveResponseFlag(boolean state)
-{
-	isAliveResponseFlag=state;
-}
-boolean getIsAliveResponseFlag()
-{
-	return isAliveResponseFlag;
+	if((!firstFrameToSend) && (txBufferIndex +3 >20))
+	{
+		resendIsAlive = true;
+	}
+	else
+	{
+		write(START_SYSEX);
+		write(IS_ALIVE);
+		write(END_SYSEX);
+		resendIsAlive = false;
+	}
+
 }
 
-boolean getIsAliveFrameNotSent()
-{
-	return notAliveFrameSent;
-}
-
-void setIsAliveFrameNotSent(boolean state)
-{
-	notAliveFrameSent=state;
-}
 //******************************************************************************
 //* Private Methods
 //******************************************************************************
 // resets the system state upon a SYSTEM_RESET message from the host software
 void systemReset(void)
 {
-  byte i;
-
   waitForData = 0; // this flag says the next serial input will be data
   executeMultiByteCommand = 0; // execute this after getting multi-byte data
   multiByteChannel = 0; // channel data for multiByteCommands
-  muteFlag=0;
-
-  for(i=0; i<MAX_DATA_BYTES; i++) {
-    storedInputData[i] = 0;
-  }
-
-  parsingSysex = false;
+  muteFirmata=0;
+  txBufferIndex = 0;
   sysexBytesRead = 0;
-  rbResetResponseFlag=false;
-  isAliveResponseFlag=false;
-  notAliveFrameSent=false;
+  parsingSysex = false;
+  storeDataInSmallBuffer=false;
+  bluetoothResetResponded=false;
+  isAppResponded=false;
+  notAliveSentToArduino=false;
+  firstFrameToSend = false;
+  resendDigitalPort = false;
+  resendIsAlive = false ;
+  resendPrintVersion = false;
+  setIsArduinoRx0BufferEmptyFlag(true) ;
+  setIsArduinoRx0BufferOverFlowedFlag(false);
+  arduinoStopped =false;
+  port0StatusChanged = false;
+  port1StatusChanged = false;
+  port2StatusChanged = false;
+  isPort0StatusEqual = true;
+  isPort1StatusEqual = true;
+  isPort2StatusEqual = true;
+  dataInArduinoBuffer = false;
+  toggelingIndicator=false;
   systemResetCallback();
- 
 }
 
 void printVersion()
 {
-	write(REPORT_VERSION);
-	write(ONESHEELD_MINOR_FIRMWARE_VERSION);
-	write(ONESHEELD_MAJOR_FIRMWARE_VERSION);
+	if ((!firstFrameToSend) && (txBufferIndex + 3 >20))
+	{
+		resendPrintVersion = true;
+	}
+	else
+	{
+		write(REPORT_VERSION);
+		write(ONESHEELD_MINOR_FIRMWARE_VERSION);
+		write(ONESHEELD_MAJOR_FIRMWARE_VERSION);
+		resendPrintVersion = false;	
+	}
+	
 }
 
 /*==============================================================================
@@ -294,8 +356,6 @@ void checkDigitalInputs(void)
   if (reportPINs[0]) outputPort(0, readPort(0, portConfigInputs[0]), false);
   if (reportPINs[1]) outputPort(1, readPort(1, portConfigInputs[1]), false);
   if (reportPINs[2]) outputPort(2, readPort(2, portConfigInputs[2]), false);
-  //if (reportPINs[3]) outputPort(3, readPort(3, portConfigInputs[3]), false);
-  //if (reportPINs[4]) outputPort(4, readPort(4, portConfigInputs[4]), false);
 }
 
 // -----------------------------------------------------------------------------
@@ -428,39 +488,25 @@ void sysexCallback(byte command, byte argc, byte *argv)
 	{
 		if (argv[0]==0)
 		{
-			muteFlag=0;
+			muteFirmata=0;
 		}
 		else if (argv[0]==1)
 		{
-			muteFlag=1;
+			muteFirmata=1;
 		}
 	}break;
 
 	case IS_ALIVE:
 	{
-		isAliveResponseFlag=true;
-		notAliveFrameSent=false;
-		//writeOnUart1(0xf0);
-		//writeOnUart1(IS_ALIVE);
-		//writeOnUart1(0xf7);
+		isAppResponded=true;
+		notAliveSentToArduino=false;
 	}break;
 	
 	case RESET_MICRO:
 	{
 		forceHardReset();
 	}break;
-	
-	/*case PULSE_IN_INIT: 
-	{
-		
-        pinPWM = argv[0];
-		
-		if(argv[1]==0x00)
-		isPulseInEnabled =1;
-		else  if(argv[1]==0x04)
-		isPulseInEnabled =0;
-		
-	}break; */
+
 	case RESET_BLUETOOTH:
 	{
 		if (argv[0]&&!(argv[1]&argv[2]))
@@ -468,16 +514,25 @@ void sysexCallback(byte command, byte argc, byte *argv)
 			resetBluetooth();
 		}
 		
-		rbResetResponseFlag=true;
+		bluetoothResetResponded=true;
 	}break;
+	
 	case REPORT_INPUT_PINS:
 	{
-		outputPort(0, readPort(0, portConfigInputs[0]), true);
-	    outputPort(1, readPort(1, portConfigInputs[1]), true);
-		outputPort(2, readPort(2, portConfigInputs[2]), true);
+		reportDigitalPorts();
 	}break;
 	}
 }
+
+void resetBluetooth()
+{
+	//bt reset
+	SET_BIT(DDRE,0);
+	SET_BIT(PORTE,0);
+	_delay_ms(5);
+	CLR_BIT(PORTE,0);
+}
+
 void systemResetCallback()
 {	
 	for (byte i=0; i < TOTAL_PORTS; i++) {

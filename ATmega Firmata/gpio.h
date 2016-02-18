@@ -17,13 +17,10 @@
  * @author Integreight
  * @version 1.1
  */
-
-#include "CommonMacros.h"
-
-
 #ifndef GPIO_H_
 #define GPIO_H_
-#include"sys.h"
+#include "sys.h"
+#include "pwm.h"
 
 
 typedef struct
@@ -67,5 +64,53 @@ uint8 getPinValue(unsigned int pid,uint8 pinNum);
  * @return None. 
  */
 void setPinValue(uint8 data,unsigned int pid,uint8 pinNum);
+/**
+ * @brief Reads the value of a certain digital pin
+ * @param pinNumber pin number
+ * @return current state of the pin 
+ */
+uint8  digitalRead(uint8);
+/**
+ * @brief Output a value to a digital pin
+ * @param pinNumber pin number
+ * @param value HIGH or LOW
+ * @return None 
+ */
+void   digitalWrite(uint8, uint8);
+/**
+ * @brief Sets the pin whether it's Input, Output or PWM
+ * @param pinNumber pin number
+ * @param pinMode Mode (INPUT/OUTPUT/PWM)
+ * @return None 
+ */
+void   setPinMode(uint8 , uint8);
+/**
+ * @brief Sets the duty cycle of a PWM pin.
+ * @param pinNumber pwm pin number
+ * @param val duty cycle 0 --> 255
+ * @return None 
+ */
+void   analogWrite(uint8, int);
+/**
+ * @brief output a value to the whole port 
+ * @param port port number 
+ * @param value the value of the whole port to be output
+ * @param bitmask masks the port to protect some pins and to retain their values 
+ * @return None  
+ */
+void   writePort(byte, byte, byte);
+/**
+ * @brief reads the whole port value 
+ * @param port port number to be red 
+ * @param bitmask masks the port to protect some pins and to retain their values 
+ * @return None  
+ */
+uint8  readPort(byte, byte);
+/**
+ * @brief Sets all unused pins to be Output 
+ * @param None
+ * @return  None  
+ */
+void setUnusedPinsAsOutput();
 
 #endif /* GPIO_H_ */

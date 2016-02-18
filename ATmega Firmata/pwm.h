@@ -18,11 +18,15 @@
  * @version 1.1
  */
 
-#include <avr/io.h>
-#include "sys.h"
+
 
 #ifndef PWM_H_
 #define PWM_H_
+#include <avr/io.h>
+#include "sys.h"
+#include "CommonMacros.h"
+#include "atmega162_mapping.h"
+
 #define TIMER_00		0
 #define TIMER_1A		1
 #define TIMER_1B		2
@@ -44,6 +48,12 @@ void initPwm(uint8);
  * @return None. 
  */
 void setPwmDutyCycle(uint8, uint8);
+/**
+ * @brief turning of the certain timers used by the library 
+ * @param timer number of the timer to be turned off  
+ * @return  None  
+ */
+void turnOffPWM(uint8);
 
 
 
