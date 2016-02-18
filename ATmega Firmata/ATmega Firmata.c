@@ -21,10 +21,12 @@ int main(void)
 	{		
 		newMillis = millis();
 		checkDigitalPinStatus();
-		checkDataAvailabilityInRx0Buffer();		
+		#ifdef IOS_VERSION
+		checkDataAvailabilityInRx0Buffer(); 
+		checkArduinoRx0BufferSpace();
+		#endif // IOS_VERSION
 		processDataFromApp();
 		checkBluetoothResetResponse();
-		checkArduinoRx0BufferSpace();
 		checkAppConnection();
 		sendDataToApp();
 	}
