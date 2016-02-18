@@ -1,3 +1,6 @@
+## v1.5 (Major:1, Minor:5) (November 8, 2015)
+ - Prepared the firmware to receive the new disconnection frame.
+ 
 ## v1.4 (Major:1, Minor:4) (October 13, 2015)
  - Increased the RX1 buffer size to 256 instead of 64.
  - Made some required checks before processing app frames.
