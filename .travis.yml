@@ -1,0 +1,10 @@
+language: c
+before_install:
+  - sudo apt-get update -qq
+install:
+  - sudo apt-get install -y -qq gcc-avr binutils-avr avr-libc
+script: make
+notifications:
+  email:
+    on_success: change
+    on_failure: change

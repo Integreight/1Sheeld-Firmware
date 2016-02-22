@@ -1,7 +1,7 @@
 ﻿/*
 
   Project:       1Sheeld Firmware 
-  File:          1sheelds_functions.h
+  File:          onesheeld.h
 
   Compiler:      avr-gcc 3.4.2
 
@@ -12,13 +12,14 @@
 */
 
 /**
- * @file 1sheelds_functions.h
+ * @file onesheeld.h
  * @brief This library contains an Arduino abstraction layer to mimic Arduino methods and a set of 1Sheeld related methods.
  * @author Integreight
  * @version 1.1
  */ 
-#ifndef SHEELDS_FUNCTIONS_H_
-#define SHEELDS_FUNCTIONS_H_
+
+#ifndef ONESHEELD_H_
+#define ONESHEELD_H_
 
 #include "firmata.h"
 

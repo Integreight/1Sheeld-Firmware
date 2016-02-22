@@ -1,6 +1,19 @@
-*.atsuo
-Debug
-Release
+# Generated Files
+build/
+Debug/
+Release/
 
-#Doxygen
+# Doxygen
 docs/
+
+# Atmel Studio
+*.atsln
+*.cproj
+*.atsuo
+*.xml
+
+# OSX
+.DS_Store
+
+# Windows
+thumbs.db
