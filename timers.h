@@ -18,11 +18,11 @@
  * @version 1.1
  */
 
-#ifndef TIMERSa_H_
-#define TIMERSa_H_
+#ifndef TIMERS_H_
+#define TIMERS_H_
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include "atmega162_mapping.h"
+#include "mapping.h"
 
 
 /** 

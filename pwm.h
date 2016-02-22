@@ -23,7 +23,7 @@
 #ifndef PWM_H_
 #define PWM_H_
 #include <avr/io.h>
-#include "atmega162_mapping.h"
+#include "mapping.h"
 
 #define TIMER_00		0
 #define TIMER_1A		1

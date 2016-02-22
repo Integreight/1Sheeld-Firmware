@@ -24,7 +24,6 @@
 #include <avr/interrupt.h>
 #include "timers.h"
 
-
 #define UART_RX0_INTERRUPT ENABLED
 #define UART_RX1_INTERRUPT ENABLED 
 #define UART_RX1_BUFFER_SIZE     256

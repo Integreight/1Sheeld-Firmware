@@ -1,7 +1,7 @@
 /*
 
   Project:       1Sheeld Firmware 
-  File:          ATmega Firmata.cpp
+  File:          main.cpp
 
   Compiler:      avr-gcc 3.4.2
 
@@ -11,7 +11,7 @@
 
 */
 
-#include "1sheelds_functions.h"
+#include "onesheeld.h"
 
 int main(void)
 { 
