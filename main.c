@@ -21,10 +21,10 @@ int main(void)
 	{		
 		newMillis = millis();
 		checkDigitalPinStatus();
-		#ifdef ONE_SHEELD_PLUS
+		#ifdef PLUS_BOARD
 		checkDataAvailabilityInRx0Buffer(); 
 		checkArduinoRx0BufferSpace();
-		#endif // ONE_SHEELD_PLUS
+		#endif // PLUS_BOARD
 		processDataFromApp();
 		checkBluetoothResetResponse();
 		checkAppConnection();

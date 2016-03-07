@@ -22,7 +22,7 @@
 
 void reportDigitalPorts()
 {
-	#ifdef ONE_SHEELD_PLUS
+	#ifdef PLUS_BOARD
 	if((!firstFrameToSend) && txBufferIndex +10 >20)
 	{
 		resendDigitalPort = true;
@@ -33,7 +33,7 @@ void reportDigitalPorts()
 		outputPort(1, readPort(1, portConfigInputs[1]), true);
 		outputPort(2, readPort(2, portConfigInputs[2]), true);
 	}
-	#elif defined(ONE_SHEELD_CLASSIC)
+	#elif defined(CLASSIC_BOARD)
 	outputPort(0, readPort(0, portConfigInputs[0]), true);
 	outputPort(1, readPort(1, portConfigInputs[1]), true);
 	outputPort(2, readPort(2, portConfigInputs[2]), true);
@@ -42,14 +42,14 @@ void reportDigitalPorts()
 
 void write(unsigned char data)
 {
-	#ifdef ONE_SHEELD_PLUS
+	#ifdef PLUS_BOARD
 	storeDataInSmallBuffer=true;
 	if (txBufferIndex<20)
 	{
 		UartTx1Buffer[txBufferIndex]=data;
 		txBufferIndex++;
 	}
-	#elif defined(ONE_SHEELD_CLASSIC)
+	#elif defined(CLASSIC_BOARD)
 	if (muteFirmata == 0)
 	{
 		writeOnUart1(data);
@@ -108,7 +108,7 @@ void processSysexMessage(void)
 
 void processUart0Input()
 {
-	#ifdef ONE_SHEELD_PLUS
+	#ifdef PLUS_BOARD
 	if (resendIsAlive)
 	{
 		sendIsAlive();
@@ -145,7 +145,7 @@ void processUart0Input()
 			}
 		}
 	}
-	#elif defined(ONE_SHEELD_CLASSIC)
+	#elif defined(CLASSIC_BOARD)
 		unsigned int availableData=getAvailableDataCountOnUart0();
 		if(availableData>0){
 			byte arr[availableData];
@@ -245,7 +245,7 @@ void processInput(void)
 
 void sendDigitalPort(byte portNumber, int portData)
 {
-	#ifdef ONE_SHEELD_PLUS
+	#ifdef PLUS_BOARD
 	storeDataInSmallBuffer = true;
 	if(portNumber == 0){
 		digitalPort0array[0]= DIGITAL_MESSAGE | (portNumber & 0xF);
@@ -263,7 +263,7 @@ void sendDigitalPort(byte portNumber, int portData)
 		digitalPort2array[2]= portData >> 7;
 		port2StatusChanged=true;
 	}
-	#elif defined(ONE_SHEELD_CLASSIC)
+	#elif defined(CLASSIC_BOARD)
 	write(DIGITAL_MESSAGE | (portNumber & 0xF));
 	write((byte)portData % 128); // Tx bits 0-6
 	write(portData >> 7);  // Tx bits 7-13
@@ -284,7 +284,7 @@ void sendSysex(byte command, byte bytec, byte* bytev)
 
 void requestBluetoothReset()
 {
-	#ifdef ONE_SHEELD_PLUS
+	#ifdef PLUS_BOARD
 	firstFrameToSend = true;
 	#endif
 	write(START_SYSEX);
@@ -294,7 +294,7 @@ void requestBluetoothReset()
 
 void sendIsAlive()
 {
-	#ifdef ONE_SHEELD_PLUS
+	#ifdef PLUS_BOARD
 	if((!firstFrameToSend) && (txBufferIndex +3 >20))
 	{
 		resendIsAlive = true;
@@ -306,7 +306,7 @@ void sendIsAlive()
 		write(END_SYSEX);
 		resendIsAlive = false;
 	}
-	#elif defined(ONE_SHEELD_CLASSIC)
+	#elif defined(CLASSIC_BOARD)
 	write(START_SYSEX);
 	write(IS_ALIVE);
 	write(END_SYSEX);
@@ -330,7 +330,7 @@ void systemReset(void)
   isAppResponded=false;
   notAliveSentToArduino=false;
   systemResetCallback();
-  #ifdef ONE_SHEELD_PLUS
+  #ifdef PLUS_BOARD
   storeDataInSmallBuffer=false;
   txBufferIndex = 0;
   firstFrameToSend = false;
@@ -353,7 +353,7 @@ void systemReset(void)
 
 void printVersion()
 {
-	#ifdef ONE_SHEELD_PLUS
+	#ifdef PLUS_BOARD
 	if ((!firstFrameToSend) && (txBufferIndex + 3 >20))
 	{
 		resendPrintVersion = true;
@@ -365,7 +365,7 @@ void printVersion()
 		write(ONESHEELD_MAJOR_FIRMWARE_VERSION);
 		resendPrintVersion = false;
 	}
-	#elif defined(ONE_SHEELD_CLASSIC)
+	#elif defined(CLASSIC_BOARD)
 	write(REPORT_VERSION);
 	write(ONESHEELD_MINOR_FIRMWARE_VERSION);
 	write(ONESHEELD_MAJOR_FIRMWARE_VERSION);

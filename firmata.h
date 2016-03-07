@@ -87,7 +87,7 @@ byte storedInputData[MAX_DATA_BYTES]; // multi-byte data
 unsigned long bluetoothResponseMillis;
 unsigned long newMillis;
 unsigned long isAliveMillis;
-#ifdef ONE_SHEELD_PLUS
+#ifdef PLUS_BOARD
 /* Buffering data for IOS version */
 unsigned long sentFramesMillis;
 uint8_t txBufferIndex;

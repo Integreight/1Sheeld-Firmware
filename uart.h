@@ -38,7 +38,7 @@
 //Error codes
 #define UART_NO_DATA          -1              /**< no receive data available   */
 #define UART_BUFFER_OVERFLOW  -2              /**< receive ringbuffer overflow */
-#ifdef ONE_SHEELD_PLUS
+#ifdef PLUS_BOARD
 volatile boolean	isArduinoRx0BufferEmpty;
 volatile boolean	isArduinoRx0BufferOverFlowed;
 #endif

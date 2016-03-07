@@ -126,7 +126,7 @@ int readFromUart0(){
 	/* calculate /store buffer index */
 	tmptail = (UART0_RxTail + 1) & UART0_RX0_BUFFER_MASK;
 	UART0_RxTail = tmptail;
-	#ifdef ONE_SHEELD_PLUS
+	#ifdef PLUS_BOARD
 	if (((UART0_RxTail + 1) & UART0_RX0_BUFFER_MASK)== UART0_RxHead)
 	{
 		isArduinoRx0BufferEmpty = true;
@@ -159,7 +159,7 @@ ISR (USART0_RXC_vect){
    
    /* calculate buffer index */
    tmphead = ( UART0_RxHead + 1) & UART0_RX0_BUFFER_MASK;
-   #ifdef ONE_SHEELD_PLUS
+   #ifdef PLUS_BOARD
    if ((((tmphead + 128) & UART0_RX0_BUFFER_MASK)== UART0_RxTail)){
 	   isArduinoRx0BufferEmpty = false;
    }
@@ -168,7 +168,7 @@ ISR (USART0_RXC_vect){
    if ( tmphead == UART0_RxTail ) {
 	   /* error: receive buffer overflow */
 	   lastRxError = UART_BUFFER_OVERFLOW >> 8;
-	   #ifdef ONE_SHEELD_PLUS
+	   #ifdef PLUS_BOARD
 	   isArduinoRx0BufferOverFlowed = true;
 	   #endif
 	   } else {
@@ -254,7 +254,7 @@ int readFromUart1(){
 }
 
 #endif
-#ifdef ONE_SHEELD_PLUS
+#ifdef PLUS_BOARD
 boolean getIsArduinoRx0BufferEmptyFlag()
 {
 	return isArduinoRx0BufferEmpty;

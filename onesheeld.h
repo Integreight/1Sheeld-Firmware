@@ -21,8 +21,8 @@
 #ifndef ONESHEELD_H_
 #define ONESHEELD_H_
 
-#if !defined(ONE_SHEELD_PLUS) && !defined(ONE_SHEELD_CLASSIC)
-#error "Please define ONE_SHEELD_PLUS or ONE_SHEELD_CLASSIC in Symbols"
+#if !defined(PLUS_BOARD) && !defined(CLASSIC_BOARD)
+#error "Please define PLUS_BOARD or CLASSIC_BOARD in Symbols in Project Configuration"
 #endif
 
 #include "firmata.h"
