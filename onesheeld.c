@@ -40,9 +40,9 @@ void catchTimeForSomeVariables()
 {
 	bluetoothResponseMillis=millis();
 	isAliveMillis=millis();
-	#ifdef IOS_VERSION
+	#ifdef ONE_SHEELD_PLUS
 	sentFramesMillis=millis();
-	#endif // IOS_VERSION
+	#endif // ONE_SHEELD_PLUS
 }
 
 void checkDigitalPinStatus()
@@ -90,7 +90,7 @@ void checkAppConnection()
 
 void sendDataToApp()
 {
-	#ifdef IOS_VERSION
+	#ifdef ONE_SHEELD_PLUS
 	if ((newMillis-sentFramesMillis)> FRAME_GAP && (muteFirmata==0) && storeDataInSmallBuffer)
 	{
 		if (dataInArduinoBuffer)
@@ -124,13 +124,13 @@ void sendDataToApp()
 		port2StatusChanged = false;
 		sentFramesMillis=millis();
 	}
-	#else
+	#elif defined(ONE_SHEELD_CLASSIC)
 	processUart0Input();
-	#endif // IOS_VERSION
+	#endif
 	
 }
 
-#ifdef IOS_VERSION
+#ifdef ONE_SHEELD_PLUS
 void sendArduinoToStopData()
 {
 	byte dataArray[10]={0xFF,0x00,0xF0,0x04,0x01,0xFE,0x01,0xFE,0x01,0x00};
@@ -223,4 +223,4 @@ void fillBufferWithPinStates(byte * portArray,byte portNumber)
 		isPort2StatusEqual = true;
 	}
 }
-#endif // IOS_VERSION
+#endif // ONE_SHEELD_PLUS

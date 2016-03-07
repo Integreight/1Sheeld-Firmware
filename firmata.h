@@ -87,8 +87,7 @@ byte storedInputData[MAX_DATA_BYTES]; // multi-byte data
 unsigned long bluetoothResponseMillis;
 unsigned long newMillis;
 unsigned long isAliveMillis;
-
-#ifdef IOS_VERSION
+#ifdef ONE_SHEELD_PLUS
 /* Buffering data for IOS version */
 unsigned long sentFramesMillis;
 uint8_t txBufferIndex;
@@ -113,8 +112,7 @@ boolean isPort1StatusEqual;
 boolean isPort2StatusEqual;
 boolean	dataInArduinoBuffer;
 boolean	arduinoStopped;
-#endif // IOS_VERSION
-
+#endif
 /* sysex */
 boolean parsingSysex;
 int sysexBytesRead;

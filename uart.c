@@ -126,13 +126,12 @@ int readFromUart0(){
 	/* calculate /store buffer index */
 	tmptail = (UART0_RxTail + 1) & UART0_RX0_BUFFER_MASK;
 	UART0_RxTail = tmptail;
-	
-	#ifdef IOS_VERSION
+	#ifdef ONE_SHEELD_PLUS
 	if (((UART0_RxTail + 1) & UART0_RX0_BUFFER_MASK)== UART0_RxHead)
 	{
 		isArduinoRx0BufferEmpty = true;
 	}
-	#endif // IOS_VERSION
+	#endif
 	/* get data from receive buffer */
 	data = UART0_RxBuf[tmptail];
 
@@ -160,19 +159,18 @@ ISR (USART0_RXC_vect){
    
    /* calculate buffer index */
    tmphead = ( UART0_RxHead + 1) & UART0_RX0_BUFFER_MASK;
-   
-   #ifdef IOS_VERSION 
+   #ifdef ONE_SHEELD_PLUS
    if ((((tmphead + 128) & UART0_RX0_BUFFER_MASK)== UART0_RxTail)){
 	   isArduinoRx0BufferEmpty = false;
    }
-   #endif // IOS_VERSION
+   #endif
   
    if ( tmphead == UART0_RxTail ) {
 	   /* error: receive buffer overflow */
 	   lastRxError = UART_BUFFER_OVERFLOW >> 8;
-	   #ifdef IOS_VERSION
+	   #ifdef ONE_SHEELD_PLUS
 	   isArduinoRx0BufferOverFlowed = true;
-	   #endif // IOS_VERSION
+	   #endif
 	   } else {
 	   /* store new index */
 	   UART0_RxHead = tmphead;
@@ -256,7 +254,7 @@ int readFromUart1(){
 }
 
 #endif
-#ifdef IOS_VERSION
+#ifdef ONE_SHEELD_PLUS
 boolean getIsArduinoRx0BufferEmptyFlag()
 {
 	return isArduinoRx0BufferEmpty;
@@ -277,4 +275,4 @@ void setIsArduinoRx0BufferOverFlowedFlag(boolean state)
 {
 	isArduinoRx0BufferOverFlowed = state;
 }
-#endif // IOS_VERSION
+#endif

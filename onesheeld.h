@@ -21,8 +21,11 @@
 #ifndef ONESHEELD_H_
 #define ONESHEELD_H_
 
-#include "firmata.h"
+#if !defined(ONE_SHEELD_PLUS) && !defined(ONE_SHEELD_CLASSIC)
+#error "Please define ONE_SHEELD_PLUS or ONE_SHEELD_CLASSIC in Symbols"
+#endif
 
+#include "firmata.h"
 /**
  * @brief Send a frame to Arduino that the app is disconected  
  * @param None
@@ -71,7 +74,6 @@ void checkAppConnection();
 * @return None.
 */
 void sendDataToApp();
-#ifdef IOS_VERSION
 /**
  * @brief Send a frame to Arduino to stop sending Data  
  * @param None
@@ -108,6 +110,5 @@ int checkPortStateEquality(byte * oldPort ,byte * newPort,byte numberOfPins);
 * @return None.
 */
 void fillBufferWithPinStates(byte * portArray,byte portNumber);
-#endif // IOS_VERSION
 #endif /* 1SHEELDS_FUNCTIONS_H_ */
 

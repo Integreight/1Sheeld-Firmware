@@ -38,13 +38,10 @@
 //Error codes
 #define UART_NO_DATA          -1              /**< no receive data available   */
 #define UART_BUFFER_OVERFLOW  -2              /**< receive ringbuffer overflow */
-
-#ifdef IOS_VERSION
+#ifdef ONE_SHEELD_PLUS
 volatile boolean	isArduinoRx0BufferEmpty;
 volatile boolean	isArduinoRx0BufferOverFlowed;
-#endif // IOSVERSION
-
-
+#endif
 /**
  * @brief Initialize the serial port, it's status registers and buffers.
  * @param serialPort specify which serial port to initialize 0 or 1
@@ -87,7 +84,6 @@ int  readFromUart1();
  * @return  None  
  */
 void setupUartLeds();
-#ifdef IOS_VERSION
 /**
  * @brief Returns true if Arduino buffer is Empty.
  * @param None.  
@@ -112,8 +108,6 @@ boolean getIsArduinoRx0BufferOverFlowedFlag();
  * @return None.  
  */
 void setIsArduinoRx0BufferOverFlowedFlag(boolean);
-
-#endif // IOS_VERSION
 
 #if UART_RX0_INTERRUPT == ENABLED
 	/**

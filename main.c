@@ -21,10 +21,10 @@ int main(void)
 	{		
 		newMillis = millis();
 		checkDigitalPinStatus();
-		#ifdef IOS_VERSION
+		#ifdef ONE_SHEELD_PLUS
 		checkDataAvailabilityInRx0Buffer(); 
 		checkArduinoRx0BufferSpace();
-		#endif // IOS_VERSION
+		#endif // ONE_SHEELD_PLUS
 		processDataFromApp();
 		checkBluetoothResetResponse();
 		checkAppConnection();

@@ -22,7 +22,7 @@
 
 void reportDigitalPorts()
 {
-	#ifdef IOS_VERSION
+	#ifdef ONE_SHEELD_PLUS
 	if((!firstFrameToSend) && txBufferIndex +10 >20)
 	{
 		resendDigitalPort = true;
@@ -33,28 +33,28 @@ void reportDigitalPorts()
 		outputPort(1, readPort(1, portConfigInputs[1]), true);
 		outputPort(2, readPort(2, portConfigInputs[2]), true);
 	}
-	#else
+	#elif defined(ONE_SHEELD_CLASSIC)
 	outputPort(0, readPort(0, portConfigInputs[0]), true);
 	outputPort(1, readPort(1, portConfigInputs[1]), true);
 	outputPort(2, readPort(2, portConfigInputs[2]), true);
-	#endif // IOS_VERSION
+	#endif
 }
 
 void write(unsigned char data)
 {
-	#ifdef IOS_VERSION
+	#ifdef ONE_SHEELD_PLUS
 	storeDataInSmallBuffer=true;
 	if (txBufferIndex<20)
 	{
 		UartTx1Buffer[txBufferIndex]=data;
 		txBufferIndex++;
 	}
-	#else
+	#elif defined(ONE_SHEELD_CLASSIC)
 	if (muteFirmata == 0)
 	{
 		writeOnUart1(data);
 	}
-	#endif // IOS_VERSION
+	#endif
 }
 
 void sendValueAsTwo7bitBytes(int value)
@@ -108,7 +108,7 @@ void processSysexMessage(void)
 
 void processUart0Input()
 {
-	#ifdef IOS_VERSION
+	#ifdef ONE_SHEELD_PLUS
 	if (resendIsAlive)
 	{
 		sendIsAlive();
@@ -145,7 +145,7 @@ void processUart0Input()
 			}
 		}
 	}
-	#else
+	#elif defined(ONE_SHEELD_CLASSIC)
 		unsigned int availableData=getAvailableDataCountOnUart0();
 		if(availableData>0){
 			byte arr[availableData];
@@ -154,7 +154,7 @@ void processUart0Input()
 			}
 			sendSysex(UART_DATA,availableData,arr);
 		}
-	#endif // IOS_VERISON	
+	#endif
 }
 
 void processInput(void)
@@ -245,7 +245,7 @@ void processInput(void)
 
 void sendDigitalPort(byte portNumber, int portData)
 {
-	#ifdef IOS_VERSION
+	#ifdef ONE_SHEELD_PLUS
 	storeDataInSmallBuffer = true;
 	if(portNumber == 0){
 		digitalPort0array[0]= DIGITAL_MESSAGE | (portNumber & 0xF);
@@ -263,11 +263,11 @@ void sendDigitalPort(byte portNumber, int portData)
 		digitalPort2array[2]= portData >> 7;
 		port2StatusChanged=true;
 	}
-	#else
+	#elif defined(ONE_SHEELD_CLASSIC)
 	write(DIGITAL_MESSAGE | (portNumber & 0xF));
 	write((byte)portData % 128); // Tx bits 0-6
 	write(portData >> 7);  // Tx bits 7-13
-	#endif // IOS_VERSION
+	#endif
 	
 }
 			
@@ -284,9 +284,9 @@ void sendSysex(byte command, byte bytec, byte* bytev)
 
 void requestBluetoothReset()
 {
-	#ifdef IOS_VERSION
+	#ifdef ONE_SHEELD_PLUS
 	firstFrameToSend = true;
-	#endif // IOS_VERSION
+	#endif
 	write(START_SYSEX);
 	write(RESET_BLUETOOTH);
 	write(END_SYSEX);
@@ -294,7 +294,7 @@ void requestBluetoothReset()
 
 void sendIsAlive()
 {
-	#ifdef IOS_VERSION
+	#ifdef ONE_SHEELD_PLUS
 	if((!firstFrameToSend) && (txBufferIndex +3 >20))
 	{
 		resendIsAlive = true;
@@ -306,11 +306,11 @@ void sendIsAlive()
 		write(END_SYSEX);
 		resendIsAlive = false;
 	}
-	#else
+	#elif defined(ONE_SHEELD_CLASSIC)
 	write(START_SYSEX);
 	write(IS_ALIVE);
 	write(END_SYSEX);
-	#endif // IOS_VERSION
+	#endif
 	
 }
 
@@ -323,7 +323,6 @@ void systemReset(void)
   waitForData = 0; // this flag says the next serial input will be data
   executeMultiByteCommand = 0; // execute this after getting multi-byte data
   multiByteChannel = 0; // channel data for multiByteCommands
-  txBufferIndex = 0;
   sysexBytesRead = 0;
   parsingSysex = false;
   sysexBytesRead = 0;
@@ -331,7 +330,7 @@ void systemReset(void)
   isAppResponded=false;
   notAliveSentToArduino=false;
   systemResetCallback();
-  #ifdef IOS_VERSION
+  #ifdef ONE_SHEELD_PLUS
   storeDataInSmallBuffer=false;
   txBufferIndex = 0;
   firstFrameToSend = false;
@@ -354,7 +353,7 @@ void systemReset(void)
 
 void printVersion()
 {
-	#ifdef IOS_VERSION
+	#ifdef ONE_SHEELD_PLUS
 	if ((!firstFrameToSend) && (txBufferIndex + 3 >20))
 	{
 		resendPrintVersion = true;
@@ -366,11 +365,11 @@ void printVersion()
 		write(ONESHEELD_MAJOR_FIRMWARE_VERSION);
 		resendPrintVersion = false;
 	}
-	#else
+	#elif defined(ONE_SHEELD_CLASSIC)
 	write(REPORT_VERSION);
 	write(ONESHEELD_MINOR_FIRMWARE_VERSION);
 	write(ONESHEELD_MAJOR_FIRMWARE_VERSION);
-	#endif // IOS_VERSION	
+	#endif	
 }
 
 /*==============================================================================
