@@ -323,12 +323,8 @@ void systemReset(void)
   waitForData = 0; // this flag says the next serial input will be data
   executeMultiByteCommand = 0; // execute this after getting multi-byte data
   multiByteChannel = 0; // channel data for multiByteCommands
-<<<<<<< HEAD
-  muteFirmata=0;
-=======
   txBufferIndex = 0;
   sysexBytesRead = 0;
->>>>>>> ble_only
   parsingSysex = false;
   sysexBytesRead = 0;
   bluetoothResetResponded=false;
