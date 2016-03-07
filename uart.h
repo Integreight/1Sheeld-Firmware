@@ -23,6 +23,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "timers.h"
+#include "config.h"
 
 #define UART_RX0_INTERRUPT ENABLED
 #define UART_RX1_INTERRUPT ENABLED 

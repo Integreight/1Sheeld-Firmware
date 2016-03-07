@@ -23,6 +23,7 @@
 
 #include "uart.h"
 #include "gpio.h"
+#include "config.h"
 
 #define ONESHEELD_MINOR_FIRMWARE_VERSION   5 
 #define ONESHEELD_MAJOR_FIRMWARE_VERSION   1 

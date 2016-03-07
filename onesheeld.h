@@ -21,11 +21,13 @@
 #ifndef ONESHEELD_H_
 #define ONESHEELD_H_
 
-#if !defined(PLUS_BOARD) && !defined(CLASSIC_BOARD)
+#include "firmata.h"
+#include "config.h"
+
+#if (!defined(PLUS_BOARD) && !defined(CLASSIC_BOARD)) || (defined(PLUS_BOARD) && defined(CLASSIC_BOARD))
 #error "Please define PLUS_BOARD or CLASSIC_BOARD in Symbols in Project Configuration"
 #endif
 
-#include "firmata.h"
 /**
  * @brief Send a frame to Arduino that the app is disconected  
  * @param None
