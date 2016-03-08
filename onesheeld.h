@@ -24,8 +24,10 @@
 #include "firmata.h"
 #include "config.h"
 
-#if (!defined(PLUS_BOARD) && !defined(CLASSIC_BOARD)) || (defined(PLUS_BOARD) && defined(CLASSIC_BOARD))
-#error "Please define PLUS_BOARD or CLASSIC_BOARD in Symbols in Project Configuration"
+#if (!defined(PLUS_BOARD) && !defined(CLASSIC_BOARD)) 
+#error "Board not defined"
+#elif (defined(PLUS_BOARD) && defined(CLASSIC_BOARD))
+#error "Defined PLUS_BOARD and CLASSIC_BOARD"
 #endif
 
 /**
