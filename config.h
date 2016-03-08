@@ -1,9 +1,15 @@
 /*
- * config.h
- *
- * Created: 3/7/2016 6:23:28 PM
- *  Author: Eslam
- */ 
+
+  Project:       1Sheeld Firmware 
+  File:          config.h
+
+  Compiler:      avr-gcc 4.9.2
+
+  Author:        Integreight
+                 
+  Date:          2016.3
+
+*/
 
 
 #ifndef CONFIG_H_
