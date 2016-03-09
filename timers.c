@@ -10,7 +10,7 @@
   Date:          2014.5
 
 */
-
+#include "config.h"
 #include "timers.h"
 
 unsigned  volatile int countRx=0;

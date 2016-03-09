@@ -10,7 +10,7 @@
   Date:          2014.5
 
 */
-
+#include "config.h"
 #include "pwm.h"
 
 void initPwm(uint8 timer)

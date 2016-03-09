@@ -10,7 +10,7 @@
   Date:          2014.5
 
 */
-
+#include "config.h"
 #include "gpio.h"
 
 void setPinModeOutput(t_SetPortCfg* cfg, uint8 bit)

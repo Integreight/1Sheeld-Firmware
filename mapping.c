@@ -10,7 +10,7 @@
   Date:          2014.5
 
 */
-
+#include "config.h"
 #include "mapping.h"
 
 #define F_CPU 7372800UL

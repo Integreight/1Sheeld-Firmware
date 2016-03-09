@@ -22,7 +22,6 @@
 #define ONESHEELD_H_
 
 #include "firmata.h"
-#include "config.h"
 
 #if (!defined(PLUS_BOARD) && !defined(CLASSIC_BOARD)) 
 #error "Board not defined"

@@ -11,6 +11,7 @@
 
 */
 
+#include "config.h"
 #include "firmata.h"
 #include <avr/wdt.h>
 #include <util/delay.h>
