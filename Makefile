@@ -115,6 +115,11 @@ sym_plus: $(OBJECTDIRPLUS)/$(TARGET).sym
 bin_plus: $(OBJECTDIRPLUS)/$(TARGET).bin
 
 begin:
+ifneq ($(CONFIG),DEBUG)
+	ifneq ($(CONFIG),RELEASE)
+		$(error please define CONFIG variable as DEBUG or RELEASE)
+	endif
+endif
 	@echo
 	@echo $(MSG_BEGIN)
 
