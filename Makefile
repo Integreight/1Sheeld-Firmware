@@ -10,13 +10,16 @@ TARGET = firmware
 # List C source files here. (C dependencies are automatically generated.)
 SRC =main.c  onesheeld.c mapping.c firmata.c gpio.c pwm.c timers.c uart.c
 
+# determine the building configuration debug or release
+CONFIG = DEBUG
+LOWER_VAR_CONFIG  =  $(shell echo $(CONFIG) | tr A-Z a-z)
 # Create object files and object files directories 
-OBJECTDIRDEBUG = build/debug
-OBJECTDIRRELEASE = build/release
-OBJRELEASE = $(OBJECTDIRRELEASE)/firmata.o $(OBJECTDIRRELEASE)/gpio.o $(OBJECTDIRRELEASE)/main.o $(OBJECTDIRRELEASE)/mapping.o $(OBJECTDIRRELEASE)/onesheeld.o $(OBJECTDIRRELEASE)/pwm.o \
-$(OBJECTDIRRELEASE)/timers.o $(OBJECTDIRRELEASE)/uart.o 
-OBJDEBUG = $(OBJECTDIRDEBUG)/firmata.o $(OBJECTDIRDEBUG)/gpio.o $(OBJECTDIRDEBUG)/main.o $(OBJECTDIRDEBUG)/mapping.o $(OBJECTDIRDEBUG)/onesheeld.o $(OBJECTDIRDEBUG)/pwm.o \
-$(OBJECTDIRDEBUG)/timers.o $(OBJECTDIRDEBUG)/uart.o 
+OBJECTDIRCLASSIC = build/classic/$(LOWER_VAR_CONFIG)
+OBJECTDIRPLUS = build/plus/$(LOWER_VAR_CONFIG)
+OBJPLUS = $(OBJECTDIRPLUS)/firmata.o $(OBJECTDIRPLUS)/gpio.o $(OBJECTDIRPLUS)/main.o $(OBJECTDIRPLUS)/mapping.o $(OBJECTDIRPLUS)/onesheeld.o $(OBJECTDIRPLUS)/pwm.o \
+$(OBJECTDIRPLUS)/timers.o $(OBJECTDIRPLUS)/uart.o 
+OBJCLASSIC = $(OBJECTDIRCLASSIC)/firmata.o $(OBJECTDIRCLASSIC)/gpio.o $(OBJECTDIRCLASSIC)/main.o $(OBJECTDIRCLASSIC)/mapping.o $(OBJECTDIRCLASSIC)/onesheeld.o $(OBJECTDIRCLASSIC)/pwm.o\
+$(OBJECTDIRCLASSIC)/timers.o $(OBJECTDIRCLASSIC)/uart.o 
 # Optimization level, can be [0, 1, 2, 3, s]. 
 OPT_DEBUG = 1
 OPT_RELEASE = s
@@ -45,8 +48,8 @@ MATH_LIB = -lm
 #  -Wl,...:     tell GCC to pass this to linker.
 #    -Map:      create map file
 #    --cref:    add cross reference to  map file
-LDFLAGSDEBUG = -Wl,-Map="$(OBJECTDIRDEBUG)/$(TARGET).map" -Wl,--start-group -Wl,-lm  -Wl,--end-group -Wl,--gc-sections -mmcu=atmega162 -B.
-LDFLAGSRELEASE = -Wl,-Map="$(OBJECTDIRRELEASE)/$(TARGET).map" -Wl,--start-group -Wl,-lm  -Wl,--end-group -Wl,--gc-sections -mmcu=atmega162 -B.
+LDFLAGSCLASSIC = -Wl,-Map="$(OBJECTDIRCLASSIC)/$(TARGET).map" -Wl,--start-group -Wl,-lm  -Wl,--end-group -Wl,--gc-sections -mmcu=atmega162 -B.
+LDFLAGSPLUS = -Wl,-Map="$(OBJECTDIRPLUS)/$(TARGET).map" -Wl,--start-group -Wl,-lm  -Wl,--end-group -Wl,--gc-sections -mmcu=atmega162 -B.
 #####################################################################################################################
 
 # Define programs and commands.
@@ -80,35 +83,36 @@ MSG_BINARY_FILE = Creating binary output file:
 
 
 # Compiler flags to generate dependency files.
-GENDEPFLAGSDEBUG = -MD -MP -MF $(OBJECTDIRDEBUG)/$(@F).d -MT.$(OBJECTDIRDEBUG)/$(@F).d -MT$(OBJECTDIRDEBUG)/$(@F)
-GENDEPFLAGSRELEASE = -MD -MP -MF $(OBJECTDIRRELEASE)/$(@F).d -MT.$(OBJECTDIRRELEASE)/$(@F).d -MT$(OBJECTDIRRELEASE)/$(@F)
+GENDEPFLAGSCLASSIC = -MD -MP -MF $(OBJECTDIRCLASSIC)/$(@F).d -MT.$(OBJECTDIRCLASSIC)/$(@F).d -MT$(OBJECTDIRCLASSIC)/$(@F)
+GENDEPFLAGSPLUS = -MD -MP -MF $(OBJECTDIRPLUS)/$(@F).d -MT.$(OBJECTDIRPLUS)/$(@F).d -MT$(OBJECTDIRPLUS)/$(@F)
 
 # Combine all necessary flags and optional flags.
 # Add target processor to flags.
-ALL_CFLAGS_DEBUG = -mmcu=$(MCU) -I. $(CFLAGS_DEBUG) $(CFLAGS) $(GENDEPFLAGSDEBUG)
-ALL_CFLAGS_RELEASE = -mmcu=$(MCU) -I. $(CFLAGS_RELEASE) $(CFLAGS) $(GENDEPFLAGSRELEASE)
+
+ALL_CFLAGS_CLASSIC = -mmcu=$(MCU) -I. -DCLASSIC_BOARD $(CFLAGS_$(CONFIG)) $(CFLAGS) $(GENDEPFLAGSCLASSIC)
+ALL_CFLAGS_PLUS = -mmcu=$(MCU) -I. -DPLUS_BOARD $(CFLAGS_$(CONFIG)) $(CFLAGS) $(GENDEPFLAGSPLUS)
 #####################################################################################################################
 # Default target.
-all: debug release
-debug: begin gccversion sizebefore_debug build_debug sizeafter_debug end
-release: begin gccversion sizebefore_release build_release sizeafter_release end
+all: classic plus
+classic: begin gccversion sizebefore_classic build_classic sizeafter_classic end
+plus: begin gccversion sizebefore_plus build_plus sizeafter_plus end
 # Change the build target to build a HEX file or a library.
-build_debug: elf_debug hex_debug eep_debug lss_debug sym_debug bin_debug
-build_release: elf_release hex_release eep_release lss_release sym_release bin_release
+build_classic: elf_classic hex_classic eep_classic lss_classic sym_classic bin_classic
+build_plus: elf_plus hex_plus eep_plus lss_plus sym_plus bin_plus
 
-elf_debug: $(OBJECTDIRDEBUG)/$(TARGET).elf
-hex_debug: $(OBJECTDIRDEBUG)/$(TARGET).hex
-eep_debug: $(OBJECTDIRDEBUG)/$(TARGET).eep
-lss_debug: $(OBJECTDIRDEBUG)/$(TARGET).lss
-sym_debug: $(OBJECTDIRDEBUG)/$(TARGET).sym
-bin_debug: $(OBJECTDIRDEBUG)/$(TARGET).bin
+elf_classic: $(OBJECTDIRCLASSIC)/$(TARGET).elf
+hex_classic: $(OBJECTDIRCLASSIC)/$(TARGET).hex
+eep_classic: $(OBJECTDIRCLASSIC)/$(TARGET).eep
+lss_classic: $(OBJECTDIRCLASSIC)/$(TARGET).lss
+sym_classic: $(OBJECTDIRCLASSIC)/$(TARGET).sym
+bin_classic: $(OBJECTDIRCLASSIC)/$(TARGET).bin
 
-elf_release: $(OBJECTDIRRELEASE)/$(TARGET).elf
-hex_release: $(OBJECTDIRRELEASE)/$(TARGET).hex
-eep_release: $(OBJECTDIRRELEASE)/$(TARGET).eep
-lss_release: $(OBJECTDIRRELEASE)/$(TARGET).lss
-sym_release: $(OBJECTDIRRELEASE)/$(TARGET).sym
-bin_release: $(OBJECTDIRRELEASE)/$(TARGET).bin
+elf_plus: $(OBJECTDIRPLUS)/$(TARGET).elf
+hex_plus: $(OBJECTDIRPLUS)/$(TARGET).hex
+eep_plus: $(OBJECTDIRPLUS)/$(TARGET).eep
+lss_plus: $(OBJECTDIRPLUS)/$(TARGET).lss
+sym_plus: $(OBJECTDIRPLUS)/$(TARGET).sym
+bin_plus: $(OBJECTDIRPLUS)/$(TARGET).bin
 
 begin:
 	@echo
@@ -118,133 +122,132 @@ end:
 	@echo $(MSG_END)
 	@echo
 
-
 # Display size of file.
-ELFSIZE_DEBUG = $(SIZE) --mcu=$(MCU) --format=avr $(OBJECTDIRDEBUG)/$(TARGET).elf
-ELFSIZE_RELEASE = $(SIZE) --mcu=$(MCU) --format=avr $(OBJECTDIRRELEASE)/$(TARGET).elf
+ELFSIZE_CLASSIC = $(SIZE) --mcu=$(MCU) --format=avr $(OBJECTDIRCLASSIC)/$(TARGET).elf
+ELFSIZE_PLUS = $(SIZE) --mcu=$(MCU) --format=avr $(OBJECTDIRPLUS)/$(TARGET).elf
 
-sizebefore_debug:
-	@if test -f $(OBJECTDIRDEBUG)/$(TARGET).elf; then echo; echo $(MSG_SIZE_BEFORE); $(ELFSIZE_DEBUG); \
+sizebefore_classic:
+	@if test -f $(OBJECTDIRCLASSIC)/$(TARGET).elf; then echo; echo $(MSG_SIZE_BEFORE); $(ELFSIZE_CLASSIC); \
 	2>/dev/null; echo; fi
 
-sizeafter_debug:
-	@if test -f $(OBJECTDIRDEBUG)/$(TARGET).elf; then echo; echo $(MSG_SIZE_AFTER); $(ELFSIZE_DEBUG); \
+sizeafter_classic:
+	@if test -f $(OBJECTDIRCLASSIC)/$(TARGET).elf; then echo; echo $(MSG_SIZE_AFTER); $(ELFSIZE_CLASSIC); \
 	2>/dev/null; echo; fi
 
-sizebefore_release:
-	@if test -f $(OBJECTDIRRELEASE)/$(TARGET).elf; then echo; echo $(MSG_SIZE_BEFORE); $(ELFSIZE_RELEASE); \
+sizebefore_plus:
+	@if test -f $(OBJECTDIRPLUS)/$(TARGET).elf; then echo; echo $(MSG_SIZE_BEFORE); $(ELFSIZE_PLUS); \
 	2>/dev/null; echo; fi
 
-sizeafter_release:
-	@if test -f $(OBJECTDIRRELEASE)/$(TARGET).elf; then echo; echo $(MSG_SIZE_AFTER); $(ELFSIZE_RELEASE); \
+sizeafter_plus:
+	@if test -f $(OBJECTDIRPLUS)/$(TARGET).elf; then echo; echo $(MSG_SIZE_AFTER); $(ELFSIZE_PLUS); \
 	2>/dev/null; echo; fi
 
 # Display compiler version information.
 gccversion : 
 	@$(CC) --version
 
-flashdebug:
-	avrdude -c usbasp -p m162 -P usb -v -u -D -U efuse:w:0xfb:m -U hfuse:w:0xd8:m -U lfuse:w:0xfd:m -u -U flash:w:$(OBJECTDIRDEBUG)/$(TARGET).hex
+flashclassic:
+	avrdude -c usbasp -p m162 -P usb -v -u -D -U efuse:w:0xfb:m -U hfuse:w:0xd8:m -U lfuse:w:0xfd:m -u -U flash:w:$(OBJECTDIRCLASSIC)/$(TARGET).hex
 	
-flashrelease:
-	avrdude -c usbasp -p m162 -P usb -v -u -D -U efuse:w:0xfb:m -U hfuse:w:0xd8:m -U lfuse:w:0xfd:m -u -U flash:w:$(OBJECTDIRRELEASE)/$(TARGET).hex
+flashplus:
+	avrdude -c usbasp -p m162 -P usb -v -u -D -U efuse:w:0xfb:m -U hfuse:w:0xd8:m -U lfuse:w:0xfd:m -u -U flash:w:$(OBJECTDIRPLUS)/$(TARGET).hex
 
 erase: 
 	avrdude -c usbasp -p m162 -P usb -v -u -e
 
 # Create final output files (.hex, .eep) from ELF output file.
-$(OBJECTDIRDEBUG)/%.hex: $(OBJECTDIRDEBUG)/%.elf
+$(OBJECTDIRCLASSIC)/%.hex: $(OBJECTDIRCLASSIC)/%.elf
 	@echo
 	@echo $(MSG_FLASH) $@
-	$(OBJCOPY) -O $(FORMAT) -R .eeprom -R .fuse -R .lock -R .signature -R .user_signatures  "$(OBJECTDIRDEBUG)/$(TARGET).elf" "$(OBJECTDIRDEBUG)/$(TARGET).hex"
+	$(OBJCOPY) -O $(FORMAT) -R .eeprom -R .fuse -R .lock -R .signature -R .user_signatures  "$(OBJECTDIRCLASSIC)/$(TARGET).elf" "$(OBJECTDIRCLASSIC)/$(TARGET).hex"
 
 
-$(OBJECTDIRDEBUG)/%.eep: $(OBJECTDIRDEBUG)/%.elf
+$(OBJECTDIRCLASSIC)/%.eep: $(OBJECTDIRCLASSIC)/%.elf
 	@echo
 	@echo $(MSG_EEPROM) $@
-	-$(OBJCOPY) -j .eeprom  --set-section-flags=.eeprom=alloc,load --change-section-lma .eeprom=0  --no-change-warnings -O ihex "$(OBJECTDIRDEBUG)/$(TARGET).elf" "$(OBJECTDIRDEBUG)/$(TARGET).eep" || exit 0
+	-$(OBJCOPY) -j .eeprom  --set-section-flags=.eeprom=alloc,load --change-section-lma .eeprom=0  --no-change-warnings -O ihex "$(OBJECTDIRCLASSIC)/$(TARGET).elf" "$(OBJECTDIRCLASSIC)/$(TARGET).eep" || exit 0
 	#-j .eeprom --set-section-flags=.eeprom="alloc,load" \
 	#--change-section-lma .eeprom=0 --no-change-warnings -O $(FORMAT) $< $@ || exit 0
 
 # Create extended listing file from ELF output file.
-$(OBJECTDIRDEBUG)/%.lss: $(OBJECTDIRDEBUG)/%.elf
+$(OBJECTDIRCLASSIC)/%.lss: $(OBJECTDIRCLASSIC)/%.elf
 	@echo
 	@echo $(MSG_EXTENDED_LISTING) $@
 	$(OBJDUMP) -h -S -z $< > $@
 
 # Create a symbol table from ELF output file.
-$(OBJECTDIRDEBUG)/%.sym: $(OBJECTDIRDEBUG)/%.elf
+$(OBJECTDIRCLASSIC)/%.sym: $(OBJECTDIRCLASSIC)/%.elf
 	@echo
 	@echo $(MSG_SYMBOL_TABLE) $@
 	$(NM) -n $< > $@
 # Create a binary output file from ELF output file 
-$(OBJECTDIRDEBUG)/%.bin: $(OBJECTDIRDEBUG)/%.elf 
+$(OBJECTDIRCLASSIC)/%.bin: $(OBJECTDIRCLASSIC)/%.elf 
 	@echo
 	@echo $(MSG_BINARY_FILE) $@
 	$(OBJCOPY) -O binary $< $@
 
 # Link: create ELF output file from object files.
-.SECONDARY : $(OBJECTDIRDEBUG)/$(TARGET).elf
-.PRECIOUS : $(OBJDEBUG)
-$(OBJECTDIRDEBUG)/%.elf: $(OBJDEBUG)
+.SECONDARY : $(OBJECTDIRCLASSIC)/$(TARGET).elf
+.PRECIOUS : $(OBJCLASSIC)
+$(OBJECTDIRCLASSIC)/%.elf: $(OBJCLASSIC)
 	@echo
 	@echo $(MSG_LINKING) $<
-	$(CC) -o $(OBJECTDIRDEBUG)/$(TARGET).elf $(OBJDEBUG) $(LDFLAGSDEBUG) 
+	$(CC) -o $(OBJECTDIRCLASSIC)/$(TARGET).elf $(OBJCLASSIC) $(LDFLAGSCLASSIC) 
 	
 # Compile: create object files from C source files.
-$(OBJECTDIRDEBUG)/%.o : %.c
+$(OBJECTDIRCLASSIC)/%.o : %.c
 	$(shell mkdir build 2>/dev/null)
-	$(shell mkdir $(OBJECTDIRDEBUG) 2>/dev/null)
+	$(shell mkdir -p $(OBJECTDIRCLASSIC) 2>/dev/null)
 	@echo
 	@echo $(MSG_COMPILING) $<
-	$(CC) -c $(ALL_CFLAGS_DEBUG)  $< -o $@   
+	$(CC) -c $(ALL_CFLAGS_CLASSIC)  $< -o $@   
 #####################################################################################################################
 # Create final output files (.hex, .eep) from ELF output file :Release version.
-$(OBJECTDIRRELEASE)/%.hex: $(OBJECTDIRRELEASE)/%.elf
+$(OBJECTDIRPLUS)/%.hex: $(OBJECTDIRPLUS)/%.elf
 	@echo
 	@echo $(MSG_FLASH) $@
-	$(OBJCOPY) -O $(FORMAT) -R .eeprom -R .fuse -R .lock -R .signature -R .user_signatures  "$(OBJECTDIRRELEASE)/$(TARGET).elf" "$(OBJECTDIRRELEASE)/$(TARGET).hex"
+	$(OBJCOPY) -O $(FORMAT) -R .eeprom -R .fuse -R .lock -R .signature -R .user_signatures  "$(OBJECTDIRPLUS)/$(TARGET).elf" "$(OBJECTDIRPLUS)/$(TARGET).hex"
 
 
-$(OBJECTDIRRELEASE)/%.eep: $(OBJECTDIRRELEASE)/%.elf
+$(OBJECTDIRPLUS)/%.eep: $(OBJECTDIRPLUS)/%.elf
 	@echo
 	@echo $(MSG_EEPROM) $@
-	-$(OBJCOPY) -j .eeprom  --set-section-flags=.eeprom=alloc,load --change-section-lma .eeprom=0  --no-change-warnings -O ihex "$(OBJECTDIRRELEASE)/$(TARGET).elf" "$(OBJECTDIRRELEASE)/$(TARGET).eep" || exit 0
+	-$(OBJCOPY) -j .eeprom  --set-section-flags=.eeprom=alloc,load --change-section-lma .eeprom=0  --no-change-warnings -O ihex "$(OBJECTDIRPLUS)/$(TARGET).elf" "$(OBJECTDIRPLUS)/$(TARGET).eep" || exit 0
 	#-j .eeprom --set-section-flags=.eeprom="alloc,load" \
 	#--change-section-lma .eeprom=0 --no-change-warnings -O $(FORMAT) $< $@ || exit 0
 
 # Create extended listing file from ELF output file.
-$(OBJECTDIRRELEASE)/%.lss: $(OBJECTDIRRELEASE)/%.elf
+$(OBJECTDIRPLUS)/%.lss: $(OBJECTDIRPLUS)/%.elf
 	@echo
 	@echo $(MSG_EXTENDED_LISTING) $@
 	$(OBJDUMP) -h -S -z $< > $@
 
 # Create a symbol table from ELF output file.
-$(OBJECTDIRRELEASE)/%.sym: $(OBJECTDIRRELEASE)/%.elf
+$(OBJECTDIRPLUS)/%.sym: $(OBJECTDIRPLUS)/%.elf
 	@echo
 	@echo $(MSG_SYMBOL_TABLE) $@
 	$(NM) -n $< > $@
 # Create a binary output file from ELF output file 
-$(OBJECTDIRRELEASE)/%.bin: $(OBJECTDIRRELEASE)/%.elf 
+$(OBJECTDIRPLUS)/%.bin: $(OBJECTDIRPLUS)/%.elf 
 	@echo
 	@echo $(MSG_BINARY_FILE) $@
 	$(OBJCOPY) -O binary $< $@
 
 # Link: create ELF output file from object files.
-.SECONDARY : $(OBJECTDIRRELEASE)/$(TARGET).elf
-.PRECIOUS : $(OBJRELEASE)
-$(OBJECTDIRRELEASE)/%.elf: $(OBJRELEASE)
+.SECONDARY : $(OBJECTDIRPLUS)/$(TARGET).elf
+.PRECIOUS : $(OBJPLUS)
+$(OBJECTDIRPLUS)/%.elf: $(OBJPLUS)
 	@echo
 	@echo $(MSG_LINKING) $<
-	$(CC) -o $(OBJECTDIRRELEASE)/$(TARGET).elf $(OBJRELEASE) $(LDFLAGSRELEASE) 
+	$(CC) -o $(OBJECTDIRPLUS)/$(TARGET).elf $(OBJPLUS) $(LDFLAGSPLUS) 
 	
 # Compile: create object files from C source files.
-$(OBJECTDIRRELEASE)/%.o : %.c
+$(OBJECTDIRPLUS)/%.o : %.c
 	$(shell mkdir build 2>/dev/null)	
-	$(shell mkdir $(OBJECTDIRRELEASE) 2>/dev/null)
+	$(shell mkdir -p $(OBJECTDIRPLUS) 2>/dev/null)
 	@echo
 	@echo $(MSG_COMPILING) $<
-	$(CC) -c $(ALL_CFLAGS_RELEASE)  $< -o $@   
+	$(CC) -c $(ALL_CFLAGS_PLUS)  $< -o $@   
 #####################################################################################################################
 # Target: clean project.
 clean: begin clean_list end
@@ -258,7 +261,6 @@ clean_list :
 
 
 # Listing of phony targets.
-.PHONY : all begin finish end sizebefore sizeafter gccversion debug release\
-build elf hex bin eep lss clean clean_list flashdebug flashrelease erase
+.PHONY : all begin finish end sizebefore_classic build_classic sizeafter_classic elf_classic hex_classic eep_classic lss_classic sym_classic bin_classic elf_plus hex_plus eep_plus \ lss_plus sym_plus bin_plus sizebefore_plus build_plus sizeafter_plus clean clean_list flashclassic flashplus erase
 
 
