@@ -20,7 +20,8 @@
 //* Support Functions
 //******************************************************************************
 
-
+const uint8_t atNameArray[7] PROGMEM = {'A','T','+','N','A','M','E'};
+	
 void reportDigitalPorts()
 {
 	#ifdef PLUS_BOARD
@@ -566,7 +567,36 @@ void sysexCallback(byte command, byte argc, byte *argv)
 	{
 		reportDigitalPorts();
 	}break;
+	
+	case BLUETOOTH_RENAMING:
+	{
+		if (argc > 0)
+		{
+			_delay_ms(100);
+			sendBluetoothRenameConfirmation();
+			_delay_ms(100);
+			resetBluetooth();					/* reset bluetooth to enter AT mode. */
+			_delay_ms(100);						
+			sendATNameCommand();				/* send the AT+NAME command to rename the bluetooth. */
+			uint8_t newName [argc/2];			/* newName array to re-assemble name from sysex message*/
+			for (uint16_t i = 0; i < argc; i+=2) {newName[i/2]=(argv[i]|(argv[i+1]<<7));writeOnUart1(newName[i/2]);} /* send New name*/
+			_delay_ms(1000);					/* 1 Second was chosen to support latecny of HC-06 bluetooth module */ 
+			resetBluetooth();					/* reset the bluetooth again to restart with new configuration. */
+		}		
+	}break;
 	}
+}
+
+void sendBluetoothRenameConfirmation()
+{
+	writeOnUart1(START_SYSEX);
+	writeOnUart1(BLUETOOTH_RENAMING);
+	writeOnUart1(END_SYSEX);
+}
+
+void sendATNameCommand()
+{
+	for(uint16_t i = 0 ; i < 7 ; i++ )writeOnUart1(pgm_read_byte(&(atNameArray[i])));
 }
 
 void resetBluetooth()

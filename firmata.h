@@ -47,6 +47,7 @@
 #define RESET_BLUETOOTH         0x61          
 #define RESET_MICRO             0x60
 #define REPORT_INPUT_PINS       0X5F
+#define BLUETOOTH_RENAMING		0x5E
 
 // pin modes
 #define ANALOG                  0x02 // analog pin in analogInput mode
@@ -84,6 +85,7 @@ byte waitForData; // this flag says the next serial input will be data
 byte executeMultiByteCommand; // execute this after getting multi-byte data
 byte multiByteChannel; // channel data for multiByteCommands
 byte storedInputData[MAX_DATA_BYTES]; // multi-byte data
+extern const uint8_t PROGMEM atNameArray[7];
 unsigned long bluetoothResponseMillis;
 unsigned long newMillis;
 unsigned long isAliveMillis;
@@ -288,4 +290,16 @@ void sendIsAlive();
  * @return  None  
  */
 void resetBluetooth();
+/**
+ * @brief Send AT+NAME command to bluetooth to rename
+ * @param None
+ * @return  None  
+ */
+void sendATNameCommand();
+/**
+ * @brief Send Confirmation when bluetooth is renamed
+ * @param None
+ * @return  None  
+ */
+void sendBluetoothRenameConfirmation();
 #endif /* FIRMATA_H_ */
