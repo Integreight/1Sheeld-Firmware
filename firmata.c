@@ -576,10 +576,14 @@ void sysexCallback(byte command, byte argc, byte *argv)
 			sendBluetoothRenameConfirmation();
 			_delay_ms(100);
 			resetBluetooth();					/* reset bluetooth to enter AT mode. */
-			_delay_ms(100);						
+			_delay_ms(1000);					
 			sendATNameCommand();				/* send the AT+NAME command to rename the bluetooth. */
 			uint8_t newName [argc/2];			/* newName array to re-assemble name from sysex message*/
-			for (uint16_t i = 0; i < argc; i+=2) {newName[i/2]=(argv[i]|(argv[i+1]<<7));writeOnUart1(newName[i/2]);} /* send New name*/
+			for (uint16_t i = 0; i < argc; i+=2) 
+			{
+				newName[i/2]=(argv[i]|(argv[i+1]<<7));
+				writeOnUart1(newName[i/2]);
+			} /* send New name*/
 			_delay_ms(1000);					/* 1 Second was chosen to support latecny of HC-06 bluetooth module */ 
 			resetBluetooth();					/* reset the bluetooth again to restart with new configuration. */
 		}		
