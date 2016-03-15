@@ -126,6 +126,11 @@ void processUart0Input()
 		printVersion();
 	}
 	
+	if (resendTestingAnswer)
+	{
+		sendAnswerToApplication();
+	}
+	
 	if(getAvailableDataCountOnUart0()>0)
 	{
 		if (txBufferIndex <=15)
@@ -588,7 +593,37 @@ void sysexCallback(byte command, byte argc, byte *argv)
 			resetBluetooth();					/* reset the bluetooth again to restart with new configuration. */
 		}		
 	}break;
+	
+	case TESTING_FRAME:
+	{
+		if (argc>0)
+		{
+			uint8_t testNumbers [argc/2];			/* newName array to re-assemble name from sysex message*/
+			uint16_t sumOfData = 0;
+			for (uint16_t i = 0; i < argc; i+=2) testNumbers[i/2]=(argv[i]|(argv[i+1]<<7));
+			for (uint16_t i =0 ; i< argc/2 ;i++) sumOfData+=testNumbers[i];
+			testAnswer = sumOfData%256;
+			sendAnswerToApplication();
+		}
+	}break;
 	}
+}
+
+void sendAnswerToApplication()
+{
+	#ifdef PLUS_BOARD
+	if(txBufferIndex + 5 >20)
+	{
+		resendTestingAnswer = true;
+	}
+	else
+	{
+		sendSysex(TESTING_FRAME,1,&testAnswer);
+		resendTestingAnswer = false;
+	}
+	#elif defined(CLASSIC_BOARD)
+	sendSysex(TESTING_FRAME,1,&testAnswer);
+	#endif
 }
 
 void sendBluetoothRenameConfirmation()

@@ -48,6 +48,7 @@
 #define RESET_MICRO             0x60
 #define REPORT_INPUT_PINS       0X5F
 #define BLUETOOTH_RENAMING		0x5E
+#define TESTING_FRAME			0x5D
 
 // pin modes
 #define ANALOG                  0x02 // analog pin in analogInput mode
@@ -86,6 +87,7 @@ byte executeMultiByteCommand; // execute this after getting multi-byte data
 byte multiByteChannel; // channel data for multiByteCommands
 byte storedInputData[MAX_DATA_BYTES]; // multi-byte data
 extern const uint8_t PROGMEM atNameArray[7];
+uint8_t testAnswer;
 unsigned long bluetoothResponseMillis;
 unsigned long newMillis;
 unsigned long isAliveMillis;
@@ -114,6 +116,7 @@ boolean isPort1StatusEqual;
 boolean isPort2StatusEqual;
 boolean	dataInArduinoBuffer;
 boolean	arduinoStopped;
+uint8_t resendTestingAnswer;
 #endif
 /* sysex */
 boolean parsingSysex;
@@ -302,4 +305,10 @@ void sendATNameCommand();
  * @return  None  
  */
 void sendBluetoothRenameConfirmation();
+/**
+ * @brief Send testing answer "SDK testing"
+ * @param None
+ * @return  None  
+ */
+void sendAnswerToApplication();
 #endif /* FIRMATA_H_ */
