@@ -20,6 +20,7 @@
 
 #ifndef UART_H_
 #define UART_H_
+#include "stdint.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "timers.h"
@@ -39,21 +40,21 @@
 #define UART_NO_DATA          -1              /**< no receive data available   */
 #define UART_BUFFER_OVERFLOW  -2              /**< receive ringbuffer overflow */
 #ifdef PLUS_BOARD
-volatile boolean	isArduinoRx0BufferEmpty;
-volatile boolean	isArduinoRx0BufferOverFlowed;
+volatile uint8_t	isArduinoRx0BufferEmpty;
+volatile uint8_t	isArduinoRx0BufferOverFlowed;
 #endif
 /**
  * @brief Initialize the serial port, it's status registers and buffers.
  * @param serialPort specify which serial port to initialize 0 or 1
  * @return None 
  */
-void initUart(uint8 serialPort);
+void initUart(uint8_t serialPort);
 /**
  * @brief Disables the serial port, it's status registers and buffers. and returns rx and tx pins to their defaults.
  * @param serialPort specify which serial port to disable 0 or 1 
  * @return None 
  */
-void terminateUart(uint8 serialPort);
+void terminateUart(uint8_t serialPort);
 /**
  * @brief Transmits a byte to serial port 0.
  * @param data the byte to be sent  
@@ -71,13 +72,13 @@ void writeOnUart1(uint8_t data);
  * @param None.  
  * @return the received byte.  
  */
-int  readFromUart0();
+int16_t  readFromUart0();
 /**
  * @brief Receives a byte from serial port 1.
  * @param None.  
  * @return the received byte.  
  */
-int  readFromUart1();
+int16_t  readFromUart1();
 /**
  * @brief Setup the LEDs as UART communication indicator  
  * @param None
@@ -89,25 +90,25 @@ void setupUartLeds();
  * @param None.  
  * @return True or False.  
  */
-boolean getIsArduinoRx0BufferEmptyFlag();
+uint8_t getIsArduinoRx0BufferEmptyFlag();
 /**
  * @brief Sets the boolean.
  * @param True or False.  
  * @return None.  
  */
-void setIsArduinoRx0BufferEmptyFlag(boolean);
+void setIsArduinoRx0BufferEmptyFlag(uint8_t);
 /**
  * @brief Returns true if Arduino buffer is Empty.
  * @param None.  
  * @return True or False.  
  */
-boolean getIsArduinoRx0BufferOverFlowedFlag();
+uint8_t getIsArduinoRx0BufferOverFlowedFlag();
 /**
  * @brief Sets the boolean.
  * @param True or False.  
  * @return None.  
  */
-void setIsArduinoRx0BufferOverFlowedFlag(boolean);
+void setIsArduinoRx0BufferOverFlowedFlag(uint8_t);
 
 #if UART_RX0_INTERRUPT == ENABLED
 	/**
@@ -115,13 +116,13 @@ void setIsArduinoRx0BufferOverFlowedFlag(boolean);
 	  * @param None.  
 	  * @return the data count.  
 	  */
-    int getAvailableDataCountOnUart1();
+    int16_t getAvailableDataCountOnUart1();
 	/**
 	  * @brief Gets the count of the available data in the buffer of serial 0.
 	  * @param None.  
 	  * @return the data count.  
 	  */
-    int getAvailableDataCountOnUart0();
+    int16_t getAvailableDataCountOnUart0();
 #endif
 
 #endif /* UART_H_ */

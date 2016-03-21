@@ -10,7 +10,7 @@
   Date:          2014.5
 
 */
-
+#include "stdint.h"
 #include "config.h"
 #include "onesheeld.h"
 

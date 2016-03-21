@@ -38,7 +38,7 @@ void setupUartLeds()
 	TCCR2|=(1<<CS20)|(1<<CS21); // clock prescalar =32
 }
 
-void initUart(uint8 serialPort){
+void initUart(uint8_t serialPort){
 	
     UART1_RxHead = 0;
 	UART1_RxTail = 0;
@@ -80,7 +80,7 @@ void initUart(uint8 serialPort){
 	
 }
 
-void terminateUart(uint8 serialPort)
+void terminateUart(uint8_t serialPort)
 {
 	if (serialPort==0)
 	{
@@ -116,7 +116,7 @@ void writeOnUart1(uint8_t data){
 
 #if UART_RX0_INTERRUPT == ENABLED
 
-int readFromUart0(){
+int16_t readFromUart0(){
 	uint16_t tmptail;
 	uint8_t data;
 
@@ -140,7 +140,7 @@ int readFromUart0(){
 }
 
 
-int getAvailableDataCountOnUart0(){
+int16_t getAvailableDataCountOnUart0(){
 	
 	return (UART0_RX0_BUFFER_SIZE + UART0_RxHead - UART0_RxTail) & UART0_RX0_BUFFER_MASK;
 }
@@ -183,7 +183,7 @@ ISR (USART0_RXC_vect){
 
 
 
-int readFromUart1(){
+int16_t readFromUart1(){
 	uint16_t tmptail;
 	uint8_t data;
 
@@ -202,7 +202,7 @@ int readFromUart1(){
 }
 
 
-int getAvailableDataCountOnUart1(){
+int16_t getAvailableDataCountOnUart1(){
 	return (UART_RX1_BUFFER_SIZE + UART1_RxHead - UART1_RxTail) & UART_RX1_BUFFER_MASK;
 }
 
@@ -241,13 +241,13 @@ ISR(USART1_TXC_vect)
 		enableTxLedBlinking();
 }
 #else
-int readFromUart0(){
+int16_t readFromUart0(){
 	
 	while ( (UCSR0A & (1<<RXC0))==0);
 	return UDR0;
 }
 
-int readFromUart1(){
+int16_t readFromUart1(){
 	
 	
 	while ( !(UCSR1A & (1<<RXC1)) );
@@ -256,23 +256,23 @@ int readFromUart1(){
 
 #endif
 #ifdef PLUS_BOARD
-boolean getIsArduinoRx0BufferEmptyFlag()
+uint8_t getIsArduinoRx0BufferEmptyFlag()
 {
 	return isArduinoRx0BufferEmpty;
 }
 
-void setIsArduinoRx0BufferEmptyFlag(boolean state)
+void setIsArduinoRx0BufferEmptyFlag(uint8_t state)
 {
 	isArduinoRx0BufferEmpty = state;
 }
 
 
-boolean getIsArduinoRx0BufferOverFlowedFlag()
+uint8_t getIsArduinoRx0BufferOverFlowedFlag()
 {
 	return isArduinoRx0BufferOverFlowed;
 }
 
-void setIsArduinoRx0BufferOverFlowedFlag(boolean state)
+void setIsArduinoRx0BufferOverFlowedFlag(uint8_t state)
 {
 	isArduinoRx0BufferOverFlowed = state;
 }

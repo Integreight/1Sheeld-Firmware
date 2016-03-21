@@ -20,6 +20,7 @@
 
 #ifndef TIMERS_H_
 #define TIMERS_H_
+#include "stdint.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "mapping.h"
@@ -31,12 +32,12 @@
  */
 #define MICROSECONDS_PER_TIMER0_OVERFLOW (clockCyclesToMicroseconds(64 * 256))
 /* the whole number of milliseconds per timer0 overflow */
-#define MILLIS_INC ((unsigned long)MICROSECONDS_PER_TIMER0_OVERFLOW / 1000)
+#define MILLIS_INC ((uint32_t)MICROSECONDS_PER_TIMER0_OVERFLOW / 1000)
 /** the fractional number of milliseconds per timer0 overflow. we shift right
  *  by three to fit these numbers into a byte. (for the clock speeds we care
  *  about - 8 and 16 MHz - this doesn't lose precision.)
  */
-#define FRACT_INC (((unsigned long)MICROSECONDS_PER_TIMER0_OVERFLOW % 1000) >> 3)
+#define FRACT_INC (((uint32_t)MICROSECONDS_PER_TIMER0_OVERFLOW % 1000) >> 3)
 #define FRACT_MAX (1000 >> 3)
 
 /**
@@ -68,7 +69,7 @@ void enableTxLedBlinking();
  * @param None.
  * @return Number of milliseconds since the program started (unsigned long). 
  */
-unsigned long millis();
+uint32_t millis();
 /**
  * @brief Setup the millis timers  
  * @param None

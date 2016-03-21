@@ -13,14 +13,14 @@
 #include "config.h"
 #include "gpio.h"
 
-void setPinModeOutput(t_SetPortCfg* cfg, uint8 bit)
+void setPinModeOutput(t_SetPortCfg* cfg, uint8_t bit)
 {
 	SET_BIT(cfg->Portdir,bit);
 	t_stPort* stport=(t_stPort *)cfg->pID; //make the pointer points to the Port Registers in memory		
 	stport->portDirReg |= cfg->Portdir;
 }
 
-void setPinModeInput(t_SetPortCfg* cfg, uint8 bit)
+void setPinModeInput(t_SetPortCfg* cfg, uint8_t bit)
 {
 	t_stPort* stport=(t_stPort *)cfg->pID;  //make the pointer points to the Port Registers in memory
 	cfg->Portdir=stport->portDirReg;
@@ -28,7 +28,7 @@ void setPinModeInput(t_SetPortCfg* cfg, uint8 bit)
     stport->portDirReg &= cfg->Portdir;
 }
 
-uint8 getPinValue(unsigned int pid,uint8 pinNum)
+uint8_t getPinValue(uint16_t pid,uint8_t pinNum)
 {
 	t_stPort* stport;
 	
@@ -37,7 +37,7 @@ uint8 getPinValue(unsigned int pid,uint8 pinNum)
 	return ((stport->portInReg)&(1<<pinNum));
 }
 
-void setPinValue(uint8 data,unsigned int pid,uint8 pinNum)
+void setPinValue(uint8_t data,uint16_t pid,uint8_t pinNum)
 {
 	t_stPort* stport;
 	
@@ -61,10 +61,10 @@ void setPinValue(uint8 data,unsigned int pid,uint8 pinNum)
 	}	
 }
 
-void setPinMode(uint8 pin , uint8 pinMode)
+void setPinMode(uint8_t pin , uint8_t pinMode)
 {
-	uint8 bit = digitalPinToBitMask(pin);
-	uint8 port = digitalPinToPort(pin);
+	uint8_t bit = digitalPinToBitMask(pin);
+	uint8_t port = digitalPinToPort(pin);
 	t_SetPortCfg cfg;
 	
 	
@@ -86,11 +86,11 @@ void setPinMode(uint8 pin , uint8 pinMode)
 	
 }
 
-uint8  digitalRead(uint8 pin)
+uint8_t  digitalRead(uint8_t pin)
 {
-	uint8 timer = digitalPinToTimer(pin);
-	uint8 bit = digitalPinToBitMask(pin);
-	uint8 port = digitalPinToPort(pin);
+	uint8_t timer = digitalPinToTimer(pin);
+	uint8_t bit = digitalPinToBitMask(pin);
+	uint8_t port = digitalPinToPort(pin);
 	t_SetPortCfg cfg;
 	
 	if (timer != NOT_ON_TIMER) turnOffPWM(timer);
@@ -100,17 +100,17 @@ uint8  digitalRead(uint8 pin)
 		return 0;
 	}
 	
-	cfg.pID = (unsigned int)portModeRegister(port);
+	cfg.pID = (uint16_t)portModeRegister(port);
 	
 	return getPinValue(cfg.pID,bit);
 	
 }
 
-void   digitalWrite(uint8 pin, uint8 value)
+void   digitalWrite(uint8_t pin, uint8_t value)
 {
-	uint8 timer = digitalPinToTimer(pin);
-	uint8 bit = digitalPinToBitMask(pin);
-	uint8 port = digitalPinToPort(pin);
+	uint8_t timer = digitalPinToTimer(pin);
+	uint8_t bit = digitalPinToBitMask(pin);
+	uint8_t port = digitalPinToPort(pin);
 	t_SetPortCfg cfg;
 
 	if (timer != NOT_ON_TIMER) turnOffPWM(timer);
@@ -120,14 +120,14 @@ void   digitalWrite(uint8 pin, uint8 value)
 		return;
 	}
 	
-	cfg.pID = (unsigned int)portModeRegister(port);
+	cfg.pID = (uint16_t)portModeRegister(port);
 	
 	setPinValue(value,cfg.pID,bit);
 }
 
-void analogWrite(uint8 pin, int val)
+void analogWrite(uint8_t pin, int16_t val)
 {
-	uint8 timer = 0xff;
+	uint8_t timer = 0xff;
 	setPinMode(pin, OUTPUT);
 	
 	if ((val == 0) || (val <0))
@@ -144,16 +144,16 @@ void analogWrite(uint8 pin, int val)
 	{
 		timer = digitalPinToTimer(pin);
 		initPwm(timer);
-		setPwmDutyCycle((uint8)val, timer);
+		setPwmDutyCycle((uint8_t)val, timer);
 
 	}
 	
 }
 
 
-uint8 readPort(byte port, byte bitmask)
+uint8_t readPort(uint8_t port, uint8_t bitmask)
 {
-	unsigned char out=0, pin=port*8;
+	uint8_t out=0, pin=port*8;
 	if ((IS_PIN_DIGITAL(pin+0)) && (bitmask & 0x01) && ( digitalRead(pin+0))) out |= 0x01;
 	if ((IS_PIN_DIGITAL(pin+1)) && (bitmask & 0x02) && ( digitalRead(pin+1))) out |= 0x02;
 	if ((IS_PIN_DIGITAL(pin+2)) && (bitmask & 0x04) && ( digitalRead(pin+2))) out |= 0x04;
@@ -165,9 +165,9 @@ uint8 readPort(byte port, byte bitmask)
 	return out;
 }
 
-void writePort(byte port, byte value, byte bitmask)
+void writePort(uint8_t port, uint8_t value, uint8_t bitmask)
 {
-	byte pin=port*8;
+	uint8_t pin=port*8;
 	
 	if (port==0)
 	{
@@ -195,6 +195,6 @@ void writePort(byte port, byte value, byte bitmask)
 void setUnusedPinsAsOutput()
 {
 	setPinMode(22,OUTPUT);
-	for (int i =25;i<35;i++)
+	for (int16_t i =25;i<35;i++)
 	setPinMode(i,OUTPUT);
 }

@@ -13,12 +13,12 @@
 #include "config.h"
 #include "timers.h"
 
-unsigned  volatile int countRx=0;
-unsigned  volatile int countTx=0;
-unsigned volatile int count=0;
-volatile unsigned long timer0_overflow_count = 0;
-volatile unsigned long timer0_millis = 0;
-static unsigned char timer0_fract = 0;
+volatile uint16_t countRx=0;
+volatile uint16_t countTx=0;
+volatile uint16_t count=0;
+volatile uint32_t timer0_overflow_count = 0;
+volatile uint32_t timer0_millis = 0;
+static	 uint8_t timer0_fract = 0;
 void enableTimerOverflow()
 {
 	SET_BIT(TIMSK,TOIE2);
@@ -33,10 +33,10 @@ void enableTxLedBlinking(){
 	//isTxEnabled=1;
 	countTx =1 ;
 }
-unsigned long millis()
+uint32_t millis()
 {
-	unsigned long m;
-	char oldSREG = SREG;
+	uint32_t m;
+	uint8_t oldSREG = SREG;
 	// disable interrupts while we read timer0_millis or we might get an
 	// inconsistent value (e.g. in the middle of a write to timer0_millis)
 	cli();
@@ -47,8 +47,8 @@ unsigned long millis()
 }
 ISR (TIMER0_OVF_vect)
 {
-	unsigned long m = timer0_millis;
-	unsigned char f = timer0_fract;
+	uint32_t m = timer0_millis;
+	uint8_t f = timer0_fract;
 	m += MILLIS_INC;
 	f += FRACT_INC;
 	if (f >= FRACT_MAX) {

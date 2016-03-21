@@ -16,8 +16,8 @@
 
 void sendFrameToArduino()
 {
-	byte dataArray[7]={0xff,0x00,0xF0,0x02,0x00,0xff,0x00};
-	for (int i = 0; i < 7; i++)
+	uint8_t dataArray[7]={0xff,0x00,0xF0,0x02,0x00,0xff,0x00};
+	for (uint16_t i = 0; i < 7; i++)
 	{
 		writeOnUart0(dataArray[i]);
 	}
@@ -113,7 +113,7 @@ void sendDataToApp()
 		if(port2StatusChanged)fillBufferWithPinStates(digitalPort2array,2);
 		}
 		processUart0Input();
-		for (int i=0; i<txBufferIndex; i++)
+		for (uint16_t i=0; i<txBufferIndex; i++)
 		{
 			writeOnUart1(UartTx1Buffer[i]);
 		}
@@ -134,8 +134,8 @@ void sendDataToApp()
 #ifdef PLUS_BOARD
 void sendArduinoToStopData()
 {
-	byte dataArray[10]={0xFF,0x00,0xF0,0x04,0x01,0xFE,0x01,0xFE,0x01,0x00};
-	for (int i = 0; i < 10; i++)
+	uint8_t dataArray[10]={0xFF,0x00,0xF0,0x04,0x01,0xFE,0x01,0xFE,0x01,0x00};
+	for (uint16_t i = 0; i < 10; i++)
 	{
 		writeOnUart0(dataArray[i]);
 	}
@@ -143,8 +143,8 @@ void sendArduinoToStopData()
 
 void sendArduinoToSendData()
 {
-	byte dataArray[10]={0xFF,0x00,0xF0,0x04,0x01,0xFE,0x01,0xFE,0x00,0x00};
-	for (int i = 0; i < 10; i++)
+	uint8_t dataArray[10]={0xFF,0x00,0xF0,0x04,0x01,0xFE,0x01,0xFE,0x00,0x00};
+	for (uint16_t i = 0; i < 10; i++)
 	{
 		writeOnUart0(dataArray[i]);
 	}
@@ -180,41 +180,41 @@ void checkArduinoRx0BufferSpace()
 	}
 }
 
-int checkPortStateEquality(byte * oldPort ,byte * newPort,byte numberOfPins)
+uint16_t checkPortStateEquality(uint8_t * oldPort ,uint8_t * newPort,uint8_t numberOfPins)
 {
 	while(--numberOfPins>0 && oldPort[numberOfPins]==newPort[numberOfPins]);
 	return numberOfPins!=0;
 }
 
-void fillBufferWithPinStates(byte * portArray,byte portNumber)
+void fillBufferWithPinStates(uint8_t * portArray,uint8_t portNumber)
 {
 	if(portNumber == 0)
 	{
 		if(checkPortStateEquality(oldDigitalPort0array,portArray,3)){
 			isPort0StatusEqual = false;
-			for(int i = 0 ;i <3 ; i++) oldDigitalPort0array[i]=portArray[i];
+			for(uint16_t i = 0 ;i <3 ; i++) oldDigitalPort0array[i]=portArray[i];
 			}else{
 			isPort0StatusEqual = true;
 		}
 		}else if(portNumber == 1){
 		if(checkPortStateEquality(oldDigitalPort1array,portArray,3)){
 			isPort1StatusEqual = false;
-			for(int i = 0 ;i <3 ; i++) oldDigitalPort1array[i]=portArray[i];
+			for(uint16_t i = 0 ;i <3 ; i++) oldDigitalPort1array[i]=portArray[i];
 			}else{
 			isPort1StatusEqual = true;
 		}
 		}else if(portNumber == 2){
 		if(checkPortStateEquality(oldDigitalPort2array,portArray,3)){
 			isPort2StatusEqual = false;
-			for(int i = 0 ;i <3 ; i++) oldDigitalPort2array[i]=portArray[i];
+			for(uint16_t i = 0 ;i <3 ; i++) oldDigitalPort2array[i]=portArray[i];
 			}else{
 			isPort2StatusEqual = true;
 		}
 	}
-	uint8 bufferIndex = txBufferIndex;
+	uint8_t bufferIndex = txBufferIndex;
 	if (bufferIndex+3<20 && ((!isPort0StatusEqual)||(!isPort1StatusEqual)||(!isPort2StatusEqual))){
-		int j = 0;
-		for (int i = bufferIndex; i<bufferIndex+3 ;i++)
+		uint16_t j = 0;
+		for (uint16_t i = bufferIndex; i<bufferIndex+3 ;i++)
 		{
 			write(portArray[j]);
 			j++;

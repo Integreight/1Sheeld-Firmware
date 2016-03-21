@@ -20,7 +20,7 @@
 
 #ifndef FIRMATA_H_
 #define FIRMATA_H_
-
+#include "stdint.h"
 #include "uart.h"
 #include "gpio.h"
 
@@ -74,57 +74,57 @@
 
 
 /* digital input ports */
-byte reportPINs[TOTAL_PORTS];       // 1 = report this port, 0 = silence
-byte previousPINs[TOTAL_PORTS];     // previous 8 bits sent
+uint8_t reportPINs[TOTAL_PORTS];       // 1 = report this port, 0 = silence
+uint8_t previousPINs[TOTAL_PORTS];     // previous 8 bits sent
 /* pins configuration */
-byte pinConfig[TOTAL_PINS];         // configuration of every pin
-byte portConfigInputs[TOTAL_PORTS]; // each bit: 1 = pin in INPUT, 0 = anything else
-int pinState[TOTAL_PINS];           // any value that has been written
-uint8 muteFirmata;
+uint8_t pinConfig[TOTAL_PINS];         // configuration of every pin
+uint8_t portConfigInputs[TOTAL_PORTS]; // each bit: 1 = pin in INPUT, 0 = anything else
+int16_t pinState[TOTAL_PINS];           // any value that has been written
+uint8_t muteFirmata;
 /* input message handling */
-byte waitForData; // this flag says the next serial input will be data
-byte executeMultiByteCommand; // execute this after getting multi-byte data
-byte multiByteChannel; // channel data for multiByteCommands
-byte storedInputData[MAX_DATA_BYTES]; // multi-byte data
+uint8_t waitForData; // this flag says the next serial input will be data
+uint8_t executeMultiByteCommand; // execute this after getting multi-byte data
+uint8_t multiByteChannel; // channel data for multiByteCommands
+uint8_t storedInputData[MAX_DATA_BYTES]; // multi-byte data
 extern const uint8_t PROGMEM atNameArray[7];
 uint8_t testAnswer;
-unsigned long bluetoothResponseMillis;
-unsigned long newMillis;
-unsigned long isAliveMillis;
+uint32_t bluetoothResponseMillis;
+uint32_t newMillis;
+uint32_t isAliveMillis;
 #ifdef PLUS_BOARD
 /* Buffering data for IOS version */
-unsigned long sentFramesMillis;
+uint32_t sentFramesMillis;
 uint8_t txBufferIndex;
 uint8_t UartTx1Buffer[20];	//to send frames of 20bytes each 15ms
-byte digitalPort0array[3];
-byte digitalPort1array[3];
-byte digitalPort2array[3];
-byte oldDigitalPort0array[3];
-byte oldDigitalPort1array[3];
-byte oldDigitalPort2array[3];
-boolean toggelingIndicator;
-boolean storeDataInSmallBuffer;
-boolean firstFrameToSend;
-boolean	resendDigitalPort;
-boolean resendIsAlive;
-boolean resendPrintVersion;
-boolean	port0StatusChanged;
-boolean port1StatusChanged;
-boolean port2StatusChanged;
-boolean isPort0StatusEqual;
-boolean isPort1StatusEqual;
-boolean isPort2StatusEqual;
-boolean	dataInArduinoBuffer;
-boolean	arduinoStopped;
+uint8_t digitalPort0array[3];
+uint8_t digitalPort1array[3];
+uint8_t digitalPort2array[3];
+uint8_t oldDigitalPort0array[3];
+uint8_t oldDigitalPort1array[3];
+uint8_t oldDigitalPort2array[3];
+uint8_t toggelingIndicator;
+uint8_t storeDataInSmallBuffer;
+uint8_t firstFrameToSend;
+uint8_t	resendDigitalPort;
+uint8_t resendIsAlive;
+uint8_t resendPrintVersion;
+uint8_t	port0StatusChanged;
+uint8_t port1StatusChanged;
+uint8_t port2StatusChanged;
+uint8_t isPort0StatusEqual;
+uint8_t isPort1StatusEqual;
+uint8_t isPort2StatusEqual;
+uint8_t	dataInArduinoBuffer;
+uint8_t	arduinoStopped;
 uint8_t resendTestingAnswer;
 #endif
 /* sysex */
-boolean parsingSysex;
-int sysexBytesRead;
+uint8_t parsingSysex;
+int16_t sysexBytesRead;
 //for bluetooth reset
-boolean bluetoothResetResponded;
-boolean isAppResponded;
-boolean notAliveSentToArduino;
+uint8_t bluetoothResetResponded;
+uint8_t isAppResponded;
+uint8_t notAliveSentToArduino;
 	
 /**
 * @brief Initialize Firmata protocal variables.
@@ -137,13 +137,13 @@ void initFirmata();
 * @param data byte to be sent.
 * @return None. 
 */
-void write(unsigned char data);
+void write(uint8_t data);
 /**
 * @brief Checks the availability of data in the serial buffer.
 * @param None.
 * @return number of data bytes in the serial buffer. 
 */
-int available(void);
+int16_t available(void);
 /**
 * @brief process the data coming from 1Sheeld android app.
 * @param None.
@@ -162,7 +162,7 @@ void processUart0Input(void);
 * @param portData Data to be put on the port.
 * @return None. 
 */
-void sendDigitalPort(byte portNumber, int portData);
+void sendDigitalPort(uint8_t portNumber, int16_t portData);
 /**
 * @brief Send an array of bytes using Firmata's sysex message format.
 * @param command Command byte.
@@ -170,7 +170,7 @@ void sendDigitalPort(byte portNumber, int portData);
 * @param *bytev Array carrying the data.
 * @return None. 
 */
-void sendSysex(byte command, byte bytec, byte* bytev);
+void sendSysex(uint8_t command, uint8_t bytec, uint8_t* bytev);
 /**
 * @brief set the port before sending.
 * @param portNumber port number.
@@ -178,7 +178,7 @@ void sendSysex(byte command, byte bytec, byte* bytev);
 * @param forceSend boolean to send the port even if it didn't change.
 * @return None. 
 */
-void outputPort(byte portNumber, byte portValue, byte forceSend);
+void outputPort(uint8_t portNumber, uint8_t portValue, uint8_t forceSend);
 /**
 * @brief Checks the values on all the digital inputs of 1Sheeld board.
 * @param None.
@@ -191,28 +191,28 @@ void checkDigitalInputs(void);
 * @param mode mode of the pin either INPUT, OUTPUT, ANALOG or PWM.
 * @return None. 
 */
-void setPinModeCallback(byte pin, int mode);
+void setPinModeCallback(uint8_t pin, int16_t mode);
 /**
 * @brief sets duty cycle to of an analog (PWM) pin when an analog message is received.
 * @param pin number of pin to be set.
 * @param duty cycle to be set on the pin.
 * @return None. 
 */
-void analogWriteCallback(byte pin, int value);
+void analogWriteCallback(uint8_t pin, int16_t value);
 /**
 * @brief sets digital values to pins when a digital message is received.
 * @param pin number of pin to be set.
 * @param value digital value to be set on the pin.
 * @return None. 
 */
-void digitalWriteCallback(byte port, int value);
+void digitalWriteCallback(uint8_t port, int16_t value);
 /**
 * @brief enables/disables reporting of changes of a digital input port when a digital reporting message is received.
 * @param port number of port to be reported.
 * @param value a value that determine the enabling or disabling.
 * @return None. 
 */
-void reportDigitalCallback(byte port, int value);
+void reportDigitalCallback(uint8_t port, int16_t value);
 /**
 * @brief act upon the processed sysex messages.
 * @param command command byte.
@@ -220,7 +220,7 @@ void reportDigitalCallback(byte port, int value);
 * @param *argv Array of the enclosed sysex data.
 * @return None. 
 */
-void sysexCallback(byte command, byte argc, byte *argv);
+void sysexCallback(uint8_t command, uint8_t argc, uint8_t *argv);
 /**
 * @brief resets 1Sheeld pins to their default values and reset firmata values.
 * @param None.
@@ -250,7 +250,7 @@ void systemReset(void);
 * @param None.
 * @return None. 
 */
-void sendValueAsTwo7bitBytes(int value);
+void sendValueAsTwo7bitBytes(int16_t value);
 /**
 * @brief sends start sysex byte.
 * @param None.

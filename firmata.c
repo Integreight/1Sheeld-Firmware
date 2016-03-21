@@ -42,7 +42,7 @@ void reportDigitalPorts()
 	#endif
 }
 
-void write(unsigned char data)
+void write(uint8_t data)
 {
 	#ifdef PLUS_BOARD
 	storeDataInSmallBuffer=true;
@@ -59,7 +59,7 @@ void write(unsigned char data)
 	#endif
 }
 
-void sendValueAsTwo7bitBytes(int value)
+void sendValueAsTwo7bitBytes(int16_t value)
 {
   write(value & 0b01111111); // LSB
   write(value >> 7 & 0b01111111); // MSB
@@ -97,7 +97,7 @@ void initFirmata()
 	muteFirmata=0;// 1 for rx1,tx1 with
 }
 
-int available(void)
+int16_t available(void)
 {
 	return getAvailableDataCountOnUart1();
 }
@@ -135,7 +135,7 @@ void processUart0Input()
 	{
 		if (txBufferIndex <=15)
 		{
-			unsigned int availableBytesInTxBuffer;
+			uint8_t availableBytesInTxBuffer;
 			availableBytesInTxBuffer = ((20-txBufferIndex)-3)/2;
 			if(getAvailableDataCountOnUart0()<availableBytesInTxBuffer)
 			{
@@ -144,8 +144,8 @@ void processUart0Input()
 			
 			if(!firstFrameToSend)
 			{
-				byte arr[availableBytesInTxBuffer];
-				for(unsigned int i=0;i<availableBytesInTxBuffer;i++){
+				uint8_t arr[availableBytesInTxBuffer];
+				for(uint16_t i=0;i<availableBytesInTxBuffer;i++){
 					arr[i]=readFromUart0();
 				}
 				sendSysex(UART_DATA,availableBytesInTxBuffer,arr);
@@ -153,10 +153,10 @@ void processUart0Input()
 		}
 	}
 	#elif defined(CLASSIC_BOARD)
-		unsigned int availableData=getAvailableDataCountOnUart0();
+		uint16_t availableData=getAvailableDataCountOnUart0();
 		if(availableData>0){
-			byte arr[availableData];
-			for(unsigned int i=0;i<availableData;i++){
+			uint8_t arr[availableData];
+			for(uint16_t i=0;i<availableData;i++){
 				arr[i]=readFromUart0();
 			}
 			sendSysex(UART_DATA,availableData,arr);
@@ -166,8 +166,8 @@ void processUart0Input()
 
 void processInput(void)
 {
-	int inputData = readFromUart1(); // this is 'int' to handle -1 when no data
-	int command;
+	int16_t inputData = readFromUart1(); // this is 'int' to handle -1 when no data
+	int16_t command;
 	
 	// TODO make sure it handles -1 properly
 
@@ -250,37 +250,37 @@ void processInput(void)
 	}
 }
 
-void sendDigitalPort(byte portNumber, int portData)
+void sendDigitalPort(uint8_t portNumber, int16_t portData)
 {
 	#ifdef PLUS_BOARD
 	storeDataInSmallBuffer = true;
 	if(portNumber == 0){
 		digitalPort0array[0]= DIGITAL_MESSAGE | (portNumber & 0xF);
-		digitalPort0array[1]= (byte)portData % 128;
+		digitalPort0array[1]= (uint8_t)portData % 128;
 		digitalPort0array[2]= portData >> 7;
 		port0StatusChanged =true;
 		}else if(portNumber == 1){
 		digitalPort1array[0]= DIGITAL_MESSAGE | (portNumber & 0xF);
-		digitalPort1array[1]= (byte)portData % 128;
+		digitalPort1array[1]= (uint8_t)portData % 128;
 		digitalPort1array[2]= portData >> 7;
 		port1StatusChanged =true;
 		}else if(portNumber == 2){
 		digitalPort2array[0]= DIGITAL_MESSAGE | (portNumber & 0xF);
-		digitalPort2array[1]= (byte)portData % 128;
+		digitalPort2array[1]= (uint8_t)portData % 128;
 		digitalPort2array[2]= portData >> 7;
 		port2StatusChanged=true;
 	}
 	#elif defined(CLASSIC_BOARD)
 	write(DIGITAL_MESSAGE | (portNumber & 0xF));
-	write((byte)portData % 128); // Tx bits 0-6
+	write((uint8_t)portData % 128); // Tx bits 0-6
 	write(portData >> 7);  // Tx bits 7-13
 	#endif
 	
 }
 			
-void sendSysex(byte command, byte bytec, byte* bytev)
+void sendSysex(uint8_t command, uint8_t bytec, uint8_t* bytev)
 {
-	byte i;
+	uint8_t i;
 	startSysex();
 	write(command);
 	for(i=0; i<bytec; i++) {
@@ -384,7 +384,7 @@ void printVersion()
  *============================================================================*/
 
 
-void outputPort(byte portNumber, byte portValue, byte forceSend)
+void outputPort(uint8_t portNumber, uint8_t portValue, uint8_t forceSend)
 {
   // pins not configured as INPUT are cleared to zeros
   portValue = portValue & portConfigInputs[portNumber];
@@ -413,7 +413,7 @@ void checkDigitalInputs(void)
 /* sets the pin mode to the correct state and sets the relevant bits in the
  * two bit-arrays that track Digital I/O and PWM status
  */
-void setPinModeCallback(byte pin, int mode)
+void setPinModeCallback(uint8_t pin, int16_t mode)
 {
   if (IS_PIN_DIGITAL(pin)) {
     if (mode == INPUT) {
@@ -451,7 +451,7 @@ void setPinModeCallback(byte pin, int mode)
   }
 }
 
-void analogWriteCallback(byte pin, int value)
+void analogWriteCallback(uint8_t pin, int16_t value)
 {
 	if (pin < TOTAL_PINS) {
 
@@ -462,9 +462,9 @@ void analogWriteCallback(byte pin, int value)
 	}
 }
 
-void digitalWriteCallback(byte port, int value)
+void digitalWriteCallback(uint8_t port, int16_t value)
 {
-	byte pin, lastPin, mask=1, pinWriteMask=0;
+	uint8_t pin, lastPin, mask=1, pinWriteMask=0;
 
 	if (port < TOTAL_PORTS) {
 		// create a mask of the pins on this port that are writable.
@@ -477,19 +477,19 @@ void digitalWriteCallback(byte port, int value)
 				// do not touch pins in PWM, ANALOG, SERVO or other modes
 				if (pinConfig[pin] == OUTPUT || pinConfig[pin] == INPUT) {
 					pinWriteMask |= mask;
-					pinState[pin] = ((byte)value & mask) ? 1 : 0;
+					pinState[pin] = ((uint8_t)value & mask) ? 1 : 0;
 				}
 			}
 			mask = mask << 1;
 		}
-		writePort(port, (byte)value, pinWriteMask);
+		writePort(port, (uint8_t)value, pinWriteMask);
 	}
 }
 
-void reportDigitalCallback(byte port, int value)
+void reportDigitalCallback(uint8_t port, int16_t value)
 {
 	if (port < TOTAL_PORTS) {
-		reportPINs[port] = (byte)value;
+		reportPINs[port] = (uint8_t)value;
 	}
 
 }
@@ -498,20 +498,20 @@ void reportDigitalCallback(byte port, int value)
  * SYSEX-BASED commands
  *============================================================================*/
 
-void sysexCallback(byte command, byte argc, byte *argv)
+void sysexCallback(uint8_t command, uint8_t argc, uint8_t *argv)
 {
   switch(command) {
 	  case PIN_STATE_QUERY:
 	 if (argc > 0) {
-		 byte pin=argv[0];
+		 uint8_t pin=argv[0];
 		 write(START_SYSEX);
 		 write(PIN_STATE_RESPONSE);
 		 write(pin);
 		 if (pin < TOTAL_PINS) {
-			 write((byte)pinConfig[pin]);
-			 write((byte)pinState[pin] & 0x7F);
-			 if (pinState[pin] & 0xFF80) write((byte)(pinState[pin] >> 7) & 0x7F);
-			 if (pinState[pin] & 0xC000) write((byte)(pinState[pin] >> 14) & 0x7F);
+			 write((uint8_t)pinConfig[pin]);
+			 write((uint8_t)pinState[pin] & 0x7F);
+			 if (pinState[pin] & 0xFF80) write((uint8_t)(pinState[pin] >> 7) & 0x7F);
+			 if (pinState[pin] & 0xC000) write((uint8_t)(pinState[pin] >> 14) & 0x7F);
 		 }
 		 write(END_SYSEX);
 	 }
@@ -527,8 +527,8 @@ void sysexCallback(byte command, byte argc, byte *argv)
 	  }break;
 	case UART_DATA:
 	{
-		byte newData [argc/2];
-		for (int i = 0; i < argc; i+=2) // run over and over
+		uint8_t newData [argc/2];
+		for (uint16_t i = 0; i < argc; i+=2) // run over and over
 		{
 			newData[i/2]=(argv[i]|(argv[i+1]<<7));
 			writeOnUart0(newData[i/2]);
@@ -649,13 +649,13 @@ void resetBluetooth()
 
 void systemResetCallback()
 {	
-	for (byte i=0; i < TOTAL_PORTS; i++) {
+	for (uint8_t i=0; i < TOTAL_PORTS; i++) {
 		reportPINs[i] = false;      // by default, reporting off
 		portConfigInputs[i] = 0;	// until activated
 		previousPINs[i] = 0;
 	}
 	
-	for (byte i=0; i < TOTAL_PINS; i++)
+	for (uint8_t i=0; i < TOTAL_PINS; i++)
     {
 		setPinModeCallback(i, INPUT);
 	}

@@ -13,12 +13,11 @@
 
 #ifndef MAPPING_H_
 #define MAPPING_H_
-
+#include "stdint.h"
 #include <avr/pgmspace.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "macros.h"
-#include "sys.h"
 
 #define F_CPU 7372800UL
 

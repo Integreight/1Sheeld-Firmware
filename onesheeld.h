@@ -20,7 +20,7 @@
 
 #ifndef ONESHEELD_H_
 #define ONESHEELD_H_
-
+#include "stdint.h"
 #include "firmata.h"
 
 #if (!defined(PLUS_BOARD) && !defined(CLASSIC_BOARD)) 
@@ -106,12 +106,12 @@ void checkArduinoRx0BufferSpace();
 * @param oldPort state,newPort state,number of pins.
 * @return None.
 */
-int checkPortStateEquality(byte * oldPort ,byte * newPort,byte numberOfPins);
+uint16_t checkPortStateEquality(uint8_t * oldPort ,uint8_t * newPort,uint8_t numberOfPins);
 /**
 * @brief Put digital ports values in the 20byte buffer to be sent.
 * @param None.
 * @return None.
 */
-void fillBufferWithPinStates(byte * portArray,byte portNumber);
+void fillBufferWithPinStates(uint8_t * portArray,uint8_t portNumber);
 #endif /* 1SHEELDS_FUNCTIONS_H_ */
 
