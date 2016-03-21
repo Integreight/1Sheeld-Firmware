@@ -70,7 +70,7 @@
 
 #define RESPONSE_INTERVAL 200UL
 #define FRAME_GAP	15UL
-#define APP_RESPONSE_INTERVAL	500UL
+#define APP_RESPONSE_INTERVAL	2000UL
 
 
 /* digital input ports */
