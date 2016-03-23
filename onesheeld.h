@@ -25,7 +25,8 @@
 
 #if (!defined(PLUS_BOARD) && !defined(CLASSIC_BOARD)) 
 #error "Board not defined"
-#elif (defined(PLUS_BOARD) && defined(CLASSIC_BOARD))
+#endif
+#if (defined(PLUS_BOARD) && defined(CLASSIC_BOARD))
 #error "Defined PLUS_BOARD and CLASSIC_BOARD"
 #endif
 

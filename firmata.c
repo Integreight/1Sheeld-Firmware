@@ -35,7 +35,8 @@ void reportDigitalPorts()
 		outputPort(1, readPort(1, portConfigInputs[1]), true);
 		outputPort(2, readPort(2, portConfigInputs[2]), true);
 	}
-	#elif defined(CLASSIC_BOARD)
+	#endif
+	#ifdef CLASSIC_BOARD
 	outputPort(0, readPort(0, portConfigInputs[0]), true);
 	outputPort(1, readPort(1, portConfigInputs[1]), true);
 	outputPort(2, readPort(2, portConfigInputs[2]), true);
@@ -51,7 +52,8 @@ void write(uint8_t data)
 		UartTx1Buffer[txBufferIndex]=data;
 		txBufferIndex++;
 	}
-	#elif defined(CLASSIC_BOARD)
+	#endif
+	#ifdef CLASSIC_BOARD
 	if (muteFirmata == 0)
 	{
 		writeOnUart1(data);
@@ -152,7 +154,8 @@ void processUart0Input()
 			}
 		}
 	}
-	#elif defined(CLASSIC_BOARD)
+	#endif
+	#ifdef CLASSIC_BOARD
 		uint16_t availableData=getAvailableDataCountOnUart0();
 		if(availableData>0){
 			uint8_t arr[availableData];
@@ -270,7 +273,8 @@ void sendDigitalPort(uint8_t portNumber, int16_t portData)
 		digitalPort2array[2]= portData >> 7;
 		port2StatusChanged=true;
 	}
-	#elif defined(CLASSIC_BOARD)
+	#endif
+	#ifdef CLASSIC_BOARD
 	write(DIGITAL_MESSAGE | (portNumber & 0xF));
 	write((uint8_t)portData % 128); // Tx bits 0-6
 	write(portData >> 7);  // Tx bits 7-13
@@ -313,7 +317,8 @@ void sendIsAlive()
 		write(END_SYSEX);
 		resendIsAlive = false;
 	}
-	#elif defined(CLASSIC_BOARD)
+	#endif
+	#ifdef CLASSIC_BOARD
 	write(START_SYSEX);
 	write(IS_ALIVE);
 	write(END_SYSEX);
@@ -372,7 +377,8 @@ void printVersion()
 		write(ONESHEELD_MAJOR_FIRMWARE_VERSION);
 		resendPrintVersion = false;
 	}
-	#elif defined(CLASSIC_BOARD)
+	#endif
+	#ifdef CLASSIC_BOARD
 	write(REPORT_VERSION);
 	write(ONESHEELD_MINOR_FIRMWARE_VERSION);
 	write(ONESHEELD_MAJOR_FIRMWARE_VERSION);
@@ -621,7 +627,8 @@ void sendAnswerToApplication()
 		sendSysex(TESTING_FRAME,1,&testAnswer);
 		resendTestingAnswer = false;
 	}
-	#elif defined(CLASSIC_BOARD)
+	#endif
+	#ifdef CLASSIC_BOARD
 	sendSysex(TESTING_FRAME,1,&testAnswer);
 	#endif
 }

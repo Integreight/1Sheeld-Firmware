@@ -125,7 +125,8 @@ void sendDataToApp()
 		port2StatusChanged = false;
 		sentFramesMillis=millis();
 	}
-	#elif defined(CLASSIC_BOARD)
+	#endif
+	#ifdef CLASSIC_BOARD
 	processUart0Input();
 	#endif
 	
