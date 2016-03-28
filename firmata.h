@@ -23,6 +23,7 @@
 #include "stdint.h"
 #include "uart.h"
 #include "gpio.h"
+#include "eeprom.h"
 
 #define ONESHEELD_MINOR_FIRMWARE_VERSION   5 
 #define ONESHEELD_MAJOR_FIRMWARE_VERSION   1 
@@ -49,6 +50,8 @@
 #define REPORT_INPUT_PINS       0X5F
 #define BLUETOOTH_RENAMING		0x5E
 #define TESTING_FRAME			0x5D
+#define QUERY_UART0_BAUD_RATE	0x5C
+#define SET_UART0_BAUD_RATE		0x5B
 
 // pin modes
 #define ANALOG                  0x02 // analog pin in analogInput mode
@@ -63,6 +66,9 @@
 #define ETX 0x03
 #define UART_BEGIN 0x01
 #define UART_END 0x00
+
+//eeprom address
+#define CURRENT_UART0_BAUD_RATE_EEPROM_ADDRESS	0
 
 #define IS_PIN_REPORTING_ENABLED 1
 #define TOTAL_PORTS             5
@@ -117,6 +123,7 @@ uint8_t isPort2StatusEqual;
 uint8_t	dataInArduinoBuffer;
 uint8_t	arduinoStopped;
 uint8_t resendTestingAnswer;
+uint8_t resendCurrentBaudRate;
 #endif
 /* sysex */
 uint8_t parsingSysex;
@@ -311,4 +318,10 @@ void sendBluetoothRenameConfirmation();
  * @return  None  
  */
 void sendAnswerToApplication();
+/**
+ * @brief send the current UART0 baudRate to applicaiton
+ * @param None
+ * @return  None  
+ */
+void getCurrentUart0BaudRate();
 #endif /* FIRMATA_H_ */

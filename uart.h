@@ -25,6 +25,14 @@
 #include <avr/interrupt.h>
 #include "timers.h"
 
+#define BAUD_9600	0x01
+#define BAUD_14400	0x02
+#define BAUD_19200	0x03
+#define BAUD_28800	0x04
+#define BAUD_38400	0x05
+#define BAUD_57600	0x06
+#define BAUD_115200	0x07
+
 #define UART_RX0_INTERRUPT ENABLED
 #define UART_RX1_INTERRUPT ENABLED 
 #define UART_RX1_BUFFER_SIZE     256
@@ -48,7 +56,7 @@ volatile uint8_t	isArduinoRx0BufferOverFlowed;
  * @param serialPort specify which serial port to initialize 0 or 1
  * @return None 
  */
-void initUart(uint8_t serialPort);
+void initUart(uint8_t serialPort,uint8_t baudrate);
 /**
  * @brief Disables the serial port, it's status registers and buffers. and returns rx and tx pins to their defaults.
  * @param serialPort specify which serial port to disable 0 or 1 

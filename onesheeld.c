@@ -29,8 +29,13 @@ void initialization()
 	setupMillisTimers();
 	initFirmata();
 	systemReset();
-	initUart(1);
-	initUart(0);
+	initUart(1,BAUD_115200);
+	#ifdef PLUS_BOARD
+	initUart(0,getSavedBaudRateFromEeprom());
+	#endif
+	#ifdef CLASSIC_BOARD
+	initUart(0,BAUD_115200);
+	#endif
 	setUnusedPinsAsOutput();
 	setupUartLeds();
 	requestBluetoothReset();
@@ -224,5 +229,26 @@ void fillBufferWithPinStates(uint8_t * portArray,uint8_t portNumber)
 		isPort1StatusEqual = true;
 		isPort2StatusEqual = true;
 	}
+}
+
+uint8_t getSavedBaudRateFromEeprom()
+{
+	uint8_t savedBaudRate = readFromEeprom(CURRENT_UART0_BAUD_RATE_EEPROM_ADDRESS);
+	switch (savedBaudRate)
+	{
+		case BAUD_9600:
+		case BAUD_14400:
+		case BAUD_19200:
+		case BAUD_28800:
+		case BAUD_38400:
+		case BAUD_57600:
+		case BAUD_115200:	break;
+		default:
+		{
+			savedBaudRate = BAUD_115200;
+			updateEeprom(CURRENT_UART0_BAUD_RATE_EEPROM_ADDRESS,savedBaudRate);
+		}
+	}
+	return savedBaudRate;
 }
 #endif // PLUS_BOARD

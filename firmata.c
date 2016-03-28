@@ -133,6 +133,11 @@ void processUart0Input()
 		sendAnswerToApplication();
 	}
 	
+	if (resendCurrentBaudRate)
+	{
+		getCurrentUart0BaudRate();
+	}
+
 	if(getAvailableDataCountOnUart0()>0)
 	{
 		if (txBufferIndex <=15)
@@ -526,7 +531,7 @@ void sysexCallback(uint8_t command, uint8_t argc, uint8_t *argv)
 	  {
 		  if(argv[0]==UART_BEGIN)
 		  {
-			  initUart(0);
+			  initUart(0,BAUD_115200);
 		  }
 		  else if(argv[0]==UART_END) terminateUart(0);
 		  
@@ -612,8 +617,46 @@ void sysexCallback(uint8_t command, uint8_t argc, uint8_t *argv)
 			sendAnswerToApplication();
 		}
 	}break;
+	#ifdef PLUS_BOARD
+		case SET_UART0_BAUD_RATE:
+		{
+			if (argc == 6)
+			{
+				uint8_t data [argc/2];			
+				for (uint16_t i = 0; i < argc; i+=2) data[i/2]=(argv[i]|(argv[i+1]<<7));
+				if(!(data[1] & data[2]))
+				{
+					//update the new value in eeprom and initialize the uart with the new value
+					uint8_t newBaudRateValue = data[0];
+					updateEeprom(CURRENT_UART0_BAUD_RATE_EEPROM_ADDRESS,newBaudRateValue);
+					initUart(0,newBaudRateValue);
+				}
+			}
+		}break;
+		
+		case QUERY_UART0_BAUD_RATE:
+		{
+			getCurrentUart0BaudRate();
+		}break;
+	#endif // PLUS_BOARD
 	}
 }
+
+#ifdef PLUS_BOARD
+void getCurrentUart0BaudRate()
+{
+	uint8_t baudRate = readFromEeprom(CURRENT_UART0_BAUD_RATE_EEPROM_ADDRESS);
+	if(txBufferIndex + 5 >20)
+	{
+		resendCurrentBaudRate = true;
+	}
+	else
+	{
+		sendSysex(QUERY_UART0_BAUD_RATE,1,&baudRate);
+		resendCurrentBaudRate = false;
+	}
+}
+#endif
 
 void sendAnswerToApplication()
 {

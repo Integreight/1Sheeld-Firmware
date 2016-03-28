@@ -114,5 +114,11 @@ uint16_t checkPortStateEquality(uint8_t * oldPort ,uint8_t * newPort,uint8_t num
 * @return None.
 */
 void fillBufferWithPinStates(uint8_t * portArray,uint8_t portNumber);
+/**
+* @brief Put digital ports values in the 20byte buffer to be sent.
+* @param None.
+* @return None.
+*/
+uint8_t getSavedBaudRateFromEeprom();
 #endif /* 1SHEELDS_FUNCTIONS_H_ */
 

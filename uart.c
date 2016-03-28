@@ -38,7 +38,7 @@ void setupUartLeds()
 	TCCR2|=(1<<CS20)|(1<<CS21); // clock prescalar =32
 }
 
-void initUart(uint8_t serialPort){
+void initUart(uint8_t serialPort, uint8_t baudrate){
 	
     UART1_RxHead = 0;
 	UART1_RxTail = 0;
@@ -56,8 +56,17 @@ void initUart(uint8_t serialPort){
 		    UCSR0B=(1<<TXEN0)|(1<<RXEN0)|(1<<RXCIE0);		
 			UCSR0C=(1<<URSEL0)|(1<<UCSZ00)|(1<<UCSZ01);
 			#endif
-			UBRR0L= 3; // 115200 single speed
-			
+			switch (baudrate)
+			{
+				case BAUD_9600:		UBRR0L = 47;break;
+				case BAUD_14400:	UBRR0L = 31;break;
+				case BAUD_19200:	UBRR0L = 23;break;
+				case BAUD_28800:	UBRR0L = 15;break;
+				case BAUD_38400:	UBRR0L = 11;break;
+				case BAUD_57600:	UBRR0L =  7;break;
+				case BAUD_115200:	UBRR0L =  3;break;
+				default:			UBRR0L =  3;break;
+			}			
 		break;
 		
 		case 1:
