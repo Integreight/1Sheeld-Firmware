@@ -8,7 +8,7 @@ FORMAT = ihex
 TARGET = firmware
 
 # List C source files here. (C dependencies are automatically generated.)
-SRC =main.c  onesheeld.c mapping.c firmata.c gpio.c pwm.c timers.c uart.c
+SRC =main.c  onesheeld.c mapping.c firmata.c gpio.c pwm.c timers.c uart.c eeprom.c
 
 # determine the building configuration debug or release
 CONFIG = DEBUG
@@ -17,9 +17,9 @@ LOWER_VAR_CONFIG  =  $(shell echo $(CONFIG) | tr A-Z a-z)
 OBJECTDIRCLASSIC = build/classic/$(LOWER_VAR_CONFIG)
 OBJECTDIRPLUS = build/plus/$(LOWER_VAR_CONFIG)
 OBJPLUS = $(OBJECTDIRPLUS)/firmata.o $(OBJECTDIRPLUS)/gpio.o $(OBJECTDIRPLUS)/main.o $(OBJECTDIRPLUS)/mapping.o $(OBJECTDIRPLUS)/onesheeld.o $(OBJECTDIRPLUS)/pwm.o \
-$(OBJECTDIRPLUS)/timers.o $(OBJECTDIRPLUS)/uart.o 
+$(OBJECTDIRPLUS)/timers.o $(OBJECTDIRPLUS)/uart.o $(OBJECTDIRPLUS)/eeprom.o
 OBJCLASSIC = $(OBJECTDIRCLASSIC)/firmata.o $(OBJECTDIRCLASSIC)/gpio.o $(OBJECTDIRCLASSIC)/main.o $(OBJECTDIRCLASSIC)/mapping.o $(OBJECTDIRCLASSIC)/onesheeld.o $(OBJECTDIRCLASSIC)/pwm.o\
-$(OBJECTDIRCLASSIC)/timers.o $(OBJECTDIRCLASSIC)/uart.o 
+$(OBJECTDIRCLASSIC)/timers.o $(OBJECTDIRCLASSIC)/uart.o $(OBJECTDIRCLASSIC)/eeprom.o 
 # Optimization level, can be [0, 1, 2, 3, s]. 
 OPT_DEBUG = 1
 OPT_RELEASE = s
