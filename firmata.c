@@ -684,7 +684,7 @@ void resetBluetooth()
 	//bt reset
 	SET_BIT(DDRE,0);
 	SET_BIT(PORTE,0);
-	_delay_ms(150);
+	_delay_ms(5);
 	CLR_BIT(PORTE,0);
 }
 
