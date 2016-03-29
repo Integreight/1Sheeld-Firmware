@@ -527,15 +527,6 @@ void sysexCallback(uint8_t command, uint8_t argc, uint8_t *argv)
 		 write(END_SYSEX);
 	 }
 	 break;
-	  case UART_COMMAND:  
-	  {
-		  if(argv[0]==UART_BEGIN)
-		  {
-			  initUart(0,BAUD_115200);
-		  }
-		  else if(argv[0]==UART_END) terminateUart(0);
-		  
-	  }break;
 	case UART_DATA:
 	{
 		uint8_t newData [argc/2];
