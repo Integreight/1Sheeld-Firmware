@@ -14,7 +14,7 @@
 #include "config.h"
 #include "onesheeld.h"
 
-void sendFrameToArduino()
+void sendArduinoAppDisconnected()
 {
 	uint8_t dataArray[7]={0xff,0x00,0xF0,0x02,0x00,0xff,0x00};
 	for (uint16_t i = 0; i < 7; i++)
@@ -81,7 +81,7 @@ void checkAppConnection()
 		{
 			if (!isAppResponded)
 			{
-				sendFrameToArduino();
+				sendArduinoAppDisconnected();
 				notAliveSentToArduino = true;
 			}
 			else

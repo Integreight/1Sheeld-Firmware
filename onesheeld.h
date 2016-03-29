@@ -35,7 +35,7 @@
  * @param None
  * @return  None  
  */
-void sendFrameToArduino();
+void sendArduinoAppDisconnected();
 /**
  * @brief Initializes the Hardware peripherals and setup for communications  
  * @param None
