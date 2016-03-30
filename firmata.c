@@ -524,11 +524,11 @@ void sysexCallback(uint8_t command, uint8_t argc, uint8_t *argv)
 	break; 
 	case FIRMATA_MUTE:
 	{
-		if (argv[0]==0)
+		if ((uint8_t)(argv[0]|(argv[1]<<7))==0)
 		{
 			muteFirmata=0;
 		}
-		else if (argv[0]==1)
+		else if ((uint8_t)(argv[0]|(argv[1]<<7))==1)
 		{
 			muteFirmata=1;
 		}
@@ -547,7 +547,7 @@ void sysexCallback(uint8_t command, uint8_t argc, uint8_t *argv)
 
 	case RESET_BLUETOOTH:
 	{
-		if (argv[0]&&!(argv[1]&argv[2]))
+		if ((uint8_t)(argv[0]|argv[1]<<7) &&!(((uint8_t)(argv[2]|argv[3]<<7))&((uint8_t)(argv[4]|argv[5]<<7))))
 		{
 			resetBluetooth();
 		}
