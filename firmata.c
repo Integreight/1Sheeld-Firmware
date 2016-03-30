@@ -512,21 +512,6 @@ void reportDigitalCallback(uint8_t port, int16_t value)
 void sysexCallback(uint8_t command, uint8_t argc, uint8_t *argv)
 {
   switch(command) {
-	  case PIN_STATE_QUERY:
-	 if (argc > 0) {
-		 uint8_t pin=argv[0];
-		 write(START_SYSEX);
-		 write(PIN_STATE_RESPONSE);
-		 write(pin);
-		 if (pin < TOTAL_PINS) {
-			 write((uint8_t)pinConfig[pin]);
-			 write((uint8_t)pinState[pin] & 0x7F);
-			 if (pinState[pin] & 0xFF80) write((uint8_t)(pinState[pin] >> 7) & 0x7F);
-			 if (pinState[pin] & 0xC000) write((uint8_t)(pinState[pin] >> 14) & 0x7F);
-		 }
-		 write(END_SYSEX);
-	 }
-	 break;
 	case UART_DATA:
 	{
 		uint8_t newData [argc/2];
