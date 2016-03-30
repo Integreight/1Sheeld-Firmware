@@ -117,20 +117,17 @@ uint8_t getIsArduinoRx0BufferOverFlowedFlag();
  * @return None.  
  */
 void setIsArduinoRx0BufferOverFlowedFlag(uint8_t);
-
-#if UART_RX0_INTERRUPT == ENABLED
-	/**
-	  * @brief Gets the count of the available data in the buffer of serial 1.
-	  * @param None.  
-	  * @return the data count.  
-	  */
-    int16_t getAvailableDataCountOnUart1();
-	/**
-	  * @brief Gets the count of the available data in the buffer of serial 0.
-	  * @param None.  
-	  * @return the data count.  
-	  */
-    int16_t getAvailableDataCountOnUart0();
-#endif
+/**
+	* @brief Gets the count of the available data in the buffer of serial 1.
+	* @param None.  
+	* @return the data count.  
+	*/
+int16_t getAvailableDataCountOnUart1();
+/**
+	* @brief Gets the count of the available data in the buffer of serial 0.
+	* @param None.  
+	* @return the data count.  
+	*/
+int16_t getAvailableDataCountOnUart0();
 
 #endif /* UART_H_ */

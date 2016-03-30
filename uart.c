@@ -15,19 +15,16 @@
 #include "uart.h"
 
 
-#if UART_RX0_INTERRUPT == ENABLED
 static volatile uint8_t  UART0_RxBuf[UART0_RX0_BUFFER_SIZE];
 static volatile uint8_t  UART0_LastRxError;
 static volatile uint16_t UART0_RxHead;
 static volatile uint16_t UART0_RxTail;
-#endif 
 
-#if UART_RX1_INTERRUPT == ENABLED
 static volatile uint8_t  UART1_RxBuf[UART_RX1_BUFFER_SIZE];
 static volatile uint8_t  UART1_LastRxError;
 static volatile uint16_t UART1_RxHead;
 static volatile uint16_t UART1_RxTail;
-#endif 
+
 
 void setupUartLeds()
 {
@@ -123,7 +120,6 @@ void writeOnUart1(uint8_t data){
 	UDR1=data;
 }
 
-#if UART_RX0_INTERRUPT == ENABLED
 
 int16_t readFromUart0(){
 	uint16_t tmptail;
@@ -249,21 +245,7 @@ ISR(USART1_TXC_vect)
 		enableTimerOverflow();
 		enableTxLedBlinking();
 }
-#else
-int16_t readFromUart0(){
-	
-	while ( (UCSR0A & (1<<RXC0))==0);
-	return UDR0;
-}
 
-int16_t readFromUart1(){
-	
-	
-	while ( !(UCSR1A & (1<<RXC1)) );
-	return UDR1;
-}
-
-#endif
 #ifdef PLUS_BOARD
 uint8_t getIsArduinoRx0BufferEmptyFlag()
 {
