@@ -66,7 +66,7 @@ void processDataFromApp()
 
 void checkBluetoothResetResponse()
 {
-	if (((newMillis-bluetoothResponseMillis)>=RESPONSE_INTERVAL) && (!bluetoothResetResponded) )
+	if (((newMillis-bluetoothResponseMillis)>=BLUETOOH_RESET_RESPONSE_INTERVAL) && (!bluetoothResetResponded) )
 	{
 		resetBluetooth();
 		bluetoothResetResponded = true;
@@ -77,7 +77,7 @@ void checkAppConnection()
 {
 	if (!notAliveSentToArduino)
 	{
-		if((newMillis-isAliveMillis)>=APP_RESPONSE_INTERVAL)
+		if((newMillis-isAliveMillis)>=APP_ISALIVE_RESPONSE_INTERVAL)
 		{
 			if (!isAppResponded)
 			{

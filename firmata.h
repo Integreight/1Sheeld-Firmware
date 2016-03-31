@@ -74,9 +74,9 @@
 #define TOTAL_PORTS             5
 #define TOTAL_PINS              20
 
-#define RESPONSE_INTERVAL 200UL
+#define BLUETOOH_RESET_RESPONSE_INTERVAL 200UL
 #define FRAME_GAP	15UL
-#define APP_RESPONSE_INTERVAL	2000UL
+#define APP_ISALIVE_RESPONSE_INTERVAL	2000UL
 
 
 /* digital input ports */
