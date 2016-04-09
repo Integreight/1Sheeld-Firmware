@@ -10,7 +10,7 @@
   Date:          2016.4
 
 */
-
+#include "config.h"
 #include "eeprom.h"
 
 
