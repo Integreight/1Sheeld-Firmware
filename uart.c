@@ -46,13 +46,8 @@ void initUart(uint8_t serialPort, uint8_t baudrate){
 	{
 		case 0:
 		    UCSR0A=0x00;
-		  	#if UART_RX0_INTERRUPT == DISABLED	  
-			UCSR0B=(1<<TXEN0)|(1<<RXEN0);		
-			UCSR0C=(1<<URSEL0)|(1<<UCSZ00)|(1<<UCSZ01);
-			#else
 		    UCSR0B=(1<<TXEN0)|(1<<RXEN0)|(1<<RXCIE0);		
 			UCSR0C=(1<<URSEL0)|(1<<UCSZ00)|(1<<UCSZ01);
-			#endif
 			switch (baudrate)
 			{
 				case BAUD_9600:		UBRR0L = 47;break;
@@ -68,13 +63,8 @@ void initUart(uint8_t serialPort, uint8_t baudrate){
 		
 		case 1:
 		    UCSR1A=0x00;
-		 	#if UART_RX1_INTERRUPT == DISABLED
-			UCSR1B=(1<<TXEN1)|(1<<RXEN1);		
-			UCSR1C=(1<<URSEL1)|(1<<UCSZ10)|(1<<UCSZ11);
-			#else
 			UCSR1B=(1<<TXEN1)|(1<<RXEN1)|(1<<RXCIE1)|(1<<TXCIE1);		
 			UCSR1C=(1<<URSEL1)|(1<<UCSZ10)|(1<<UCSZ11);
-			#endif 
 		    UBRR1L= 3; // 115200 single speed
 			
 		break;

@@ -95,7 +95,6 @@ void forceHardReset()
 /* begin method for overriding default serial bitrate */
 void initFirmata()
 {
-	//isPulseInEnabled =0;
 	muteFirmata=0;// 1 for rx1,tx1 with
 }
 
@@ -340,7 +339,6 @@ void systemReset(void)
   waitForData = 0; // this flag says the next serial input will be data
   executeMultiByteCommand = 0; // execute this after getting multi-byte data
   multiByteChannel = 0; // channel data for multiByteCommands
-  sysexBytesRead = 0;
   parsingSysex = false;
   sysexBytesRead = 0;
   bluetoothResetResponded=false;
