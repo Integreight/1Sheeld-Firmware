@@ -1,3 +1,10 @@
+## v1.6 (Major:1, Minor:6) (April 10, 2016)
+ - Supported the new plus board. (Sending chunks of 20 bytes every 15ms)
+ - Made the repo a generic avr-gcc project that can be built with a make command.
+ - Made the board testable using a special frame.
+ - Added the ability to rename the bluetooth module.
+ - Added the ability to query and change the board's communication baud rate.
+
 ## v1.5 (Major:1, Minor:5) (November 8, 2015)
  - Prepared the firmware to receive the new disconnection frame.
  

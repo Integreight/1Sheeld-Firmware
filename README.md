@@ -6,7 +6,9 @@ This is the source code of the firmware shipped with your 1Sheeld board. It is a
 
 ## Building ##
 
-The project is an generic C project, and can be built using any port of *avr-gcc* for either Microsoft Windows, Linux, or Mac OSX. Just make sure you have both *GNU Make* and *avr-gcc* tool chain installed on your platform then run ``` make ``` on the repo's root directory and both the debug and release versions will be built in a new subdirectory called *build*.
+The project is an generic C project, and can be built using any port of *avr-gcc* for either Microsoft Windows, Linux, or Mac OSX. Just make sure you have both *GNU Make* and *avr-gcc* tool chain installed on your platform then run ``` make ``` on the repo's root directory and both the classic and plus boards variations will be built in a new subdirectory called *build*.
+
+If you are not going to use the *make* command, make sure you that either *PLUS_BOARD* or *CLASSIC_BOARD* is defined. (You can use the config.h file for that)
 
 ## Fuse Bits ##
 
