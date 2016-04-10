@@ -91,12 +91,6 @@ void sendArduinoToStopData();
  */
 void sendArduinoToSendData();
 /**
- * @brief Check if there's data in Arduino Buffer  
- * @param None
- * @return  None  
- */
-void checkDataAvailabilityInRx0Buffer();
-/**
  * @brief Check if the Arduino Buffer is Empty  
  * @param None
  * @return  None  

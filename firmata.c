@@ -46,7 +46,6 @@ void reportDigitalPorts()
 void write(uint8_t data)
 {
 	#ifdef PLUS_BOARD
-	storeDataInSmallBuffer=true;
 	if (txBufferIndex<20)
 	{
 		UartTx1Buffer[txBufferIndex]=data;
@@ -260,7 +259,6 @@ void processInput(void)
 void sendDigitalPort(uint8_t portNumber, int16_t portData)
 {
 	#ifdef PLUS_BOARD
-	storeDataInSmallBuffer = true;
 	if(portNumber == 0){
 		digitalPort0array[0]= DIGITAL_MESSAGE | (portNumber & 0xF);
 		digitalPort0array[1]= (uint8_t)portData % 128;
@@ -346,7 +344,6 @@ void systemReset(void)
   notAliveSentToArduino=false;
   systemResetCallback();
   #ifdef PLUS_BOARD
-  storeDataInSmallBuffer=false;
   txBufferIndex = 0;
   firstFrameToSend = false;
   resendDigitalPort = false;
@@ -361,7 +358,6 @@ void systemReset(void)
   isPort0StatusEqual = true;
   isPort1StatusEqual = true;
   isPort2StatusEqual = true;
-  dataInArduinoBuffer = false;
   toggelingIndicator=false;
   #endif
 }

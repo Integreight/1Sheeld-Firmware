@@ -23,7 +23,6 @@ int main(void)
 		newMillis = millis();
 		checkDigitalPinStatus();
 		#ifdef PLUS_BOARD
-		checkDataAvailabilityInRx0Buffer(); 
 		checkArduinoRx0BufferSpace();
 		#endif // PLUS_BOARD
 		processDataFromApp();

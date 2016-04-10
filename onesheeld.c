@@ -107,27 +107,28 @@ void sendDataToApp()
 			}
 			else
 			{
-				if(port0StatusChanged)fillBufferWithPinStates(digitalPort0array,0);
-				if(port1StatusChanged)fillBufferWithPinStates(digitalPort1array,1);
-				if(port2StatusChanged)fillBufferWithPinStates(digitalPort2array,2);
+				checkIfPinsChangedSendThem();
 				toggelingIndicator= false;
 			}	
-		}else{
-		if(port0StatusChanged)fillBufferWithPinStates(digitalPort0array,0);
-		if(port1StatusChanged)fillBufferWithPinStates(digitalPort1array,1);
-		if(port2StatusChanged)fillBufferWithPinStates(digitalPort2array,2);
 		}
-		processUart0Input();
-		for (uint16_t i=0; i<txBufferIndex; i++)
+		else
 		{
-			writeOnUart1(UartTx1Buffer[i]);
+			checkIfPinsChangedSendThem();
 		}
-		if(firstFrameToSend) firstFrameToSend = false;
-		txBufferIndex = 0;
-		storeDataInSmallBuffer=false;
-		port0StatusChanged = false;
-		port1StatusChanged = false;
-		port2StatusChanged = false;
+		
+		processUart0Input();
+		if(txBufferIndex!=0)
+		{
+			for (uint16_t i=0; i<txBufferIndex; i++)
+			{
+				writeOnUart1(UartTx1Buffer[i]);
+			}
+			if(firstFrameToSend) firstFrameToSend = false;
+			txBufferIndex = 0;
+			port0StatusChanged = false;
+			port1StatusChanged = false;
+			port2StatusChanged = false;
+		}
 		sentFramesMillis=millis();
 	}
 	#endif
@@ -153,17 +154,6 @@ void sendArduinoToSendData()
 	for (uint16_t i = 0; i < 10; i++)
 	{
 		writeOnUart0(dataArray[i]);
-	}
-}
-
-void checkDataAvailabilityInRx0Buffer()
-{
-	if (getAvailableDataCountOnUart0()>0){
-		dataInArduinoBuffer = true;
-		storeDataInSmallBuffer = true;
-	}
-	else{
-		dataInArduinoBuffer = false;
 	}
 }
 
