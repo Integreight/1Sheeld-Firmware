@@ -263,17 +263,14 @@ void sendDigitalPort(uint8_t portNumber, int16_t portData)
 		digitalPort0array[0]= DIGITAL_MESSAGE | (portNumber & 0xF);
 		digitalPort0array[1]= (uint8_t)portData % 128;
 		digitalPort0array[2]= portData >> 7;
-		port0StatusChanged =true;
 		}else if(portNumber == 1){
 		digitalPort1array[0]= DIGITAL_MESSAGE | (portNumber & 0xF);
 		digitalPort1array[1]= (uint8_t)portData % 128;
 		digitalPort1array[2]= portData >> 7;
-		port1StatusChanged =true;
 		}else if(portNumber == 2){
 		digitalPort2array[0]= DIGITAL_MESSAGE | (portNumber & 0xF);
 		digitalPort2array[1]= (uint8_t)portData % 128;
 		digitalPort2array[2]= portData >> 7;
-		port2StatusChanged=true;
 	}
 	#endif
 	#ifdef CLASSIC_BOARD
@@ -352,9 +349,6 @@ void systemReset(void)
   setIsArduinoRx0BufferEmptyFlag(true) ;
   setIsArduinoRx0BufferOverFlowedFlag(false);
   arduinoStopped =false;
-  port0StatusChanged = false;
-  port1StatusChanged = false;
-  port2StatusChanged = false;
   toggelingIndicator=false;
   #endif
 }

@@ -96,9 +96,9 @@ void checkAppConnection()
 
 void checkIfPinsChangedSendThem()
 {
-	if(port0StatusChanged)fillBufferWithPinStates(digitalPort0array,0);
-	if(port1StatusChanged)fillBufferWithPinStates(digitalPort1array,1);
-	if(port2StatusChanged)fillBufferWithPinStates(digitalPort2array,2);
+	fillBufferWithPinStates(digitalPort0array,0);
+	fillBufferWithPinStates(digitalPort1array,1);
+	fillBufferWithPinStates(digitalPort2array,2);
 }
 
 void sendDataToApp()
@@ -132,9 +132,6 @@ void sendDataToApp()
 			}
 			if(firstFrameToSend) firstFrameToSend = false;
 			txBufferIndex = 0;
-			port0StatusChanged = false;
-			port1StatusChanged = false;
-			port2StatusChanged = false;
 		}
 		sentFramesMillis=millis();
 	}
