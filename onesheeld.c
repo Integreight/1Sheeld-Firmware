@@ -94,12 +94,19 @@ void checkAppConnection()
 	}
 }
 
+void checkIfPinsChangedSendThem()
+{
+	if(port0StatusChanged)fillBufferWithPinStates(digitalPort0array,0);
+	if(port1StatusChanged)fillBufferWithPinStates(digitalPort1array,1);
+	if(port2StatusChanged)fillBufferWithPinStates(digitalPort2array,2);
+}
+
 void sendDataToApp()
 {
 	#ifdef PLUS_BOARD
-	if ((newMillis-sentFramesMillis)> FRAME_GAP && (muteFirmata==0) && storeDataInSmallBuffer)
+	if ((newMillis-sentFramesMillis)> FRAME_GAP && (muteFirmata==0))
 	{
-		if (dataInArduinoBuffer)
+		if (getAvailableDataCountOnUart0()>0)
 		{
 			if (!toggelingIndicator)
 			{

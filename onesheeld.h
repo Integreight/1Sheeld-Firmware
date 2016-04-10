@@ -114,5 +114,11 @@ void fillBufferWithPinStates(uint8_t * portArray,uint8_t portNumber);
 * @return None.
 */
 uint8_t getSavedBaudRateFromEeprom();
+/**
+* @brief Check the changes of the pins and place them in the small buffer.
+* @param None.
+* @return None.
+*/
+void checkIfPinsChangedSendThem();
 #endif /* 1SHEELDS_FUNCTIONS_H_ */
 
