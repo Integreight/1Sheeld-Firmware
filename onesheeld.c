@@ -191,40 +191,45 @@ uint16_t checkPortStateEquality(uint8_t * oldPort ,uint8_t * newPort,uint8_t num
 
 void fillBufferWithPinStates(uint8_t * portArray,uint8_t portNumber)
 {
-	if(portNumber == 0)
-	{
-		if(checkPortStateEquality(oldDigitalPort0array,portArray,3)){
-			isPort0StatusEqual = false;
-			for(uint16_t i = 0 ;i <3 ; i++) oldDigitalPort0array[i]=portArray[i];
-			}else{
-			isPort0StatusEqual = true;
-		}
-		}else if(portNumber == 1){
-		if(checkPortStateEquality(oldDigitalPort1array,portArray,3)){
-			isPort1StatusEqual = false;
-			for(uint16_t i = 0 ;i <3 ; i++) oldDigitalPort1array[i]=portArray[i];
-			}else{
-			isPort1StatusEqual = true;
-		}
-		}else if(portNumber == 2){
-		if(checkPortStateEquality(oldDigitalPort2array,portArray,3)){
-			isPort2StatusEqual = false;
-			for(uint16_t i = 0 ;i <3 ; i++) oldDigitalPort2array[i]=portArray[i];
-			}else{
-			isPort2StatusEqual = true;
-		}
-	}
-	uint8_t bufferIndex = txBufferIndex;
-	if (bufferIndex+3<20 && ((!isPort0StatusEqual)||(!isPort1StatusEqual)||(!isPort2StatusEqual))){
-		uint16_t j = 0;
-		for (uint16_t i = bufferIndex; i<bufferIndex+3 ;i++)
-		{
-			write(portArray[j]);
-			j++;
-		}
-		isPort0StatusEqual = true;
-		isPort1StatusEqual = true;
-		isPort2StatusEqual = true;
+	switch (portNumber){
+		case 0: 
+			if(checkPortStateEquality(oldDigitalPort0array,portArray,3)){
+				for(uint16_t i = 0 ;i <3 ; i++) oldDigitalPort0array[i]=portArray[i];
+				if (txBufferIndex+3 < 20){
+					for (uint16_t i = 0; i< 3 ;i++)
+					{
+						write(portArray[i]);
+					}
+				}
+			}
+			break;
+		
+		case 1: 
+			if(checkPortStateEquality(oldDigitalPort1array,portArray,3)){
+				for(uint16_t i = 0 ;i <3 ; i++) oldDigitalPort1array[i]=portArray[i];
+				if (txBufferIndex+3 < 20){
+					for (uint16_t i = 0; i< 3 ;i++)
+					{
+						write(portArray[i]);
+					}
+				}
+			}
+			break;
+		
+		case 2: 
+			if(checkPortStateEquality(oldDigitalPort2array,portArray,3)){
+				for(uint16_t i = 0 ;i <3 ; i++) oldDigitalPort2array[i]=portArray[i];
+				if (txBufferIndex+3 < 20){
+					for (uint16_t i = 0; i< 3 ;i++)
+					{
+						write(portArray[i]);
+					}
+				}
+			}
+			break;
+		
+		default:
+			break;
 	}
 }
 

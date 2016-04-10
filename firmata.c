@@ -355,9 +355,6 @@ void systemReset(void)
   port0StatusChanged = false;
   port1StatusChanged = false;
   port2StatusChanged = false;
-  isPort0StatusEqual = true;
-  isPort1StatusEqual = true;
-  isPort2StatusEqual = true;
   toggelingIndicator=false;
   #endif
 }
