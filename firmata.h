@@ -25,7 +25,7 @@
 #include "gpio.h"
 #include "eeprom.h"
 
-#define ONESHEELD_MINOR_FIRMWARE_VERSION   5 
+#define ONESHEELD_MINOR_FIRMWARE_VERSION   6 
 #define ONESHEELD_MAJOR_FIRMWARE_VERSION   1 
 #define MAX_DATA_BYTES 32 // max number of data bytes in non-Sysex messages
 
