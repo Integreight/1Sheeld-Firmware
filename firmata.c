@@ -349,6 +349,8 @@ void systemReset(void)
   resendDigitalPort = false;
   resendIsAlive = false ;
   resendPrintVersion = false;
+  resendCurrentBaudRate = false;
+  resendTestingAnswer = false;
   setIsArduinoRx0BufferEmptyFlag(true) ;
   setIsArduinoRx0BufferOverFlowedFlag(false);
   arduinoStopped =false;
