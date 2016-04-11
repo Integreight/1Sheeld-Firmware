@@ -102,12 +102,12 @@ uint32_t isAliveMillis;
 uint32_t sentFramesMillis;
 uint8_t txBufferIndex;
 uint8_t UartTx1Buffer[20];	//to send frames of 20bytes each 15ms
-uint8_t digitalPort0array[3];
-uint8_t digitalPort1array[3];
-uint8_t digitalPort2array[3];
-uint8_t oldDigitalPort0array[3];
-uint8_t oldDigitalPort1array[3];
-uint8_t oldDigitalPort2array[3];
+uint8_t digitalPort0array[2];
+uint8_t digitalPort1array[2];
+uint8_t digitalPort2array[2];
+uint8_t oldDigitalPort0array[2];
+uint8_t oldDigitalPort1array[2];
+uint8_t oldDigitalPort2array[2];
 uint8_t toggelingIndicator;
 uint8_t firstFrameToSend;
 uint8_t	resendDigitalPort;

@@ -265,17 +265,14 @@ void sendDigitalPort(uint8_t portNumber, int16_t portData)
 {
 	#ifdef PLUS_BOARD
 	if(portNumber == 0){
-		digitalPort0array[0]= DIGITAL_MESSAGE | (portNumber & 0xF);
-		digitalPort0array[1]= (uint8_t)portData % 128;
-		digitalPort0array[2]= portData >> 7;
+		digitalPort0array[0]= (uint8_t)portData % 128;
+		digitalPort0array[1]= portData >> 7;
 		}else if(portNumber == 1){
-		digitalPort1array[0]= DIGITAL_MESSAGE | (portNumber & 0xF);
-		digitalPort1array[1]= (uint8_t)portData % 128;
-		digitalPort1array[2]= portData >> 7;
+		digitalPort1array[0]= (uint8_t)portData % 128;
+		digitalPort1array[1]= portData >> 7;
 		}else if(portNumber == 2){
-		digitalPort2array[0]= DIGITAL_MESSAGE | (portNumber & 0xF);
-		digitalPort2array[1]= (uint8_t)portData % 128;
-		digitalPort2array[2]= portData >> 7;
+		digitalPort2array[0]= (uint8_t)portData % 128;
+		digitalPort2array[1]= portData >> 7;
 	}
 	#endif
 	#ifdef CLASSIC_BOARD

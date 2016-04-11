@@ -186,45 +186,40 @@ void checkArduinoRx0BufferSpace()
 
 uint16_t checkPortStateEquality(uint8_t * oldPort ,uint8_t * newPort,uint8_t numberOfPins)
 {
-	while(--numberOfPins>0 && oldPort[numberOfPins]==newPort[numberOfPins]);
-	return numberOfPins!=0;
+	uint8_t count=0;
+	while(--numberOfPins>=0 && oldPort[numberOfPins]==newPort[numberOfPins]) count++;
+	return count!=2;
 }
 
 void fillBufferWithPinStates(uint8_t * portArray,uint8_t portNumber)
 {
 	switch (portNumber){
 		case 0: 
-			if(checkPortStateEquality(oldDigitalPort0array,portArray,3)){
-				for(uint16_t i = 0 ;i <3 ; i++) oldDigitalPort0array[i]=portArray[i];
+			if(checkPortStateEquality(oldDigitalPort0array,portArray,2)){
+				for(uint16_t i = 0 ;i <2 ; i++) oldDigitalPort0array[i]=portArray[i];
 				if (txBufferIndex+3 < 20){
-					for (uint16_t i = 0; i< 3 ;i++)
-					{
-						write(portArray[i]);
-					}
+					write(DIGITAL_MESSAGE | (portNumber & 0xF));
+					for (uint16_t i = 0; i< 2 ;i++)write(portArray[i]);
 				}
 			}
 			break;
 		
 		case 1: 
-			if(checkPortStateEquality(oldDigitalPort1array,portArray,3)){
-				for(uint16_t i = 0 ;i <3 ; i++) oldDigitalPort1array[i]=portArray[i];
+			if(checkPortStateEquality(oldDigitalPort1array,portArray,2)){
+				for(uint16_t i = 0 ;i <2 ; i++) oldDigitalPort1array[i]=portArray[i];
 				if (txBufferIndex+3 < 20){
-					for (uint16_t i = 0; i< 3 ;i++)
-					{
-						write(portArray[i]);
-					}
+					write(DIGITAL_MESSAGE | (portNumber & 0xF));
+					for (uint16_t i = 0; i< 2 ;i++)write(portArray[i]);
 				}
 			}
 			break;
 		
-		case 2: 
-			if(checkPortStateEquality(oldDigitalPort2array,portArray,3)){
-				for(uint16_t i = 0 ;i <3 ; i++) oldDigitalPort2array[i]=portArray[i];
+		case 2:
+			if(checkPortStateEquality(oldDigitalPort2array,portArray,2)){
+				for(uint16_t i = 0 ;i <2 ; i++) oldDigitalPort2array[i]=portArray[i];
 				if (txBufferIndex+3 < 20){
-					for (uint16_t i = 0; i< 3 ;i++)
-					{
-						write(portArray[i]);
-					}
+					write(DIGITAL_MESSAGE | (portNumber & 0xF));
+					for (uint16_t i = 0; i< 2 ;i++)write(portArray[i]);
 				}
 			}
 			break;
