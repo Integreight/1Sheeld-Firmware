@@ -93,13 +93,15 @@ void checkAppConnection()
 		}
 	}
 }
-
+#ifdef PLUS_BOARD
 void checkIfPinsChangedSendThem()
 {
 	fillBufferWithPinStates(digitalPort0array,0);
 	fillBufferWithPinStates(digitalPort1array,1);
 	fillBufferWithPinStates(digitalPort2array,2);
 }
+#endif // PLUS_BOARD
+
 
 void sendDataToApp()
 {
