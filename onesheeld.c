@@ -134,7 +134,6 @@ void sendDataToApp()
 			{
 				writeOnUart1(UartTx1Buffer[i]);
 			}
-			if(firstFrameToSend) firstFrameToSend = false;
 			txBufferIndex = 0;
 		}
 		sentFramesMillis=millis();

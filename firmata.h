@@ -109,7 +109,6 @@ uint8_t oldDigitalPort0array[2];
 uint8_t oldDigitalPort1array[2];
 uint8_t oldDigitalPort2array[2];
 uint8_t toggelingIndicator;
-uint8_t firstFrameToSend;
 uint8_t	resendDigitalPort;
 uint8_t resendIsAlive;
 uint8_t resendPrintVersion;

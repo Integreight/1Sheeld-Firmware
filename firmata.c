@@ -25,7 +25,7 @@ const uint8_t atNameArray[7] PROGMEM = {'A','T','+','N','A','M','E'};
 void reportDigitalPorts()
 {
 	#ifdef PLUS_BOARD
-	if((!firstFrameToSend) && txBufferIndex +10 >20)
+	if(txBufferIndex +10 >20)
 	{
 		resendDigitalPort = true;
 	}else
@@ -153,14 +153,11 @@ void processUart0Input()
 				availableBytesInTxBuffer= countOfDataInUart0Buffer;
 			}
 			
-			if(!firstFrameToSend)
-			{
-				uint8_t arr[availableBytesInTxBuffer];
-				for(uint16_t i=0;i<availableBytesInTxBuffer;i++){
-					arr[i]=readFromUart0();
-				}
-				sendSysex(UART_DATA,availableBytesInTxBuffer,arr);
+			uint8_t arr[availableBytesInTxBuffer];
+			for(uint16_t i=0;i<availableBytesInTxBuffer;i++){
+				arr[i]=readFromUart0();
 			}
+			sendSysex(UART_DATA,availableBytesInTxBuffer,arr);
 		}
 	}
 	#endif
@@ -304,9 +301,6 @@ void sendSysex(uint8_t command, uint8_t bytec, uint8_t* bytev)
 
 void requestBluetoothReset()
 {
-	#ifdef PLUS_BOARD
-	firstFrameToSend = true;
-	#endif
 	write(START_SYSEX);
 	write(RESET_BLUETOOTH);
 	write(END_SYSEX);
@@ -315,7 +309,7 @@ void requestBluetoothReset()
 void sendIsAlive()
 {
 	#ifdef PLUS_BOARD
-	if((!firstFrameToSend) && (txBufferIndex +3 >20))
+	if(txBufferIndex +3 >20)
 	{
 		resendIsAlive = true;
 	}
@@ -352,7 +346,6 @@ void systemReset(void)
   systemResetCallback();
   #ifdef PLUS_BOARD
   txBufferIndex = 0;
-  firstFrameToSend = false;
   resendDigitalPort = false;
   resendIsAlive = false ;
   resendPrintVersion = false;
@@ -368,7 +361,7 @@ void systemReset(void)
 void printVersion()
 {
 	#ifdef PLUS_BOARD
-	if ((!firstFrameToSend) && (txBufferIndex + 3 >20))
+	if (txBufferIndex + 3 >20)
 	{
 		resendPrintVersion = true;
 	}
