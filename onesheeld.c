@@ -118,14 +118,14 @@ void sendDataToApp()
 			{
 				checkIfPinsChangedSendThem();
 				toggelingIndicator= false;
-			}	
+			}		
+			processUart0Input();	
 		}
 		else
 		{
 			checkIfPinsChangedSendThem();
 		}
-		
-		processUart0Input();
+
 		if(txBufferIndex!=0)
 		{
 			for (uint16_t i=0; i<txBufferIndex; i++)
