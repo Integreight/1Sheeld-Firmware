@@ -264,15 +264,22 @@ void processInput(void)
 void sendDigitalPort(uint8_t portNumber, int16_t portData)
 {
 	#ifdef PLUS_BOARD
-	if(portNumber == 0){
-		digitalPort0array[0]= (uint8_t)portData % 128;
-		digitalPort0array[1]= portData >> 7;
-		}else if(portNumber == 1){
-		digitalPort1array[0]= (uint8_t)portData % 128;
-		digitalPort1array[1]= portData >> 7;
-		}else if(portNumber == 2){
-		digitalPort2array[0]= (uint8_t)portData % 128;
-		digitalPort2array[1]= portData >> 7;
+	switch(portNumber){
+		
+		case 0:
+				digitalPort0array[0]= (uint8_t)portData % 128;
+				digitalPort0array[1]= portData >> 7;
+				break;
+		case 1:
+				digitalPort1array[0]= (uint8_t)portData % 128;
+				digitalPort1array[1]= portData >> 7;
+				break;
+		case 2:
+				digitalPort2array[0]= (uint8_t)portData % 128;
+				digitalPort2array[1]= portData >> 7;
+				break;
+		default:
+		break;
 	}
 	#endif
 	#ifdef CLASSIC_BOARD
