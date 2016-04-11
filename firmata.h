@@ -316,4 +316,10 @@ void sendAnswerToApplication();
  * @return  None  
  */
 void getCurrentUart0BaudRate();
+/**
+ * @brief Resend the unsent data.
+ * @param None
+ * @return  None  
+ */
+void checkNeededDataToResend();
 #endif /* FIRMATA_H_ */

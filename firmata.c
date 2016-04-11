@@ -108,9 +108,9 @@ void processSysexMessage(void)
 		sysexCallback(storedInputData[0], sysexBytesRead - 1, storedInputData + 1);
 }
 
-void processUart0Input()
+#ifdef PLUS_BOARD
+void checkNeededDataToResend()
 {
-	#ifdef PLUS_BOARD
 	if (resendIsAlive)
 	{
 		sendIsAlive();
@@ -135,7 +135,12 @@ void processUart0Input()
 	{
 		getCurrentUart0BaudRate();
 	}
+}
+#endif
 
+void processUart0Input()
+{
+	#ifdef PLUS_BOARD
 	if(getAvailableDataCountOnUart0()>0)
 	{
 		if (txBufferIndex <=15)

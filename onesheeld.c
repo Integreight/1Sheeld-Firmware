@@ -118,12 +118,14 @@ void sendDataToApp()
 			{
 				checkIfPinsChangedSendThem();
 				toggelingIndicator= false;
-			}		
+			}
+			checkNeededDataToResend();		
 			processUart0Input();	
 		}
 		else
 		{
 			checkIfPinsChangedSendThem();
+			checkNeededDataToResend();
 		}
 
 		if(txBufferIndex!=0)
