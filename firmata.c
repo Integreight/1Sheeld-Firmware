@@ -147,9 +147,10 @@ void processUart0Input()
 		{
 			uint8_t availableBytesInTxBuffer;
 			availableBytesInTxBuffer = ((20-txBufferIndex)-3)/2;
-			if(getAvailableDataCountOnUart0()<availableBytesInTxBuffer)
+			uint8_t countOfDataInUart0Buffer = getAvailableDataCountOnUart0();
+			if(countOfDataInUart0Buffer < availableBytesInTxBuffer)
 			{
-				availableBytesInTxBuffer=getAvailableDataCountOnUart0();
+				availableBytesInTxBuffer= countOfDataInUart0Buffer;
 			}
 			
 			if(!firstFrameToSend)
