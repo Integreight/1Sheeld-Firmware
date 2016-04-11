@@ -101,7 +101,7 @@ void checkArduinoRx0BufferSpace();
 * @param oldPort state,newPort state,number of pins.
 * @return None.
 */
-uint16_t checkPortStateEquality(uint8_t * oldPort ,uint8_t * newPort,uint8_t numberOfPins);
+void checkPortStateEquality(uint8_t * oldPort ,uint8_t * newPort,uint8_t portNumber,uint8_t numberOfBytesToCheck);
 /**
 * @brief Put digital ports values in the 20byte buffer to be sent.
 * @param None.

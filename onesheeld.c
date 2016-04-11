@@ -184,44 +184,32 @@ void checkArduinoRx0BufferSpace()
 	}
 }
 
-uint16_t checkPortStateEquality(uint8_t * oldPort ,uint8_t * newPort,uint8_t numberOfPins)
+void checkPortStateEquality(uint8_t * oldPort ,uint8_t * newPort,uint8_t portNumber, uint8_t numberOfBytesToCheck)
 {
 	uint8_t count=0;
-	while(--numberOfPins>=0 && oldPort[numberOfPins]==newPort[numberOfPins]) count++;
-	return count!=2;
+	while(--numberOfBytesToCheck>=0 && oldPort[numberOfBytesToCheck]==newPort[numberOfBytesToCheck]) count++;
+	if(count!=2){
+		for(uint16_t i = 0 ;i <2 ; i++) oldPort[i]=newPort[i];
+		if (txBufferIndex+3 < 20){
+			write(DIGITAL_MESSAGE | (portNumber & 0xF));
+			for (uint16_t i = 0; i< 2 ;i++)write(newPort[i]);
+		}
+	}
 }
 
 void fillBufferWithPinStates(uint8_t * portArray,uint8_t portNumber)
 {
 	switch (portNumber){
 		case 0: 
-			if(checkPortStateEquality(oldDigitalPort0array,portArray,2)){
-				for(uint16_t i = 0 ;i <2 ; i++) oldDigitalPort0array[i]=portArray[i];
-				if (txBufferIndex+3 < 20){
-					write(DIGITAL_MESSAGE | (portNumber & 0xF));
-					for (uint16_t i = 0; i< 2 ;i++)write(portArray[i]);
-				}
-			}
+			checkPortStateEquality(oldDigitalPort0array,portArray,portNumber,2);
 			break;
 		
 		case 1: 
-			if(checkPortStateEquality(oldDigitalPort1array,portArray,2)){
-				for(uint16_t i = 0 ;i <2 ; i++) oldDigitalPort1array[i]=portArray[i];
-				if (txBufferIndex+3 < 20){
-					write(DIGITAL_MESSAGE | (portNumber & 0xF));
-					for (uint16_t i = 0; i< 2 ;i++)write(portArray[i]);
-				}
-			}
+			checkPortStateEquality(oldDigitalPort1array,portArray,portNumber,2);
 			break;
 		
 		case 2:
-			if(checkPortStateEquality(oldDigitalPort2array,portArray,2)){
-				for(uint16_t i = 0 ;i <2 ; i++) oldDigitalPort2array[i]=portArray[i];
-				if (txBufferIndex+3 < 20){
-					write(DIGITAL_MESSAGE | (portNumber & 0xF));
-					for (uint16_t i = 0; i< 2 ;i++)write(portArray[i]);
-				}
-			}
+			checkPortStateEquality(oldDigitalPort2array,portArray,portNumber,2);
 			break;
 		
 		default:
