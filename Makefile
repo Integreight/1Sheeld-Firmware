@@ -4,22 +4,24 @@ MCU = atmega162
 # Output format. (can be srec, ihex, binary)
 FORMAT = ihex
 
-# Target file name (without extension).
-TARGET = firmware
 
 # List C source files here. (C dependencies are automatically generated.)
-SRC =main.c  onesheeld.c mapping.c firmata.c gpio.c pwm.c timers.c uart.c eeprom.c
+SRC = $(wildcard *.c)
 
 # determine the building configuration debug or release
 CONFIG = DEBUG
 LOWER_VAR_CONFIG  =  $(shell echo $(CONFIG) | tr A-Z a-z)
+
+# Target file name (without extension).
+TARGET_PLUS = firmware_plus_$(LOWER_VAR_CONFIG)
+TARGET_CLASSIC = firmware_classic_$(LOWER_VAR_CONFIG)
+
 # Create object files and object files directories 
 OBJECTDIRCLASSIC = build/classic/$(LOWER_VAR_CONFIG)
 OBJECTDIRPLUS = build/plus/$(LOWER_VAR_CONFIG)
-OBJPLUS = $(OBJECTDIRPLUS)/firmata.o $(OBJECTDIRPLUS)/gpio.o $(OBJECTDIRPLUS)/main.o $(OBJECTDIRPLUS)/mapping.o $(OBJECTDIRPLUS)/onesheeld.o $(OBJECTDIRPLUS)/pwm.o \
-$(OBJECTDIRPLUS)/timers.o $(OBJECTDIRPLUS)/uart.o $(OBJECTDIRPLUS)/eeprom.o
-OBJCLASSIC = $(OBJECTDIRCLASSIC)/firmata.o $(OBJECTDIRCLASSIC)/gpio.o $(OBJECTDIRCLASSIC)/main.o $(OBJECTDIRCLASSIC)/mapping.o $(OBJECTDIRCLASSIC)/onesheeld.o $(OBJECTDIRCLASSIC)/pwm.o\
-$(OBJECTDIRCLASSIC)/timers.o $(OBJECTDIRCLASSIC)/uart.o $(OBJECTDIRCLASSIC)/eeprom.o 
+OBJPLUS = $(foreach file, $(SRC), $(OBJECTDIRPLUS)/$(patsubst %.c,%.o, $(file)) )
+
+OBJCLASSIC = $(foreach file, $(SRC), $(OBJECTDIRCLASSIC)/$(patsubst %.c,%.o, $(file)) )
 # Optimization level, can be [0, 1, 2, 3, s]. 
 OPT_DEBUG = 1
 OPT_RELEASE = s
@@ -48,8 +50,8 @@ MATH_LIB = -lm
 #  -Wl,...:     tell GCC to pass this to linker.
 #    -Map:      create map file
 #    --cref:    add cross reference to  map file
-LDFLAGSCLASSIC = -Wl,-Map="$(OBJECTDIRCLASSIC)/$(TARGET).map" -Wl,--start-group -Wl,-lm  -Wl,--end-group -Wl,--gc-sections -mmcu=atmega162 -B.
-LDFLAGSPLUS = -Wl,-Map="$(OBJECTDIRPLUS)/$(TARGET).map" -Wl,--start-group -Wl,-lm  -Wl,--end-group -Wl,--gc-sections -mmcu=atmega162 -B.
+LDFLAGSCLASSIC = -Wl,-Map="$(OBJECTDIRCLASSIC)/$(TARGET_CLASSIC).map" -Wl,--start-group -Wl,-lm  -Wl,--end-group -Wl,--gc-sections -mmcu=atmega162 -B.
+LDFLAGSPLUS = -Wl,-Map="$(OBJECTDIRPLUS)/$(TARGET_PLUS).map" -Wl,--start-group -Wl,-lm  -Wl,--end-group -Wl,--gc-sections -mmcu=atmega162 -B.
 #####################################################################################################################
 
 # Define programs and commands.
@@ -100,19 +102,19 @@ plus: begin gccversion sizebefore_plus build_plus sizeafter_plus end
 build_classic: elf_classic hex_classic eep_classic lss_classic sym_classic bin_classic
 build_plus: elf_plus hex_plus eep_plus lss_plus sym_plus bin_plus
 
-elf_classic: $(OBJECTDIRCLASSIC)/$(TARGET).elf
-hex_classic: $(OBJECTDIRCLASSIC)/$(TARGET).hex
-eep_classic: $(OBJECTDIRCLASSIC)/$(TARGET).eep
-lss_classic: $(OBJECTDIRCLASSIC)/$(TARGET).lss
-sym_classic: $(OBJECTDIRCLASSIC)/$(TARGET).sym
-bin_classic: $(OBJECTDIRCLASSIC)/$(TARGET).bin
+elf_classic: $(OBJECTDIRCLASSIC)/$(TARGET_CLASSIC).elf
+hex_classic: $(OBJECTDIRCLASSIC)/$(TARGET_CLASSIC).hex
+eep_classic: $(OBJECTDIRCLASSIC)/$(TARGET_CLASSIC).eep
+lss_classic: $(OBJECTDIRCLASSIC)/$(TARGET_CLASSIC).lss
+sym_classic: $(OBJECTDIRCLASSIC)/$(TARGET_CLASSIC).sym
+bin_classic: $(OBJECTDIRCLASSIC)/$(TARGET_CLASSIC).bin
 
-elf_plus: $(OBJECTDIRPLUS)/$(TARGET).elf
-hex_plus: $(OBJECTDIRPLUS)/$(TARGET).hex
-eep_plus: $(OBJECTDIRPLUS)/$(TARGET).eep
-lss_plus: $(OBJECTDIRPLUS)/$(TARGET).lss
-sym_plus: $(OBJECTDIRPLUS)/$(TARGET).sym
-bin_plus: $(OBJECTDIRPLUS)/$(TARGET).bin
+elf_plus: $(OBJECTDIRPLUS)/$(TARGET_PLUS).elf
+hex_plus: $(OBJECTDIRPLUS)/$(TARGET_PLUS).hex
+eep_plus: $(OBJECTDIRPLUS)/$(TARGET_PLUS).eep
+lss_plus: $(OBJECTDIRPLUS)/$(TARGET_PLUS).lss
+sym_plus: $(OBJECTDIRPLUS)/$(TARGET_PLUS).sym
+bin_plus: $(OBJECTDIRPLUS)/$(TARGET_PLUS).bin
 
 begin:
 ifneq ($(CONFIG),DEBUG)
@@ -122,29 +124,30 @@ endif
 endif
 	@echo
 	@echo $(MSG_BEGIN)
-
+	@echo $(OBJPLUS)
+	@echo $(OBJCLASSIC)
 end:
 	@echo $(MSG_END)
 	@echo
 
 # Display size of file.
-ELFSIZE_CLASSIC = $(SIZE) --mcu=$(MCU) --format=avr $(OBJECTDIRCLASSIC)/$(TARGET).elf
-ELFSIZE_PLUS = $(SIZE) --mcu=$(MCU) --format=avr $(OBJECTDIRPLUS)/$(TARGET).elf
+ELFSIZE_CLASSIC = $(SIZE) --mcu=$(MCU) --format=avr $(OBJECTDIRCLASSIC)/$(TARGET_CLASSIC).elf
+ELFSIZE_PLUS = $(SIZE) --mcu=$(MCU) --format=avr $(OBJECTDIRPLUS)/$(TARGET_PLUS).elf
 
 sizebefore_classic:
-	@if test -f $(OBJECTDIRCLASSIC)/$(TARGET).elf; then echo; echo $(MSG_SIZE_BEFORE); $(ELFSIZE_CLASSIC); \
+	@if test -f $(OBJECTDIRCLASSIC)/$(TARGET_CLASSIC).elf; then echo; echo $(MSG_SIZE_BEFORE); $(ELFSIZE_CLASSIC); \
 	2>/dev/null; echo; fi
 
 sizeafter_classic:
-	@if test -f $(OBJECTDIRCLASSIC)/$(TARGET).elf; then echo; echo $(MSG_SIZE_AFTER); $(ELFSIZE_CLASSIC); \
+	@if test -f $(OBJECTDIRCLASSIC)/$(TARGET_CLASSIC).elf; then echo; echo $(MSG_SIZE_AFTER); $(ELFSIZE_CLASSIC); \
 	2>/dev/null; echo; fi
 
 sizebefore_plus:
-	@if test -f $(OBJECTDIRPLUS)/$(TARGET).elf; then echo; echo $(MSG_SIZE_BEFORE); $(ELFSIZE_PLUS); \
+	@if test -f $(OBJECTDIRPLUS)/$(TARGET_PLUS).elf; then echo; echo $(MSG_SIZE_BEFORE); $(ELFSIZE_PLUS); \
 	2>/dev/null; echo; fi
 
 sizeafter_plus:
-	@if test -f $(OBJECTDIRPLUS)/$(TARGET).elf; then echo; echo $(MSG_SIZE_AFTER); $(ELFSIZE_PLUS); \
+	@if test -f $(OBJECTDIRPLUS)/$(TARGET_PLUS).elf; then echo; echo $(MSG_SIZE_AFTER); $(ELFSIZE_PLUS); \
 	2>/dev/null; echo; fi
 
 # Display compiler version information.
@@ -152,10 +155,10 @@ gccversion :
 	@$(CC) --version
 
 flashclassic:
-	avrdude -c usbasp -p m162 -P usb -v -u -D -U efuse:w:0xfb:m -U hfuse:w:0xd8:m -U lfuse:w:0xfd:m -u -U flash:w:$(OBJECTDIRCLASSIC)/$(TARGET).hex
+	avrdude -c usbasp -p m162 -P usb -v -u -D -U efuse:w:0xfb:m -U hfuse:w:0xd8:m -U lfuse:w:0xfd:m -u -U flash:w:$(OBJECTDIRCLASSIC)/$(TARGET_CLASSIC).hex
 	
 flashplus:
-	avrdude -c usbasp -p m162 -P usb -v -u -D -U efuse:w:0xfb:m -U hfuse:w:0xd8:m -U lfuse:w:0xfd:m -u -U flash:w:$(OBJECTDIRPLUS)/$(TARGET).hex
+	avrdude -c usbasp -p m162 -P usb -v -u -D -U efuse:w:0xfb:m -U hfuse:w:0xd8:m -U lfuse:w:0xfd:m -u -U flash:w:$(OBJECTDIRPLUS)/$(TARGET_PLUS).hex
 
 erase: 
 	avrdude -c usbasp -p m162 -P usb -v -u -e
@@ -164,13 +167,13 @@ erase:
 $(OBJECTDIRCLASSIC)/%.hex: $(OBJECTDIRCLASSIC)/%.elf
 	@echo
 	@echo $(MSG_FLASH) $@
-	$(OBJCOPY) -O $(FORMAT) -R .eeprom -R .fuse -R .lock -R .signature -R .user_signatures  "$(OBJECTDIRCLASSIC)/$(TARGET).elf" "$(OBJECTDIRCLASSIC)/$(TARGET).hex"
+	$(OBJCOPY) -O $(FORMAT) -R .eeprom -R .fuse -R .lock -R .signature -R .user_signatures  "$(OBJECTDIRCLASSIC)/$(TARGET_CLASSIC).elf" "$(OBJECTDIRCLASSIC)/$(TARGET_CLASSIC).hex"
 
 
 $(OBJECTDIRCLASSIC)/%.eep: $(OBJECTDIRCLASSIC)/%.elf
 	@echo
 	@echo $(MSG_EEPROM) $@
-	-$(OBJCOPY) -j .eeprom  --set-section-flags=.eeprom=alloc,load --change-section-lma .eeprom=0  --no-change-warnings -O ihex "$(OBJECTDIRCLASSIC)/$(TARGET).elf" "$(OBJECTDIRCLASSIC)/$(TARGET).eep" || exit 0
+	-$(OBJCOPY) -j .eeprom  --set-section-flags=.eeprom=alloc,load --change-section-lma .eeprom=0  --no-change-warnings -O ihex "$(OBJECTDIRCLASSIC)/$(TARGET_CLASSIC).elf" "$(OBJECTDIRCLASSIC)/$(TARGET_CLASSIC).eep" || exit 0
 	#-j .eeprom --set-section-flags=.eeprom="alloc,load" \
 	#--change-section-lma .eeprom=0 --no-change-warnings -O $(FORMAT) $< $@ || exit 0
 
@@ -192,12 +195,12 @@ $(OBJECTDIRCLASSIC)/%.bin: $(OBJECTDIRCLASSIC)/%.elf
 	$(OBJCOPY) -O binary $< $@
 
 # Link: create ELF output file from object files.
-.SECONDARY : $(OBJECTDIRCLASSIC)/$(TARGET).elf
+.SECONDARY : $(OBJECTDIRCLASSIC)/$(TARGET_CLASSIC).elf
 .PRECIOUS : $(OBJCLASSIC)
 $(OBJECTDIRCLASSIC)/%.elf: $(OBJCLASSIC)
 	@echo
 	@echo $(MSG_LINKING) $<
-	$(CC) -o $(OBJECTDIRCLASSIC)/$(TARGET).elf $(OBJCLASSIC) $(LDFLAGSCLASSIC) 
+	$(CC) -o $(OBJECTDIRCLASSIC)/$(TARGET_CLASSIC).elf $(OBJCLASSIC) $(LDFLAGSCLASSIC) 
 	
 # Compile: create object files from C source files.
 $(OBJECTDIRCLASSIC)/%.o : %.c
@@ -211,13 +214,13 @@ $(OBJECTDIRCLASSIC)/%.o : %.c
 $(OBJECTDIRPLUS)/%.hex: $(OBJECTDIRPLUS)/%.elf
 	@echo
 	@echo $(MSG_FLASH) $@
-	$(OBJCOPY) -O $(FORMAT) -R .eeprom -R .fuse -R .lock -R .signature -R .user_signatures  "$(OBJECTDIRPLUS)/$(TARGET).elf" "$(OBJECTDIRPLUS)/$(TARGET).hex"
+	$(OBJCOPY) -O $(FORMAT) -R .eeprom -R .fuse -R .lock -R .signature -R .user_signatures  "$(OBJECTDIRPLUS)/$(TARGET_PLUS).elf" "$(OBJECTDIRPLUS)/$(TARGET_PLUS).hex"
 
 
 $(OBJECTDIRPLUS)/%.eep: $(OBJECTDIRPLUS)/%.elf
 	@echo
 	@echo $(MSG_EEPROM) $@
-	-$(OBJCOPY) -j .eeprom  --set-section-flags=.eeprom=alloc,load --change-section-lma .eeprom=0  --no-change-warnings -O ihex "$(OBJECTDIRPLUS)/$(TARGET).elf" "$(OBJECTDIRPLUS)/$(TARGET).eep" || exit 0
+	-$(OBJCOPY) -j .eeprom  --set-section-flags=.eeprom=alloc,load --change-section-lma .eeprom=0  --no-change-warnings -O ihex "$(OBJECTDIRPLUS)/$(TARGET_PLUS).elf" "$(OBJECTDIRPLUS)/$(TARGET_PLUS).eep" || exit 0
 	#-j .eeprom --set-section-flags=.eeprom="alloc,load" \
 	#--change-section-lma .eeprom=0 --no-change-warnings -O $(FORMAT) $< $@ || exit 0
 
@@ -239,12 +242,12 @@ $(OBJECTDIRPLUS)/%.bin: $(OBJECTDIRPLUS)/%.elf
 	$(OBJCOPY) -O binary $< $@
 
 # Link: create ELF output file from object files.
-.SECONDARY : $(OBJECTDIRPLUS)/$(TARGET).elf
+.SECONDARY : $(OBJECTDIRPLUS)/$(TARGET_PLUS).elf
 .PRECIOUS : $(OBJPLUS)
 $(OBJECTDIRPLUS)/%.elf: $(OBJPLUS)
 	@echo
 	@echo $(MSG_LINKING) $<
-	$(CC) -o $(OBJECTDIRPLUS)/$(TARGET).elf $(OBJPLUS) $(LDFLAGSPLUS) 
+	$(CC) -o $(OBJECTDIRPLUS)/$(TARGET_PLUS).elf $(OBJPLUS) $(LDFLAGSPLUS) 
 	
 # Compile: create object files from C source files.
 $(OBJECTDIRPLUS)/%.o : %.c
