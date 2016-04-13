@@ -124,8 +124,7 @@ endif
 endif
 	@echo
 	@echo $(MSG_BEGIN)
-	@echo $(OBJPLUS)
-	@echo $(OBJCLASSIC)
+
 end:
 	@echo $(MSG_END)
 	@echo
