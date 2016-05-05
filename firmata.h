@@ -102,23 +102,16 @@ uint32_t isAliveMillis;
 uint32_t sentFramesMillis;
 uint8_t txBufferIndex;
 uint8_t UartTx1Buffer[20];	//to send frames of 20bytes each 15ms
-uint8_t digitalPort0array[3];
-uint8_t digitalPort1array[3];
-uint8_t digitalPort2array[3];
-uint8_t oldDigitalPort0array[3];
-uint8_t oldDigitalPort1array[3];
-uint8_t oldDigitalPort2array[3];
+uint8_t digitalPort0array[2];
+uint8_t digitalPort1array[2];
+uint8_t digitalPort2array[2];
+uint8_t oldDigitalPort0array[2];
+uint8_t oldDigitalPort1array[2];
+uint8_t oldDigitalPort2array[2];
 uint8_t toggelingIndicator;
-uint8_t firstFrameToSend;
 uint8_t	resendDigitalPort;
 uint8_t resendIsAlive;
 uint8_t resendPrintVersion;
-uint8_t	port0StatusChanged;
-uint8_t port1StatusChanged;
-uint8_t port2StatusChanged;
-uint8_t isPort0StatusEqual;
-uint8_t isPort1StatusEqual;
-uint8_t isPort2StatusEqual;
 uint8_t	arduinoStopped;
 uint8_t resendTestingAnswer;
 uint8_t resendCurrentBaudRate;
@@ -322,4 +315,10 @@ void sendAnswerToApplication();
  * @return  None  
  */
 void getCurrentUart0BaudRate();
+/**
+ * @brief Resend the unsent data.
+ * @param None
+ * @return  None  
+ */
+void checkNeededDataToResend();
 #endif /* FIRMATA_H_ */

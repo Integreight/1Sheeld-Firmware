@@ -25,7 +25,7 @@ const uint8_t atNameArray[7] PROGMEM = {'A','T','+','N','A','M','E'};
 void reportDigitalPorts()
 {
 	#ifdef PLUS_BOARD
-	if((!firstFrameToSend) && txBufferIndex +10 >20)
+	if(txBufferIndex +10 >20)
 	{
 		resendDigitalPort = true;
 	}else
@@ -108,9 +108,9 @@ void processSysexMessage(void)
 		sysexCallback(storedInputData[0], sysexBytesRead - 1, storedInputData + 1);
 }
 
-void processUart0Input()
+#ifdef PLUS_BOARD
+void checkNeededDataToResend()
 {
-	#ifdef PLUS_BOARD
 	if (resendIsAlive)
 	{
 		sendIsAlive();
@@ -135,26 +135,29 @@ void processUart0Input()
 	{
 		getCurrentUart0BaudRate();
 	}
+}
+#endif
 
+void processUart0Input()
+{
+	#ifdef PLUS_BOARD
 	if(getAvailableDataCountOnUart0()>0)
 	{
 		if (txBufferIndex <=15)
 		{
 			uint8_t availableBytesInTxBuffer;
 			availableBytesInTxBuffer = ((20-txBufferIndex)-3)/2;
-			if(getAvailableDataCountOnUart0()<availableBytesInTxBuffer)
+			uint8_t countOfDataInUart0Buffer = getAvailableDataCountOnUart0();
+			if(countOfDataInUart0Buffer < availableBytesInTxBuffer)
 			{
-				availableBytesInTxBuffer=getAvailableDataCountOnUart0();
+				availableBytesInTxBuffer= countOfDataInUart0Buffer;
 			}
 			
-			if(!firstFrameToSend)
-			{
-				uint8_t arr[availableBytesInTxBuffer];
-				for(uint16_t i=0;i<availableBytesInTxBuffer;i++){
-					arr[i]=readFromUart0();
-				}
-				sendSysex(UART_DATA,availableBytesInTxBuffer,arr);
+			uint8_t arr[availableBytesInTxBuffer];
+			for(uint16_t i=0;i<availableBytesInTxBuffer;i++){
+				arr[i]=readFromUart0();
 			}
+			sendSysex(UART_DATA,availableBytesInTxBuffer,arr);
 		}
 	}
 	#endif
@@ -259,21 +262,22 @@ void processInput(void)
 void sendDigitalPort(uint8_t portNumber, int16_t portData)
 {
 	#ifdef PLUS_BOARD
-	if(portNumber == 0){
-		digitalPort0array[0]= DIGITAL_MESSAGE | (portNumber & 0xF);
-		digitalPort0array[1]= (uint8_t)portData % 128;
-		digitalPort0array[2]= portData >> 7;
-		port0StatusChanged =true;
-		}else if(portNumber == 1){
-		digitalPort1array[0]= DIGITAL_MESSAGE | (portNumber & 0xF);
-		digitalPort1array[1]= (uint8_t)portData % 128;
-		digitalPort1array[2]= portData >> 7;
-		port1StatusChanged =true;
-		}else if(portNumber == 2){
-		digitalPort2array[0]= DIGITAL_MESSAGE | (portNumber & 0xF);
-		digitalPort2array[1]= (uint8_t)portData % 128;
-		digitalPort2array[2]= portData >> 7;
-		port2StatusChanged=true;
+	switch(portNumber){
+		
+		case 0:
+				digitalPort0array[0]= (uint8_t)portData % 128;
+				digitalPort0array[1]= portData >> 7;
+				break;
+		case 1:
+				digitalPort1array[0]= (uint8_t)portData % 128;
+				digitalPort1array[1]= portData >> 7;
+				break;
+		case 2:
+				digitalPort2array[0]= (uint8_t)portData % 128;
+				digitalPort2array[1]= portData >> 7;
+				break;
+		default:
+		break;
 	}
 	#endif
 	#ifdef CLASSIC_BOARD
@@ -297,9 +301,6 @@ void sendSysex(uint8_t command, uint8_t bytec, uint8_t* bytev)
 
 void requestBluetoothReset()
 {
-	#ifdef PLUS_BOARD
-	firstFrameToSend = true;
-	#endif
 	write(START_SYSEX);
 	write(RESET_BLUETOOTH);
 	write(END_SYSEX);
@@ -308,7 +309,7 @@ void requestBluetoothReset()
 void sendIsAlive()
 {
 	#ifdef PLUS_BOARD
-	if((!firstFrameToSend) && (txBufferIndex +3 >20))
+	if(txBufferIndex +3 >20)
 	{
 		resendIsAlive = true;
 	}
@@ -345,7 +346,6 @@ void systemReset(void)
   systemResetCallback();
   #ifdef PLUS_BOARD
   txBufferIndex = 0;
-  firstFrameToSend = false;
   resendDigitalPort = false;
   resendIsAlive = false ;
   resendPrintVersion = false;
@@ -354,12 +354,6 @@ void systemReset(void)
   setIsArduinoRx0BufferEmptyFlag(true) ;
   setIsArduinoRx0BufferOverFlowedFlag(false);
   arduinoStopped =false;
-  port0StatusChanged = false;
-  port1StatusChanged = false;
-  port2StatusChanged = false;
-  isPort0StatusEqual = true;
-  isPort1StatusEqual = true;
-  isPort2StatusEqual = true;
   toggelingIndicator=false;
   #endif
 }
@@ -367,7 +361,7 @@ void systemReset(void)
 void printVersion()
 {
 	#ifdef PLUS_BOARD
-	if ((!firstFrameToSend) && (txBufferIndex + 3 >20))
+	if (txBufferIndex + 3 >20)
 	{
 		resendPrintVersion = true;
 	}
