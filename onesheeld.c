@@ -39,13 +39,13 @@ void initialization()
 	setUnusedPinsAsOutput();
 	setupUartLeds();
 	requestBluetoothReset();
-	sendIsAlive();
+	// sendIsAlive();
 }
 
 void catchTimeForSomeVariables()
 {
 	bluetoothResponseMillis=millis();
-	isAliveMillis=millis();
+	// isAliveMillis=millis();
 	#ifdef PLUS_BOARD
 	sentFramesMillis=millis();
 	#endif // PLUS_BOARD
@@ -60,6 +60,7 @@ void processDataFromApp()
 {
 	while(available()>0)
 	{
+		// isAppResponded=true;
 		processInput();
 	}
 }
@@ -75,23 +76,21 @@ void checkBluetoothResetResponse()
 
 void checkAppConnection()
 {
-	if (!notAliveSentToArduino)
-	{
-		if((newMillis-isAliveMillis)>=APP_ISALIVE_RESPONSE_INTERVAL)
+	if (isDataSentFromApp)
 		{
-			if (!isAppResponded)
+			isAliveMillis=millis();
+			isDataSentFromApp=false;
+			notAliveSentToArduino=false;
+		}
+		
+	if((millis()-isAliveMillis)>=APP_ISALIVE_RESPONSE_INTERVAL)
+		{
+			if (!notAliveSentToArduino)
 			{
 				sendArduinoAppDisconnected();
-				notAliveSentToArduino = true;
+				notAliveSentToArduino=1;
 			}
-			else
-			{
-				sendIsAlive();
-				isAliveMillis=millis();
-				isAppResponded = false;
-			}
-		}
-	}
+		}		
 }
 #ifdef PLUS_BOARD
 void checkIfPinsChangedSendThem()

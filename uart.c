@@ -207,6 +207,8 @@ ISR (USART1_RXC_vect){
 	uint8_t usr;
 	uint8_t lastRxError;
 
+	isDataSentFromApp = true;
+	
 	/* read UART status register and UART data register */
 	usr  = UART1_STATUS;
 	data = UART1_DATA;

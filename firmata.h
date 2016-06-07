@@ -44,7 +44,7 @@
 #define END_SYSEX               0xF7 // end a MIDI Sysex message
 #define FIRMATA_MUTE            0x64  // turn off firmata
 #define FIRMATA_VERSION         0X63 // our firmata version
-#define IS_ALIVE                0x62
+// #define IS_ALIVE                0x62
 #define RESET_BLUETOOTH         0x61          
 #define RESET_MICRO             0x60
 #define REPORT_INPUT_PINS       0X5F
@@ -76,7 +76,7 @@
 
 #define BLUETOOH_RESET_RESPONSE_INTERVAL 500UL
 #define FRAME_GAP	15UL
-#define APP_ISALIVE_RESPONSE_INTERVAL	2000UL
+#define APP_ISALIVE_RESPONSE_INTERVAL	10000UL
 
 
 /* digital input ports */
@@ -96,7 +96,6 @@ extern const uint8_t PROGMEM atNameArray[7];
 uint8_t testAnswer;
 uint32_t bluetoothResponseMillis;
 uint32_t newMillis;
-uint32_t isAliveMillis;
 #ifdef PLUS_BOARD
 /* Buffering data for IOS version */
 uint32_t sentFramesMillis;
@@ -110,7 +109,7 @@ uint8_t oldDigitalPort1array[2];
 uint8_t oldDigitalPort2array[2];
 uint8_t toggelingIndicator;
 uint8_t	resendDigitalPort;
-uint8_t resendIsAlive;
+// uint8_t resendIsAlive;
 uint8_t resendPrintVersion;
 uint8_t	arduinoStopped;
 uint8_t resendTestingAnswer;
@@ -122,8 +121,8 @@ int16_t sysexBytesRead;
 //for bluetooth reset
 uint8_t bluetoothResetResponded;
 uint8_t isAppResponded;
-uint8_t notAliveSentToArduino;
-	
+uint32_t isAliveMillis;
+
 /**
 * @brief Initialize Firmata protocal variables.
 * @param None.
@@ -284,7 +283,7 @@ void reportDigialPorts();
 * @param None.
 * @return None.
 */
-void sendIsAlive();
+// void sendIsAlive();
 /**
  * @brief Reset the Bluetooth using software  
  * @param None

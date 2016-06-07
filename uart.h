@@ -50,6 +50,9 @@
 #ifdef PLUS_BOARD
 volatile uint8_t	isArduinoRx0BufferEmpty;
 volatile uint8_t	isArduinoRx0BufferOverFlowed;
+volatile uint8_t 	isDataSentFromApp;
+volatile uint8_t    notAliveSentToArduino;
+
 #endif
 /**
  * @brief Initialize the serial port, it's status registers and buffers.

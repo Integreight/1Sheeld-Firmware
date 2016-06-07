@@ -110,12 +110,7 @@ void processSysexMessage(void)
 
 #ifdef PLUS_BOARD
 void checkNeededDataToResend()
-{
-	if (resendIsAlive)
-	{
-		sendIsAlive();
-	}
-	
+{	
 	if(resendDigitalPort)
 	{
 		reportDigitalPorts();
@@ -306,29 +301,6 @@ void requestBluetoothReset()
 	write(END_SYSEX);
 }
 
-void sendIsAlive()
-{
-	#ifdef PLUS_BOARD
-	if(txBufferIndex +3 >20)
-	{
-		resendIsAlive = true;
-	}
-	else
-	{
-		write(START_SYSEX);
-		write(IS_ALIVE);
-		write(END_SYSEX);
-		resendIsAlive = false;
-	}
-	#endif
-	#ifdef CLASSIC_BOARD
-	write(START_SYSEX);
-	write(IS_ALIVE);
-	write(END_SYSEX);
-	#endif
-	
-}
-
 //******************************************************************************
 //* Private Methods
 //******************************************************************************
@@ -342,12 +314,12 @@ void systemReset(void)
   sysexBytesRead = 0;
   bluetoothResetResponded=false;
   isAppResponded=false;
-  notAliveSentToArduino=false;
+  // notAliveSentToArduino=0;
   systemResetCallback();
   #ifdef PLUS_BOARD
   txBufferIndex = 0;
   resendDigitalPort = false;
-  resendIsAlive = false ;
+  // resendIsAlive = false ;
   resendPrintVersion = false;
   resendCurrentBaudRate = false;
   resendTestingAnswer = false;
@@ -355,6 +327,8 @@ void systemReset(void)
   setIsArduinoRx0BufferOverFlowedFlag(false);
   arduinoStopped =false;
   toggelingIndicator=false;
+  isDataSentFromApp=false;
+  isAliveMillis=0;
   #endif
 }
 
@@ -524,11 +498,11 @@ void sysexCallback(uint8_t command, uint8_t argc, uint8_t *argv)
 		}
 	}break;
 
-	case IS_ALIVE:
-	{
-		isAppResponded=true;
-		notAliveSentToArduino=false;
-	}break;
+	// case IS_ALIVE:
+	// {
+	// 	isAppResponded=true;
+	// 	notAliveSentToArduino=false;
+	// }break;
 	
 	case RESET_MICRO:
 	{
