@@ -36,6 +36,7 @@ void initialization()
 	#ifdef CLASSIC_BOARD
 	initUart(0,BAUD_115200);
 	#endif
+	sendArduinoToSendData();
 	setUnusedPinsAsOutput();
 	setupUartLeds();
 	requestBluetoothReset();
