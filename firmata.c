@@ -314,12 +314,11 @@ void systemReset(void)
   sysexBytesRead = 0;
   bluetoothResetResponded=false;
   isAppResponded=false;
-  // notAliveSentToArduino=0;
+  isDataReceivedFromApp=false;
   systemResetCallback();
   #ifdef PLUS_BOARD
   txBufferIndex = 0;
   resendDigitalPort = false;
-  // resendIsAlive = false ;
   resendPrintVersion = false;
   resendCurrentBaudRate = false;
   resendTestingAnswer = false;
@@ -327,8 +326,6 @@ void systemReset(void)
   setIsArduinoRx0BufferOverFlowedFlag(false);
   arduinoStopped =false;
   toggelingIndicator=false;
-  isDataSentFromApp=false;
-  isAliveMillis=0;
   #endif
 }
 
@@ -496,14 +493,7 @@ void sysexCallback(uint8_t command, uint8_t argc, uint8_t *argv)
 		{
 			muteFirmata=1;
 		}
-	}break;
-
-	// case IS_ALIVE:
-	// {
-	// 	isAppResponded=true;
-	// 	notAliveSentToArduino=false;
-	// }break;
-	
+	}break;	
 	case RESET_MICRO:
 	{
 		forceHardReset();

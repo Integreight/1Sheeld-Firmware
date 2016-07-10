@@ -51,8 +51,7 @@
 volatile uint8_t	isArduinoRx0BufferEmpty;
 volatile uint8_t	isArduinoRx0BufferOverFlowed;
 #endif
-volatile uint8_t 	isDataSentFromApp;
-volatile uint8_t    notAliveSentToArduino;
+volatile uint8_t 	isDataReceivedFromApp;
 /**
  * @brief Initialize the serial port, it's status registers and buffers.
  * @param serialPort specify which serial port to initialize 0 or 1

@@ -44,7 +44,6 @@
 #define END_SYSEX               0xF7 // end a MIDI Sysex message
 #define FIRMATA_MUTE            0x64  // turn off firmata
 #define FIRMATA_VERSION         0X63 // our firmata version
-// #define IS_ALIVE                0x62
 #define RESET_BLUETOOTH         0x61          
 #define RESET_MICRO             0x60
 #define REPORT_INPUT_PINS       0X5F
@@ -109,7 +108,6 @@ uint8_t oldDigitalPort1array[2];
 uint8_t oldDigitalPort2array[2];
 uint8_t toggelingIndicator;
 uint8_t	resendDigitalPort;
-// uint8_t resendIsAlive;
 uint8_t resendPrintVersion;
 uint8_t	arduinoStopped;
 uint8_t resendTestingAnswer;
@@ -121,6 +119,7 @@ int16_t sysexBytesRead;
 //for bluetooth reset
 uint8_t bluetoothResetResponded;
 uint8_t isAppResponded;
+uint8_t    notAliveSentToArduino;
 uint32_t isAliveMillis;
 
 /**
@@ -278,12 +277,6 @@ void printVersion();
 * @return None.
 */
 void reportDigialPorts();
-/**
-* @brief Sends Frame each 500ms to check if app is connected.
-* @param None.
-* @return None.
-*/
-// void sendIsAlive();
 /**
  * @brief Reset the Bluetooth using software  
  * @param None
