@@ -32,6 +32,7 @@ void initialization()
 	initUart(1,BAUD_115200);
 	#ifdef PLUS_BOARD
 	initUart(0,getSavedBaudRateFromEeprom());
+	sendArduinoToSendData();
 	#endif
 	#ifdef CLASSIC_BOARD
 	initUart(0,BAUD_115200);
@@ -96,9 +97,9 @@ void checkAppConnection()
 #ifdef PLUS_BOARD
 void checkIfPinsChangedSendThem()
 {
-	fillBufferWithPinStates(digitalPort0array,0);
-	fillBufferWithPinStates(digitalPort1array,1);
-	fillBufferWithPinStates(digitalPort2array,2);
+	if (reportPINs[0])fillBufferWithPinStates(digitalPort0array,0);
+	if (reportPINs[1])fillBufferWithPinStates(digitalPort1array,1);
+	if (reportPINs[2])fillBufferWithPinStates(digitalPort2array,2);
 }
 #endif // PLUS_BOARD
 
@@ -185,10 +186,28 @@ void checkArduinoRx0BufferSpace()
 
 void checkPortStateEquality(uint8_t * oldPort ,uint8_t * newPort,uint8_t portNumber, uint8_t numberOfBytesToCheck)
 {
-	uint8_t count=0;
-	while(--numberOfBytesToCheck>=0 && oldPort[numberOfBytesToCheck]==newPort[numberOfBytesToCheck]) count++;
-	if(count!=2){
-		for(uint16_t i = 0 ;i <2 ; i++) oldPort[i]=newPort[i];
+	uint8_t pinsStateEqual = true;		
+	for (uint8_t i =0 ; i < numberOfBytesToCheck;i++ )
+	{
+		if(oldPort[i]!=newPort[i])
+		{
+			pinsStateEqual = false;
+			break;				
+		}
+	}
+	if(!pinsStateEqual){
+		switch (portNumber){
+			case 0:
+			for(uint16_t i = 0 ;i <2 ; i++) oldDigitalPort0array[i]=newPort[i];break;
+				
+			case 1:
+			for(uint16_t i = 0 ;i <2 ; i++) oldDigitalPort1array[i]=newPort[i];break;
+				
+			case 2:
+			for(uint16_t i = 0 ;i <2 ; i++) oldDigitalPort2array[i]=newPort[i];break;
+				
+			default:break;
+		}
 		if (txBufferIndex+3 < 20){
 			write(DIGITAL_MESSAGE | (portNumber & 0xF));
 			for (uint16_t i = 0; i< 2 ;i++)write(newPort[i]);
