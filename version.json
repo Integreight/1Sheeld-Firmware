@@ -1,0 +1,9 @@
+{
+    "name": "1Sheeld Firmware v1.6",
+    "description": "\n- Made the board testable using a special frame.\nAdded the ability to rename the bluetooth module.\n",
+    "major": 1,
+    "minor": 6,
+    "date": "10/4/2016",
+    "classic": "https://github.com/Integreight/1Sheeld-Firmware/releases/download/v1.6/1Sheeld.Firmware.Classic.Board.v1.6.bin",
+    "plus": "https://github.com/Integreight/1Sheeld-Firmware/releases/download/v1.6/1Sheeld.Firmware.Plus.Board.v1.6.bin"
+}
