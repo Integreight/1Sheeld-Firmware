@@ -8,14 +8,18 @@ FORMAT = ihex
 TARGET = firmware
 
 # List C source files here. (C dependencies are automatically generated.)
-SRC =main.c  onesheeld.c mapping.c firmata.c gpio.c pwm.c timers.c uart.c eeprom.c
+SRC = onesheeld.c firmata.c eeprom.c $(MCU)/gpio.c $(MCU)/mapping.c $(MCU)/pwm.c $(MCU)/timers.c $(MCU)/uart.c main.c
+
+#change these variables according to your lib dirs
+DEV_SPECS = "C:\Program Files (x86)\Atmel\Studio\7.0\packs\atmel\ATmega_DFP\1.2.132\gcc\dev"
+INCLUDE_DIR = "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\include"
 
 # determine the building configuration debug or release
 CONFIG = DEBUG
 LOWER_VAR_CONFIG  =  $(shell echo $(CONFIG) | tr A-Z a-z)
 # Create object files and object files directories 
-OBJECTDIRCLASSIC = build/classic/$(LOWER_VAR_CONFIG)
-OBJECTDIRPLUS = build/plus/$(LOWER_VAR_CONFIG)
+OBJECTDIRCLASSIC = build/$(MCU)/classic/$(LOWER_VAR_CONFIG)
+OBJECTDIRPLUS = build/$(MCU)/plus/$(LOWER_VAR_CONFIG)
 OBJPLUS = $(OBJECTDIRPLUS)/firmata.o $(OBJECTDIRPLUS)/gpio.o $(OBJECTDIRPLUS)/main.o $(OBJECTDIRPLUS)/mapping.o $(OBJECTDIRPLUS)/onesheeld.o $(OBJECTDIRPLUS)/pwm.o \
 $(OBJECTDIRPLUS)/timers.o $(OBJECTDIRPLUS)/uart.o $(OBJECTDIRPLUS)/eeprom.o
 OBJCLASSIC = $(OBJECTDIRCLASSIC)/firmata.o $(OBJECTDIRCLASSIC)/gpio.o $(OBJECTDIRCLASSIC)/main.o $(OBJECTDIRCLASSIC)/mapping.o $(OBJECTDIRCLASSIC)/onesheeld.o $(OBJECTDIRCLASSIC)/pwm.o\
@@ -48,8 +52,8 @@ MATH_LIB = -lm
 #  -Wl,...:     tell GCC to pass this to linker.
 #    -Map:      create map file
 #    --cref:    add cross reference to  map file
-LDFLAGSCLASSIC = -Wl,-Map="$(OBJECTDIRCLASSIC)/$(TARGET).map" -Wl,--start-group -Wl,-lm  -Wl,--end-group -Wl,--gc-sections -mmcu=atmega162 -B.
-LDFLAGSPLUS = -Wl,-Map="$(OBJECTDIRPLUS)/$(TARGET).map" -Wl,--start-group -Wl,-lm  -Wl,--end-group -Wl,--gc-sections -mmcu=atmega162 -B.
+LDFLAGSCLASSIC = -Wl,-Map="$(OBJECTDIRCLASSIC)/$(TARGET).map" -Wl,--start-group -Wl,-lm  -Wl,--end-group -Wl,--gc-sections -mmcu=$(MCU) -B$(DEV_SPECS)/$(MCU)
+LDFLAGSPLUS = -Wl,-Map="$(OBJECTDIRPLUS)/$(TARGET).map" -Wl,--start-group -Wl,-lm  -Wl,--end-group -Wl,--gc-sections -mmcu=$(MCU) -B$(DEV_SPECS)/$(MCU)
 #####################################################################################################################
 
 # Define programs and commands.
@@ -89,8 +93,8 @@ GENDEPFLAGSPLUS = -MD -MP -MF $(OBJECTDIRPLUS)/$(@F).d -MT.$(OBJECTDIRPLUS)/$(@F
 # Combine all necessary flags and optional flags.
 # Add target processor to flags.
 
-ALL_CFLAGS_CLASSIC = -mmcu=$(MCU) -I. -DCLASSIC_BOARD $(CFLAGS_$(CONFIG)) $(CFLAGS) $(GENDEPFLAGSCLASSIC)
-ALL_CFLAGS_PLUS = -mmcu=$(MCU) -I. -DPLUS_BOARD $(CFLAGS_$(CONFIG)) $(CFLAGS) $(GENDEPFLAGSPLUS)
+ALL_CFLAGS_CLASSIC = -mmcu=$(MCU) -I$(MCU)/ -I. -I$(INCLUDE_DIR) -B$(DEV_SPECS)/$(MCU) -DCLASSIC_BOARD $(CFLAGS_$(CONFIG)) $(CFLAGS) $(GENDEPFLAGSCLASSIC)
+ALL_CFLAGS_PLUS = -mmcu=$(MCU) -I$(MCU)/ -I. -I$(INCLUDE_DIR) -B$(DEV_SPECS)/$(MCU) -DPLUS_BOARD $(CFLAGS_$(CONFIG)) $(CFLAGS) $(GENDEPFLAGSPLUS)
 #####################################################################################################################
 # Default target.
 all: classic plus
@@ -206,6 +210,12 @@ $(OBJECTDIRCLASSIC)/%.o : %.c
 	@echo
 	@echo $(MSG_COMPILING) $<
 	$(CC) -c $(ALL_CFLAGS_CLASSIC)  $< -o $@   
+$(OBJECTDIRCLASSIC)/%.o : $(MCU)/%.c
+	$(shell mkdir build 2>/dev/null)
+	$(shell mkdir -p $(OBJECTDIRCLASSIC) 2>/dev/null)
+	@echo
+	@echo $(MSG_COMPILING) $<
+	$(CC) -c $(ALL_CFLAGS_CLASSIC)  $< -o $@ 
 #####################################################################################################################
 # Create final output files (.hex, .eep) from ELF output file :Release version.
 $(OBJECTDIRPLUS)/%.hex: $(OBJECTDIRPLUS)/%.elf
@@ -253,6 +263,12 @@ $(OBJECTDIRPLUS)/%.o : %.c
 	@echo
 	@echo $(MSG_COMPILING) $<
 	$(CC) -c $(ALL_CFLAGS_PLUS)  $< -o $@   
+$(OBJECTDIRPLUS)/%.o : $(MCU)/%.c
+	$(shell mkdir build 2>/dev/null)	
+	$(shell mkdir -p $(OBJECTDIRPLUS) 2>/dev/null)
+	@echo
+	@echo $(MSG_COMPILING) $<
+	$(CC) -c $(ALL_CFLAGS_PLUS)  $< -o $@  
 #####################################################################################################################
 # Target: clean project.
 clean: begin clean_list end

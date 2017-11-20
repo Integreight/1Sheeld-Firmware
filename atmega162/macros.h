@@ -1,4 +1,4 @@
-﻿/*
+/*
 
   Project:       1Sheeld Firmware 
   File:          macros.h

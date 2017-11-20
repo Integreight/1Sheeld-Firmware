@@ -1,16 +1,3 @@
-﻿/*
-
-  Project:       1Sheeld Firmware
-  File:          timers.h
-
-  Compiler:      avr-gcc 3.4.2
-
-  Author:        Integreight
-  
-  Date:          2014.5
-
-*/
-
 /**
  * @file timers.h
  * @brief Timers driver for configuring and dealing with ATmega162 timers  	
