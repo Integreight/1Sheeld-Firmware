@@ -156,13 +156,13 @@ gccversion :
 	@$(CC) --version
 
 flashclassic:
-	avrdude -c usbasp -p m162 -P usb -v -u -D -U efuse:w:0xfb:m -U hfuse:w:0xd8:m -U lfuse:w:0xfd:m -u -U flash:w:$(OBJECTDIRCLASSIC)/$(TARGET).hex
+	avrdude -c usbasp -p $(MCU) -P usb -v -u -D -U efuse:w:0xfb:m -U hfuse:w:0xd8:m -U lfuse:w:0xfd:m -u -U flash:w:$(OBJECTDIRCLASSIC)/$(TARGET).hex
 	
 flashplus:
-	avrdude -c usbasp -p m162 -P usb -v -u -D -U efuse:w:0xfb:m -U hfuse:w:0xd8:m -U lfuse:w:0xfd:m -u -U flash:w:$(OBJECTDIRPLUS)/$(TARGET).hex
+	avrdude -c usbasp -p $(MCU) -P usb -v -u -D -U efuse:w:0xfb:m -U hfuse:w:0xd8:m -U lfuse:w:0xfd:m -u -U flash:w:$(OBJECTDIRPLUS)/$(TARGET).hex
 
 erase: 
-	avrdude -c usbasp -p m162 -P usb -v -u -e
+	avrdude -c usbasp -p $(MCU) -P usb -v -u -e
 
 # Create final output files (.hex, .eep) from ELF output file.
 $(OBJECTDIRCLASSIC)/%.hex: $(OBJECTDIRCLASSIC)/%.elf
