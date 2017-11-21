@@ -1,10 +1,10 @@
-﻿#ifndef TIMERS_H_
+#ifndef TIMERS_H_
 #define TIMERS_H_
 
 #include "stdint.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include "macros.h"
+#include "mapping.h"
 
 
 /** 

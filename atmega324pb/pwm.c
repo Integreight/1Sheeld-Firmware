@@ -122,36 +122,4 @@ void turnOffPWM(uint8_t timer)
 	}
 }
 
-uint8_t digitalPinToTimer(uint8_t pin)
-{
-	switch (pin)
-	{
-		case S_PB3:
-		return TIMER_0A;
-		break;
-		case S_PB4:
-		return TIMER_0B;
-		break;
-		case S_PD5:
-		return TIMER_1A;
-		break;
-		case S_PD4:
-		return TIMER_1B;
-		break;
-		case S_PD7:
-		return TIMER_2A;
-		break;
-		case S_PD6:
-		return TIMER_2B;
-		break;
-		case S_PC4:
-		return TIMER_4A;
-		break;
-
-		default:
-		return NOT_ON_TIMER;
-		break;
-	}
-}
-
 

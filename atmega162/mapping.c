@@ -13,7 +13,6 @@
 #include "config.h"
 #include "mapping.h"
 
-#define F_CPU 7372800UL
 
 const uint16_t PROGMEM port_to_input_PGM[] = {
 	(uint16_t) &PINA,

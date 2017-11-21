@@ -1,9 +1,9 @@
-﻿#ifndef PWM_H_
+#ifndef PWM_H_
 #define PWM_H_
 
 #include "stdint.h"
 #include <avr/io.h>
-#include "macros.h"
+#include "mapping.h"
 /**
  * @brief Setup the prescalers of the timers except timer3=16 and timer 2=32.
  * @param timer The number of timer 0 --> 5.
@@ -24,5 +24,4 @@ void setPwmDutyCycle(uint8_t, uint8_t);
  */
 void turnOffPWM(uint8_t);
 
-uint8_t digitalPinToTimer(uint8_t pin);
 #endif /* PWM_H_ */

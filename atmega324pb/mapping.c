@@ -1,6 +1,5 @@
 #include "config.h"				   
 #include "mapping.h"
-
 const uint16_t PROGMEM port_to_input_PGM[] = {
 	(uint16_t) &PINA,
 	(uint16_t) &PINB,

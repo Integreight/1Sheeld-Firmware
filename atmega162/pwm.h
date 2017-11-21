@@ -26,14 +26,6 @@
 #include <avr/io.h>
 #include "mapping.h"
 
-#define TIMER_00		0
-#define TIMER_1A		1
-#define TIMER_1B		2
-#define TIMER_02		3
-#define TIMER_3A		4
-#define TIMER_3B		5
-
-
 /**
  * @brief Setup the prescalers of the timers except timer3=16 and timer 2=32.
  * @param timer The number of timer 0 --> 5.

@@ -20,6 +20,7 @@
 
 #define ENABLED    1
 #define DISABLED   0
+#define F_CPU 7372800UL
 
 // port arrays defs
 #define PA 0

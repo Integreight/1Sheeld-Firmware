@@ -7,8 +7,6 @@
 #include <avr/interrupt.h>
 #include "macros.h"
 
-
-
 #define digitalPinHasPWM(p)         ( ((p) == 3) || ((p) == 5) || ((p) == 6) ||  ((p) == 9) ||  ((p) == 10) ||  ((p) == 11) )
 #define IS_PIN_DIGITAL(p)       ((p) >= 2 && (p) <= 19)
 #define IS_PIN_PWM(p)           digitalPinHasPWM(p)
